@@ -1,0 +1,67 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="header">
+  <h1>About us</h1>
+</div>
+<div class="row">
+  <div class="col-sm">
+    <p>
+      OpenPathology is a new project being built by
+      the <a href="https://ebmdatalab.net/">EBM DataLab</a> at the
+      University of Oxford.
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm">
+    <img src="{% static 'team.jpg' %}" class="img-fluid img-big">
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm">
+    <p>
+          We are the team
+          behind <a href="https://openprescribing.net/">OpenPrescribing.net</a>,
+          an openly accessible tool for all NHS primary care
+          prescribing data. On OpenPrescribing you can explore
+          variation over time and place in prescribing for any
+          individual drug, or class of drugs, right down to the level
+          of individual practices. You can explore outliers, and see
+          which practices are fast or slow to respond to changes in
+          price, or changes in the evidence on safety and
+          effectiveness. You can see standard dashboards for every
+          practice and CCG, and subscribe to “prescribing alerts”
+          driven by cutting edge data science techniques.
+        </p>
+
+        <h2>Join Us!</h2>
+        <p>
+          We have a good team assembled.  If you’d like
+          to <a href="mailto:hello@ebmdatalab.net">join us</a> on
+          OpenPathology, or want
+          to <a href="mailto:hello@ebmdatalab.net">hear more</a> when
+          we start to ship our tools, then please get in
+          touch: <a href="mailto:hello@ebmdatalab.net">hello@ebmdatalab.net</a>
+        </p>
+        <p>
+          We are always keen to hear from more:
+          <ul>
+            <li>Policymakers</li>
+            <li>Hospital Pathologists</li>
+            <li>Public Health staff</li>
+            <li>Funders</li>
+            <li>Microbiologists</li>
+            <li>GPs</li>
+            <li>Possible users</li>
+            <li>Other researchers</li>
+            <li>Other data science teams</li>
+          </ul>
+
+        <p>...and anyone else wanting to improve and refine the use of diagnostic tests!</p>
+  </div>
+</div>
+
+{% endblock %}
