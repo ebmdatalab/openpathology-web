@@ -25,7 +25,7 @@ SECRET_KEY = 'e%gx*tq7a0k6rlvd_hj0vd0qor-seau_v@u5bt5(l^*%!uzsyj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["openpathology.net"]
 
 
 # Application definition
