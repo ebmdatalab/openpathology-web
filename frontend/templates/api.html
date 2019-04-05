@@ -1,0 +1,294 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="header">
+  <h1>Data schema</h1>
+</div>
+
+<div class="row">
+  <p>
+    This project will accept data in CSV format over SSH or SFTP to a secure area within the University of Oxford.  We will then process the data to a fully-anonymised format, and aggregate it. At this point it will be possible to share the anonymised data in research and chart format.
+  </p>
+  <p>NHS organisations who wish to participate in our project should
+  get in touch to sign off Information Governance agreements, and then
+  can provide as much of the following information as possible, on a
+  monthly basis. All participating organisations will then get the
+    benefit of our monthly analyses.</p>
+
+  <p>During the prototype period, we are also able to help write software to convert the raw output of a LIMS to this format. Get in touch at <a href="mailto:hello@ebmdatalab.net">hello@ebmdatalab.net</a> to express an interest.</p>
+</div>
+
+<div class="row">
+  <table class="table table-bordered table-sm">
+    <thead>
+
+<tr>
+<th>field</th>
+<th>description</th>
+<th>required</th>
+<th>example</th>
+</tr>
+  </thead>
+  <tbody>
+<tr>
+<td>
+<div>analyte_lab_code</div>
+</td>
+<td>
+<div>The lab&rsquo;s code for the test</div>
+</td>
+<td>Y</td>
+<td>WBC, H1BAc</td>
+</tr>
+<tr>
+<td>
+<div>analyte_lab_name</div>
+</td>
+<td>
+<div>The lab&rsquo;s full name for the text</div>
+</td>
+<td>&nbsp;</td>
+<td>
+<div>Serum total protein level</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>analyte_read_code</div>
+</td>
+<td>
+<div>The READ code for the test</div>
+</td>
+<td>&nbsp;</td>
+<td>44D1.00</td>
+</tr>
+<tr>
+<td>
+<div>analyte_snomed_code</div>
+</td>
+<td>
+<div>The SNOMED code for the test</div>
+</td>
+<td>&nbsp;</td>
+<td>200197461</td>
+</tr>
+<tr>
+<td>
+<div>analyte_result_measurement</div>
+</td>
+<td>
+<div>Numerical value of a measurement result</div>
+</td>
+<td>Y</td>
+<td>14.4</td>
+</tr>
+<tr>
+<td>
+<div>analyte_result_units</div>
+</td>
+<td>
+<div>The units that the test is measured in</div>
+</td>
+<td>&nbsp;</td>
+<td>mmol/L</td>
+</tr>
+<tr>
+<td>
+<div>analyte_result_date</div>
+</td>
+<td>
+<div>The date the measurement was made</div>
+</td>
+<td>Y</td>
+<td>2018-01-31</td>
+</tr>
+<tr>
+<td>
+<div>analyte_is_abnormal</div>
+</td>
+<td>
+<div>A flag to show if results are considered within or outside reference range</div>
+</td>
+<td>&nbsp;</td>
+<td>true, false</td>
+</tr>
+<tr>
+<td>
+<div>analyte_result_comments</div>
+</td>
+<td>
+<div>Free text field for additional comments about the measurement</div>
+</td>
+<td>&nbsp;</td>
+<td>
+<div>calculated using the CKD-EPI creatinine equation</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>analyte_lab_lims</div>
+</td>
+<td>
+<div>The LIMS used to record the test (software and version)</div>
+</td>
+<td>&nbsp;</td>
+<td>WinPath 1.2</td>
+</tr>
+<tr>
+<td>specimen_code</td>
+<td>
+<div>An identifier for the specimen</div>
+</td>
+<td>&nbsp;</td>
+<td>AB12K551W</td>
+</tr>
+<tr>
+<td>
+<div>specimen_taken_date</div>
+</td>
+<td>
+<div>Date the specimen was taken</div>
+</td>
+<td>&nbsp;</td>
+<td>2018-01-30</td>
+</tr>
+<tr>
+<td>
+<div>specimen_received_date</div>
+</td>
+<td>
+<div>Date the specimen was received by the lab</div>
+</td>
+<td>&nbsp;</td>
+<td>2018-01-30</td>
+</tr>
+<tr>
+<td>specimen_type</td>
+<td>
+<div>The type of the sample</div>
+</td>
+<td>&nbsp;</td>
+<td>blood</td>
+</tr>
+<tr>
+<td>
+<div>requestor_organisation_name</div>
+</td>
+<td>
+<div>Name of the location where the request originated</div>
+</td>
+<td>&nbsp;</td>
+<td>
+<div>Beech Street Practice</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>requestor_organisation_code</div>
+</td>
+<td>
+<div>ODS code of the location where the request originated</div>
+</td>
+<td>Y</td>
+<td>Y74004</td>
+</tr>
+<tr>
+<td>
+<div>requestor_name</div>
+</td>
+<td>
+<div>Name of the requestor</div>
+</td>
+<td>&nbsp;</td>
+<td>Dr B Anderson</td>
+</tr>
+<tr>
+<td>
+<div>requestor_registration_code</div>
+</td>
+<td>
+<div>Registration code for the requestor</div>
+</td>
+<td>&nbsp;</td>
+<td>1032213B</td>
+</tr>
+<tr>
+<td>
+<div>requestor_comments</div>
+</td>
+<td>
+<div>Free text field for additional information from the requestor, e.g. clinical observation</div>
+</td>
+<td>&nbsp;</td>
+<td>
+<div>Investigation for suspected anaemia</div>
+</td>
+</tr>
+<tr>
+<td>
+<div>requestor_order_set</div>
+</td>
+<td>
+<div>The tests as requested by the requestor. This may be an analyte (e.g. haemoglobin), a battery (e.g. FBC), or a syndrome-specific test group (e.g. TATT)</div>
+</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>
+<div>requestor_used_ordercomms</div>
+</td>
+<td>
+<div>A flag to show if the request came via an ordercomms system, or manually</div>
+</td>
+<td>&nbsp;</td>
+<td>true, false</td>
+</tr>
+<tr>
+<td>
+<div>patient_identifier</div>
+</td>
+<td>
+<div>Unique identifier for the patient. This could be NHS number or internal hospital number</div>
+</td>
+<td>&nbsp;</td>
+<td>10922132</td>
+</tr>
+<tr>
+<td>
+<div>patient_department_code</div>
+</td>
+<td>
+<div>Code for department where patient was seen, e.g. GP surgery, A&amp;E</div>
+</td>
+<td>&nbsp;</td>
+<td>GP,AE</td>
+</tr>
+<tr>
+<td>patient_sex</td>
+<td>
+<div>Administrative sex of patient</div>
+</td>
+<td>&nbsp;</td>
+<td>M,F</td>
+</tr>
+<tr>
+<td>patient_age</td>
+<td>Age of patient</td>
+<td>&nbsp;</td>
+<td>35</td>
+</tr>
+<tr>
+<td>
+<div>patient_date_of_birth</div>
+</td>
+<td>DOB of patient</td>
+<td>&nbsp;</td>
+<td>1987-05-31</td>
+</tr>
+</tbody>
+</table>        </div>
+
+{% endblock %}
