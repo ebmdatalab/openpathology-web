@@ -1,0 +1,16 @@
+{
+  "name": "Openpathology App",
+  "description": "Openpathology website",
+  "keywords": [
+    "oauth"
+  ],
+  "website": "https://github.com/ebmdatalab/openpathology",
+  "repository": "https://github.com/ebmdatalab/openpathology",
+  "addons": "heroku-postgresql:hobby-dev",
+  "env": {
+    "SECRET_KEY": {
+      "description": "Secret key for Django app",
+      "generator": "secret"
+    }
+  }
+}
