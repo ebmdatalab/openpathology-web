@@ -1,0 +1,12 @@
+.env
+hog/media/*
+!hog/media/sample_file.mp4
+venv
+*~
+.~lock*
+.ipynb_checkpoints
+__pycache__/
+#*#
+*pyc
+environment
+db.sqlite3
