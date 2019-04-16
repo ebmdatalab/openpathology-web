@@ -4,7 +4,7 @@
   "keywords": [],
   "website": "https://github.com/ebmdatalab/openpathology-web",
   "repository": "https://github.com/ebmdatalab/openpathology-web",
-  "addons": "heroku-postgresql:hobby-dev",
+  "addons": ["heroku-postgresql:hobby-dev"],
   "env": {
     "SECRET_KEY": {
       "description": "Secret key for Django app",
