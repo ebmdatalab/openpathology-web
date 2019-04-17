@@ -2,46 +2,62 @@
 {% load static %}
 
 {% block content %}
-<div class="header">
-  <h1>OpenPathology.net</h1>
+
+<div class="row">
+  <div class="jumbotron">
+    <h1>
+      OpenPathology: supporting better diagnostic testing</h1>
+    <p class="lead">We are <a href="{% url 'about' %}">a team</a> based at <a href="https://ebmdatalab.net/">the DataLab</a>  at the
+      University of Oxford.  We're developing free, open tools for analysing pathology data in the NHS. These will give clinicians simple and actionable insights, to improve patient care and reduce costs. <a href="{% url 'get_involved' %}" class="btn btn-warning">Get involved</a></p>
+
+  </div>
 </div>
 
 <div class="row">
+  <h2>Why does this matter?</h2>
+</div>
+<div class="row">
+  <p>Better audit and feedback about test requests in primary care has the potenital to <strong>improve patient safety</strong> and <strong>reduce costs</strong> significantly:
+    <ul>
+      <li>
+    England sees <strong>1.12 billion tests per year</strong>, costing £2.2 billion, 35-45% of which are requested from primary care (<a href="https://improvement.nhs.uk/resources/pathology-networks/">source</a>).</li>
+      <li>Testing rates are <strong>increasing rapidly</strong>: patients in 2001 had on average 1.5 tests per year; five years later they were having <strong>5 tests per year</strong> (<a href="https://www.ncbi.nlm.nih.gov/pubmed/30487169">source</a>).</li>
+      <li>There is <strong>huge, often unwarranted variation</strong> in tests (<a href="https://www.ncbi.nlm.nih.gov/pubmed/29556075">source</a>), which can lead to patient harm and unecessary costs.</li>
+      <li>Quality improvement studies have already demonstrated the potential to <strong>reduce costs and patient harm</strong> without impacting outcomes (<a href="https://bmjopenquality.bmj.com/content/8/1/e000349">source</a>).</li>
+    </ul>
+</div>
+
+<div class="row">
+  <h2>What will it look like?</h2>
+</div>
+<div class="row">
+  <p>Our prototype system will focus on primary care. Practices will be able view a range of test orders and results, in the context of their peers. As well as charts, all data will downloadable for further analysis. We will write a series of papers exploring trends and variation across the data.</p>
+
+  <p>Data will be presented on this website, in dashboards similar to the ones we developed for OpenPrescribing (<a href="https://openprescribing.net/practice/L83073/">example</a>). As an example, here's how we might show potassium test ordering and results for a single practice:</p>
+</div>
+<div class="row">
   <div class="col-sm">
-    <p>
-      OpenPathology is a new project being built by
-      the <a href="https://ebmdatalab.net/">EBM DataLab</a> at the
-      University of Oxford.  In spring 2019 we obtained funding from HDRUK
-      (<a href="https://ebmdatalab.net/funding-obtained-for-openpathology-pilot-project/">read
-      more</a>) to build a prototype, which will be delivered by the end of the year.
-    </p>
-    <p>
-      Our aim is to create an innovative, high impact pathology benchmarking tool that improves patient care, using advanced data science presented in simple terms, to give GPs simple, actionable insights.
-      </p>
-      At OpenPathology, we are setting out to bring all pathology
-      data together, in one place, so that users can explore
-      variation in the way that clinicians are ordering tests, and
-      give useful feedback to doctors.
-    </p>
-    <h2>Why does this matter?</h2>
-    <p>
-      There has been a rapid expansion in the ordering of blood
-      tests over the last two decades.
-    </p>
-    <p>
-  Clinicians currently receive almost no feedback on their test request rates, or how these relate to national norms. Our live, up-to-date pathology monitoring tool will show clinicians and policy-makers how recent testing rates and performance on specific measures of pathology test appropriateness compare with other practices. This will highlight areas requiring further investigation to improve patient care. It will also give live data on overall trends in test use over time for policymakers, commissioners and researchers.
-     </p>
-    <p>
-    Research by <a href="{% url 'about' %}">members of our team</a> has
-    already
-    shown <a href="https://www.ncbi.nlm.nih.gov/pubmed/30487169">enormous
-    increases</a> in the use of tests,
-    and <a href="https://www.ncbi.nlm.nih.gov/pubmed/29556075">substantial
-    variation</a>.  We have also written
-    a <a href="https://bmjopenquality.bmj.com/content/8/1/e000349">quality
-          improvement report</a> on the monitoring of chronic conditions.
-    </p>
+    <figure class="figure">
+      <figcaption class="figure-caption figure-caption-title">Number of Potassium tests per person</figcaption>
+      <img src="{% static 'example_1.png' %}" alt="Chart showing potassium ordering" class="img-fluid img-thumbnail">
+      <figcaption class="figure-caption">This practice requests relatively more than other practices in the CCG.</figcaption>
+    </figure>
+  </div>
+  <div class="col-sm">
+    <figcaption class="figure-caption figure-caption-title">Proportion of potassium tests that are high</figcaption>
+    <img src="{% static 'example_2.png' %}" alt="Another chart showing potassium ordering" class="img-fluid img-thumbnail">
+    <figcaption class="figure-caption">You can see big winter peaks across the region, but this practice has reduced the seasonal fluctuation in high potassiums, and reduced the baseline across the year.</caption>
 
   </div>
+</div>
+<hr>
+<div class="row">
+  <h2>How can I get involved?</h2>
+</div>
+
+<div class="row">
+  <p>
+    Anyone with an interest in pathology data should get in touch. At this stage, we're particularly interested in finding partners who want to include their data in the project. <a href="{% url 'get_involved' %}" class="btn btn-warning">Get involved</a>
+  </p>
 </div>
 {% endblock %}

@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Get involved</h1>
+<p class="lead">We are actively seeking NHS Trusts and labs who would like to
+  include their data in this project.</p>
+
+<p>In addition, we are always keen to hear from more policymakers, hospital pathologoist, public health staff, funders, microbiologists, GPs, researchers and data scientists!</p>
+<p>
+  To express an interest, write
+  to us
+  at <a href="mailto:ebmdatalab@phc.ox.ac.uk">ebmdatalab@phc.ox.ac.uk</a>.</p>
+
+<h2>Why get involved as a Trust or Lab?</h2>
+<p>We expect participating regions to see the following benefits:</p>
+
+<ul>
+  <li>Improved patient care</li>
+  <li>Reduced costs</li>
+  <li>Better documentation and reduction of lab workloads</li>
+  <li>More effective collaboration with GP Practices and commissioners</li>
+</ul>
+
+<p>These benefits will be achieved through:</p>
+
+<ul>
+  <li>Standardisation of data, supporting benchmarking against other regions</li>
+  <li>Access to a suite of free online tools for supporting audit and feedback, including
+    <ul>
+      <li>Ability to identify unnecessary test requests</li>
+      <li>Measures of efficacy, safety and cost-effectiveness presented in easy-to-understand charts for each practice and lab</li>
+      <li>Time trends</li>
+      <li>Automated feedback by email for interested GP practices on unusual testing variation</li>
+      <li>A per-region dashboard showing top-level summary trends and alerts, with national benchmarks</li>
+      <li>Data showing trends over time</li>
+    </ul>
+  </li>
+  <li>All the normalised, processed data and analyses will be available as raw data downloads for further analysis within each lab or trust</li>
+</ul>
+
+
+
+<h2>How to get involved</h2>
+
+<p class="lead">The pilot tool will be built using extracts from participating labs’ LIMS. The minimum a partner needs to do is provide LIMS data in the <a href="{% url 'data_format' %}">OpenPathology format</a>, once a month. At the end of every month we will update dashboards for every participating Lab.</p>
+<p>Ideally, you would allocate some time to provide explanations of known issues and anomalies. We will host occasional meetings in Oxford to discuss development of the tools.</p>
+<p>During the prototype period, we are also able to help write software to convert the raw output of a LIMS to this format. Get in touch at <a href="mailto:hello@ebmdatalab.net">hello@ebmdatalab.net</a> to express an interest.</p>
+
+<h2>Information Governance</h2>
+<p>Patient privacy is assured through the University of Oxford's extensive "Privacy by design" protocols. Once our impact assessment has been authorised, we will share it in full here. In short:</p>
+<ul>
+<li>Data will be submitted to our secured area using best-practice encryption (SSH over a VPN); we will need to liaise with your technical team to set up clients and credentials, following which data uploads will work in the same way, each month.</li>
+<li>All data sent in this way will remain in a secured server within the University, and processed to ensure it is anonymised and aggregated before it can leave this area.</li>
+<li>Raw data relating to time periods older than 5 years will be routinely deleted.</li>
+<li>We will also sign individual data-sharing agreements with each Trust, as required by their data protection protocols.</li>
+</ul>
+
+
+{% endblock %}
