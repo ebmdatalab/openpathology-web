@@ -37,3 +37,31 @@ This is a Django app.  Deployment is managed via Heroku.  A fresh instance can b
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 A development sandbox can be run by copying `env-sample` to `.env` and updating the details.  You will also need to create a postgres database. You can then either use the usual Django tooling, or use `heroku local` to run a server.
+
+## Deploying to Dokku
+
+Follow "first time" instructions below, then deploys are handled by
+
+```sh
+git push dokku master
+```
+
+### First time
+
+On the server:
+
+```sh
+dokku plugin:install https://github.com/dokku/dokku-postgres.git
+dokku apps:create openpathology-web
+dokku config:set openpathology-web SECRET_KEY=xxx
+dokku postgres:create openpathology
+dokku postgres:link openpathology openpathology-web
+```
+
+ufw allow in on eth0 from 192.168.0.0/16
+
+On a checkout (e.g. dev machine):
+
+```sh
+git remote add dokku dokku@dokku.ebmdatalab.net:openpathology-web
+```
