@@ -6,46 +6,76 @@
 <p class="lead">We are actively seeking NHS Trusts and labs who would like to
   include their data in this project.</p>
 
-<p>In addition, we are always keen to hear from more policymakers, hospital pathologoist, public health staff, funders, microbiologists, GPs, researchers and data scientists!</p>
+<p>In addition, we are always keen to hear from GPs, policymakers, hospital pathologists, public health staff, funders, microbiologists, researchers and data scientists!</p>
 <p>
   To express an interest, write
   to us
   at <a href="mailto:ebmdatalab@phc.ox.ac.uk">ebmdatalab@phc.ox.ac.uk</a>.</p>
 
-<h2>Why get involved as a Trust or Lab?</h2>
-<p>We expect participating regions to see the following benefits:</p>
 
-<ul>
-  <li>Improved patient care</li>
-  <li>Reduced costs</li>
-  <li>Better documentation and reduction of lab workloads</li>
-  <li>More effective collaboration with GP Practices and commissioners</li>
-</ul>
-
-<p>These benefits will be achieved through:</p>
-
-<ul>
-  <li>Standardisation of data, supporting benchmarking against other regions</li>
-  <li>Access to a suite of free online tools for supporting audit and feedback, including
-    <ul>
-      <li>Ability to identify unnecessary test requests</li>
-      <li>Measures of efficacy, safety and cost-effectiveness presented in easy-to-understand charts for each practice and lab</li>
-      <li>Time trends</li>
-      <li>Automated feedback by email for interested GP practices on unusual testing variation</li>
-      <li>A per-region dashboard showing top-level summary trends and alerts, with national benchmarks</li>
-      <li>Data showing trends over time</li>
-    </ul>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="trust-tab" data-toggle="tab" href="#trust" role="tab" aria-controls="profile" aria-selected="false">For Trusts and Labs</a>
   </li>
-  <li>All the normalised, processed data and analyses will be available as raw data downloads for further analysis within each lab or trust</li>
+  <li class="nav-item">
+    <a class="nav-link" id="gp-tab" data-toggle="tab" href="#gp" role="tab" aria-controls="home" aria-selected="true">For GPs</a>
+  </li>
 </ul>
 
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="trust" role="trust" aria-labelledby="trust-tab">
+     <h3>Why get involved as a Trust or Lab?</h3>
+     <p>Participating regions can expect the following benefits:</p>
+
+     <ul>
+       <li>Improved patient care</li>
+       <li>Reduced costs</li>
+       <li>Better documentation and reduction of lab workloads</li>
+       <li>More effective collaboration with GP Practices and commissioners</li>
+     </ul>
+
+     <p>These benefits will be achieved through:</p>
+
+     <ul>
+       <li>Standardisation of data, supporting benchmarking against other regions</li>
+       <li>Access to a suite of free online tools for supporting audit and feedback, including
+         <ul>
+           <li>Ability to identify unnecessary test requests</li>
+           <li>Measures of efficacy, safety and cost-effectiveness presented in easy-to-understand charts for each practice and lab</li>
+           <li>Time trends</li>
+           <li>Automated feedback by email for interested GP practices on unusual testing variation</li>
+           <li>A per-region dashboard showing top-level summary trends and alerts, with national benchmarks</li>
+           <li>Data showing trends over time</li>
+         </ul>
+       </li>
+       <li>All the normalised, processed data and analyses will be available as raw data downloads for further analysis within each lab or trust</li>
+     </ul>
 
 
-<h2>How to get involved</h2>
+     <h2>How to get involved</h2>
 
-<p class="lead">The pilot tool will be built using extracts from participating labs’ LIMS. The minimum a partner needs to do is provide LIMS data in the <a href="{% url 'data_format' %}">OpenPathology format</a>, once a month. At the end of every month we will update dashboards for every participating Lab.</p>
-<p>Ideally, you would allocate some time to provide explanations of known issues and anomalies. We will host occasional meetings in Oxford to discuss development of the tools.</p>
-<p>During the prototype period, we are also able to help write software to convert the raw output of a LIMS to this format. Get in touch at <a href="mailto:hello@ebmdatalab.net">hello@ebmdatalab.net</a> to express an interest.</p>
+     <p class="lead">The pilot tool will be built using extracts from participating labs’ LIMS. The minimum a partner needs to do is provide LIMS data in the <a href="{% url 'data_format' %}">OpenPathology format</a>, once a month. At the end of every month we will update dashboards for every participating Lab.</p>
+     <p>Ideally, you would allocate some time to provide explanations of known issues and anomalies. We will host occasional meetings in Oxford to discuss development of the tools.</p>
+     <p>During the prototype period, we are also able to help write software to convert the raw output of a LIMS to this format. Get in touch at <a href="mailto:hello@ebmdatalab.net">hello@ebmdatalab.net</a> to express an interest.</p>
+  </div>
+  <div class="tab-pane fade" id="gp" role="gp" aria-labelledby="gp-tab">
+    <h2>When can I see my data?</h2>
+    <p>Our goal is to provide audit and feedback test requests for every practice in England (and beyond).  However, we're some way off achieving this.</p>
+    <p>During the pilot phase (until October 2019) we will be collecting data directly from a small number of hospital laboratories. If your local trust is one of these partner labs, then your practice will be included in the pilot outputs. We will maintain a list of partnerships here as they are confirmed. We intend to extend coverage to national data following successful development of the pilot.</p>
+
+    <h2>How can I get involved?</h2>
+    <ul>
+      <li>Contact your local laboratory team, CCG or CSU to encourage them to support the project by becoming an early partner.</li>
+      <li>Help us design amazing tools. On the <a href="/">home page</a> you can see a tiny preview and read some background studies; our prescribing tool <a href="https://openprescribing.net">OpenPrescribing.net</a> gives a working demonstration of how much we can do with healthcare data. <a href="mailto:ebmdatalab@phc.ox.ac.uk">Let us know</a>what you would hope to get out of a pathology feedback tool as a practice, or anything specific you'd like it to include. We will share the pilot tool for your feedback as soon as possible.</li>
+      <li>Stay in touch! Keep an eye on this website for updates, and <a href="mailto:ebmdatalab@phc.ox.ac.uk">send us an email</a> if you would like to be added to our OpenPathology mailing list to which we will send occasional updates and ask for input/feedback.</li>
+      <li>Hopefully you are already making use of our <a href="https://openprescribing.net/">OpenPrescribing</a> service, including our email alerts service customised for your practice. We send a monthly OpenPrescribing newsletter in which we will mention any major OpenPathology news. You can sign up for this on the <a href="https://openprescribing.net">/OpenPrescribing.net home page</a>.</li>
+    </ul>
+  </div>
+</div>
+
+
+
+
 
 <h2>Information Governance</h2>
 <p>Patient privacy is assured through the University of Oxford's extensive "Privacy by design" protocols. Once our impact assessment has been authorised, we will share it in full here. In short:</p>
