@@ -41,8 +41,8 @@ def create_measure_with_practices():
     practice2 = create_practice(ccg=ccg, code="02")
     measure = create_measure()
     test_measure_png_paths = [
-        os.path.join(settings.PREGENERATED_CHARTS_ROOT, "RG5", "testmeasure_01_02.png"),
-        os.path.join(settings.PREGENERATED_CHARTS_ROOT, "RG5", "testmeasure_02_01.png"),
+        os.path.join(settings.PREGENERATED_CHARTS_ROOT, "testmeasure_01_02.png"),
+        os.path.join(settings.PREGENERATED_CHARTS_ROOT, "testmeasure_02_01.png"),
     ]
     with chart_fixtures(test_measure_png_paths):
         yield measure
@@ -50,8 +50,7 @@ def create_measure_with_practices():
 
 @contextmanager
 def chart_fixtures(full_paths):
-    """Create empty files at the specified paths; remove the files and the
-    directories that contain them on completion.
+    """Create empty files at the specified paths; remove the files on completion.
 
     """
     try:
@@ -66,10 +65,6 @@ def chart_fixtures(full_paths):
         for full_path in full_paths:
             location, filename = os.path.split(full_path)
             os.remove(full_path)
-        for full_path in full_paths:
-            location, filename = os.path.split(full_path)
-            if os.path.exists(location):
-                os.removedirs(location)
 
 
 class ModelTests(TestCase):
@@ -87,12 +82,13 @@ class ModelTests(TestCase):
         with create_measure_with_practices() as measure:
             self.assertEqual(
                 measure.chart_urls_for_all(),
-                ["RG5/testmeasure_02_01.png", "RG5/testmeasure_01_02.png"],
+                ["testmeasure_02_01.png", "testmeasure_01_02.png"],
             )
 
 
 @override_settings(
-    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
+    PREGENERATED_CHARTS_ROOT="/tmp/test_charts/",
+    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage",
 )
 class ViewTests(TestCase):
     def test_measure_all_practices(self):
@@ -101,8 +97,8 @@ class ViewTests(TestCase):
                 reverse("measure", kwargs={"measure": measure.id})
             )
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'src="/static/RG5/testmeasure_01_02.png"')
-            self.assertContains(response, 'src="/static/RG5/testmeasure_02_01.png"')
+            self.assertContains(response, 'src="/static/testmeasure_01_02.png"')
+            self.assertContains(response, 'src="/static/testmeasure_02_01.png"')
 
     def test_measure_single_practice(self):
         with create_measure_with_practices() as measure:
@@ -110,5 +106,5 @@ class ViewTests(TestCase):
                 reverse("measure", kwargs={"measure": measure.id}) + "?filter=ods/01"
             )
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'src="/static/RG5/testmeasure_01_02.png"')
-            self.assertNotContains(response, 'src="/static/RG5/testmeasure_02_01.png"')
+            self.assertContains(response, 'src="/static/testmeasure_01_02.png"')
+            self.assertNotContains(response, 'src="/static/testmeasure_02_01.png"')

@@ -184,9 +184,7 @@ class Measure(models.Model):
 
         """
         file_name_glob = "*_*_*.png"
-        file_name_glob = os.path.join(
-            settings.PREGENERATED_CHARTS_ROOT, "*", file_name_glob
-        )
+        file_name_glob = os.path.join(settings.PREGENERATED_CHARTS_ROOT, file_name_glob)
         urls = _sorted_files_at_glob(file_name_glob)
         if ods_practice_codes:
             matched = []
