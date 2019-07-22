@@ -161,3 +161,5 @@ LOGGING = {
         }
     }
 }
+
+PREGENERATED_CHARTS_ROOT = os.path.join(BASE_DIR, "charts")

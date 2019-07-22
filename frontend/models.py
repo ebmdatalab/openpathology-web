@@ -1,3 +1,7 @@
+import glob
+import os
+
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
@@ -159,3 +163,52 @@ class Practice(models.Model):
             address += self.address5 + ", "
         address += self.postcode
         return address
+
+
+class Measure(models.Model):
+    id = models.CharField(max_length=40, primary_key=True)
+    title = models.CharField(max_length=500)
+    why_it_matters = models.TextField(null=True, blank=True)
+
+    def chart_url_for_practice(self, ods_practice_code):
+        """Return a URL to a pregenerated chart for a given practice
+        """
+        practice = Practice.objects.get_by_entity_code(
+            "ods/{}".format(ods_practice_code)
+        )
+        ccg_code = practice.groups.get(kind__name="ccg").codes.get(system="ods").code
+        file_name_glob = "{}_{}_*".format(self.id, ods_practice_code)
+        file_name_glob = os.path.join(
+            settings.PREGENERATED_CHARTS_ROOT, ccg_code, file_name_glob
+        )
+        files = glob.glob(file_name_glob)
+        assert (
+            len(files) == 1
+        ), "There should be exactly one {} chart at {}, got {}".format(
+            self.id, file_name_glob, len(files)
+        )
+        return os.path.relpath(files[0], start=settings.PREGENERATED_CHARTS_ROOT)
+
+    def chart_urls_for_ccg(self, ods_ccg_code):
+        """Return list of URLs for pregenerated charts for every practice in
+        given CCG
+
+        """
+        practices = Practice.objects.filter_by_entity_code(
+            "ods/{}".format(ods_ccg_code)
+        )
+        file_name_glob = "{}_*_*".format(self.id, ods_ccg_code)
+        file_name_glob = os.path.join(
+            settings.PREGENERATED_CHARTS_ROOT, ods_ccg_code, file_name_glob
+        )
+        # The final part of the filename, when split by underscore, is
+        # a sort key generated when the chart is created
+        files = sorted(
+            glob.glob(file_name_glob), key=lambda filename: filename.split("_")[-1]
+        )
+        return [
+            os.path.relpath(x, start=settings.PREGENERATED_CHARTS_ROOT) for x in files
+        ]
+
+    def __str__(self):
+        return self.title
