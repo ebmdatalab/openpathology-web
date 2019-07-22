@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.gis.db import models
+from django.db import models
 from django.db.models import Q
 
 from common.utils import nhs_titlecase
@@ -40,7 +40,6 @@ class Group(models.Model):
     name = models.CharField(max_length=200)
     kind = models.ForeignKey(GroupKind, on_delete=models.PROTECT)
     codes = GenericRelation(Coding, related_query_name="group")
-    boundary = models.GeometryField(null=True, blank=True, srid=4326)
     open_date = models.DateField(null=True, blank=True)
     close_date = models.DateField(null=True, blank=True)
 
@@ -108,8 +107,6 @@ class Practice(models.Model):
     address4 = models.CharField(max_length=200, null=True, blank=True)
     address5 = models.CharField(max_length=200, null=True, blank=True)
     postcode = models.CharField(max_length=9, null=True, blank=True)
-    location = models.PointField(null=True, blank=True, srid=4326)
-    boundary = models.GeometryField(null=True, blank=True, srid=4326)
     setting = models.IntegerField(choices=PRESCRIBING_SETTINGS, default=-1)
     open_date = models.DateField(null=True, blank=True)
     close_date = models.DateField(null=True, blank=True)
