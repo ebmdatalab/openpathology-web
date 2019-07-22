@@ -76,12 +76,16 @@ A user who visits `/measure/<measure_id>?filter=ods/13T` will see all the charts
 
 Groups currently supported by the import process are CCGs and Labs.  These (along with practice codes) are imported with:
 
-    ./manage.py import_practices --filename=practices_for_website.csv
+    ./manage.py import_practices --filename=data/practices_for_website.csv
+
+Or, to do the same in the dokku container:
+
+    ssh -t dokku@dokku.ebmdatalab.net run openpathology-web python manage.py import_practices --filename=data/practices_for_website.csv
 
 The ODS code for the practice is used as the key, so importing practices will also do an update operation for existing practice codes.
 
 Measures currently only have  `id`, `title`, and `why_it_matters` fields. These can be imported with:
 
-    ./manage.py import_measures --filename=measures.csv
+    ./manage.py import_measures --filename=data/measures.csv
 
 This is also an update operation for measures with existing ids.
