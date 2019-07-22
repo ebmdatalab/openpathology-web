@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="header">
+  <h1>Measure {{ measure.title }}</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm">
+    {% for src in urls %}
+    <img src="{{ src }}">
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,6 +1,9 @@
 import os
 from contextlib import contextmanager
+from unittest.mock import patch
 
+
+from django.urls import reverse
 from django.conf import settings
 from django.test import TestCase
 from django.test import override_settings
@@ -32,6 +35,20 @@ def create_measure():
 
 
 @contextmanager
+def create_measure_with_practices():
+    ccg = create_ccg()
+    practice1 = create_practice(ccg=ccg, code="01")
+    practice2 = create_practice(ccg=ccg, code="02")
+    measure = create_measure()
+    test_measure_png_paths = [
+        os.path.join(settings.PREGENERATED_CHARTS_ROOT, "RG5", "testmeasure_01_02.png"),
+        os.path.join(settings.PREGENERATED_CHARTS_ROOT, "RG5", "testmeasure_02_01.png"),
+    ]
+    with chart_fixtures(test_measure_png_paths):
+        yield measure
+
+
+@contextmanager
 def chart_fixtures(full_paths):
     """Create empty files at the specified paths; remove the files and the
     directories that contain them on completion.
@@ -55,7 +72,7 @@ def chart_fixtures(full_paths):
                 os.removedirs(location)
 
 
-class BasicModelTests(TestCase):
+class ModelTests(TestCase):
     def test_filter_by_entity_code(self):
         ccg = create_ccg()
         practice = create_practice(ccg=ccg, code="01")
@@ -66,34 +83,29 @@ class BasicModelTests(TestCase):
         self.assertEqual(str(practice.groups.first().codes.first()), "ods/RG5")
 
     @override_settings(PREGENERATED_CHARTS_ROOT="/tmp/test_charts/")
-    def test_chart_url_for_practice(self):
-        ccg = create_ccg()
-        practice = create_practice(ccg=ccg, code="01")
-        measure = create_measure()
-        test_measure_png_path = os.path.join(
-            settings.PREGENERATED_CHARTS_ROOT, "RG5", "testmeasure_01_23.png"
-        )
-        with chart_fixtures([test_measure_png_path]):
+    def test_chart_urls_for_all(self):
+        with create_measure_with_practices() as measure:
             self.assertEqual(
-                measure.chart_url_for_practice("01"), "RG5/testmeasure_01_23.png"
-            )
-
-    @override_settings(PREGENERATED_CHARTS_ROOT="/tmp/test_charts/")
-    def test_chart_urls_for_ccg(self):
-        ccg = create_ccg()
-        practice1 = create_practice(ccg=ccg, code="01")
-        practice2 = create_practice(ccg=ccg, code="02")
-        measure = create_measure()
-        test_measure_png_paths = [
-            os.path.join(
-                settings.PREGENERATED_CHARTS_ROOT, "RG5", "testmeasure_01_02.png"
-            ),
-            os.path.join(
-                settings.PREGENERATED_CHARTS_ROOT, "RG5", "testmeasure_02_01.png"
-            ),
-        ]
-        with chart_fixtures(test_measure_png_paths):
-            self.assertEqual(
-                measure.chart_urls_for_ccg("RG5"),
+                measure.chart_urls_for_all(),
                 ["RG5/testmeasure_02_01.png", "RG5/testmeasure_01_02.png"],
             )
+
+
+class ViewTests(TestCase):
+    def test_measure_all_practices(self):
+        with create_measure_with_practices() as measure:
+            response = self.client.get(
+                reverse("measure", kwargs={"measure": measure.id})
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, 'src="RG5/testmeasure_01_02.png"')
+            self.assertContains(response, 'src="RG5/testmeasure_02_01.png"')
+
+    def test_measure_single_practice(self):
+        with create_measure_with_practices() as measure:
+            response = self.client.get(
+                reverse("measure", kwargs={"measure": measure.id}) + "?filter=ods/01"
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, 'src="RG5/testmeasure_01_02.png"')
+            self.assertNotContains(response, 'src="RG5/testmeasure_02_01.png"')

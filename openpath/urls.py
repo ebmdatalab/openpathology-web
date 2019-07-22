@@ -18,12 +18,23 @@ from django.urls import path
 from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 
+from frontend import views
+
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
-    path('get_involved/', TemplateView.as_view(template_name='get_involved.html'), name='get_involved'),
-    path('data_format/', TemplateView.as_view(template_name='data_format.html'), name='data_format'),
-    path('api/', RedirectView.as_view(pattern_name='data_format'), name='api'),
-    path('admin/', admin.site.urls),
+    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("measure/<slug:measure>", views.measure, name="measure"),
+    path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
+    path(
+        "get_involved/",
+        TemplateView.as_view(template_name="get_involved.html"),
+        name="get_involved",
+    ),
+    path(
+        "data_format/",
+        TemplateView.as_view(template_name="data_format.html"),
+        name="data_format",
+    ),
+    path("api/", RedirectView.as_view(pattern_name="data_format"), name="api"),
+    path("admin/", admin.site.urls),
 ]
