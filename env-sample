@@ -1,2 +1,2 @@
 SECRET_KEY=123asd
-DATABASE_URL=postgres://xxx:yyy@localhost/openpathology
+DATABASE_URL=postgis://root:root@localhost/openpathology

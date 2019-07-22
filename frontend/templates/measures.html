@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="header">
+  <h1>All Measures</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm">
+    <ul>
+    {% for measure in measures %}
+      <li><a href="{% url 'measure' measure=measure.id %}">{{ measure.title }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% endblock %}
