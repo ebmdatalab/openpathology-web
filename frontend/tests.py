@@ -91,6 +91,12 @@ class ModelTests(TestCase):
     STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage",
 )
 class ViewTests(TestCase):
+    def test_measures(self):
+        with create_measure_with_practices() as measure:
+            response = self.client.get(reverse("measures"))
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, measure.title)
+
     def test_measure_all_practices(self):
         with create_measure_with_practices() as measure:
             response = self.client.get(

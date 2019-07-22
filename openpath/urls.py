@@ -23,6 +23,7 @@ from frontend import views
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("measures/", views.measures, name="measures"),
     path("measure/<slug:measure>", views.measure, name="measure"),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
     path(

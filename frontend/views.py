@@ -13,6 +13,12 @@ def _get_filtered_practices(request):
     return practices
 
 
+def measures(request):
+    measures = Measure.objects.all()
+    context = {"measures": measures}
+    return render(request, "measures.html", context)
+
+
 def measure(request, measure):
     # Initially this allows us to show all practices for one measure.
     # Longer term, it would be good to support:
