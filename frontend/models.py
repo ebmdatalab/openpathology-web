@@ -2,6 +2,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.db import models
+from django.db.models import Q
 
 from common.utils import nhs_titlecase
 
@@ -44,6 +45,17 @@ class Practice(models.Model):
     """
     GP practices
     """
+
+    class Manager(models.Manager):
+        def filter_by_entity_code(self, code_filter):
+            code_system, code = code_filter.split("/")
+            return Practice.objects.filter(
+                (Q(codes__system=code_system) & Q(codes__code=code))
+                | (Q(groups__codes__system=code_system) & Q(groups__codes__code=code))
+            )
+
+        def get_by_entity_code(self, code_filter):
+            return self.filter_by_entity_code(code_filter).get()
 
     PRESCRIBING_SETTINGS = (
         (-1, "Unknown"),
@@ -100,6 +112,7 @@ class Practice(models.Model):
     status_code = models.CharField(
         max_length=1, choices=STATUS_SETTINGS, null=True, blank=True
     )
+    objects = Manager()
 
     def __str__(self):
         return self.name
