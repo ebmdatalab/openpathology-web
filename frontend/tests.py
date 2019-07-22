@@ -30,7 +30,8 @@ def create_practice(ccg=None, code=None):
     return practice
 
 
-def create_measure():
+def create_measures():
+    Measure.objects.create(id="has_no_data", title="Test Measure with no data")
     return Measure.objects.create(id="testmeasure", title="Test Measure")
 
 
@@ -39,7 +40,7 @@ def create_measure_with_practices():
     ccg = create_ccg()
     practice1 = create_practice(ccg=ccg, code="01")
     practice2 = create_practice(ccg=ccg, code="02")
-    measure = create_measure()
+    measure = create_measures()
     test_measure_png_paths = [
         os.path.join(settings.PREGENERATED_CHARTS_ROOT, "testmeasure_01_02.png"),
         os.path.join(settings.PREGENERATED_CHARTS_ROOT, "testmeasure_02_01.png"),
@@ -105,6 +106,14 @@ class ViewTests(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, 'src="/static/testmeasure_01_02.png"')
             self.assertContains(response, 'src="/static/testmeasure_02_01.png"')
+
+    def test_non_matching_measure_all_practices(self):
+        with create_measure_with_practices() as measure:
+            response = self.client.get(
+                reverse("measure", kwargs={"measure": "has_no_data"})
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertNotContains(response, 'src="/static/testmeasure_01_02.png"')
 
     def test_measure_single_practice(self):
         with create_measure_with_practices() as measure:
