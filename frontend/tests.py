@@ -91,6 +91,9 @@ class ModelTests(TestCase):
             )
 
 
+@override_settings(
+    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
+)
 class ViewTests(TestCase):
     def test_measure_all_practices(self):
         with create_measure_with_practices() as measure:
@@ -98,8 +101,8 @@ class ViewTests(TestCase):
                 reverse("measure", kwargs={"measure": measure.id})
             )
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'src="RG5/testmeasure_01_02.png"')
-            self.assertContains(response, 'src="RG5/testmeasure_02_01.png"')
+            self.assertContains(response, 'src="/static/RG5/testmeasure_01_02.png"')
+            self.assertContains(response, 'src="/static/RG5/testmeasure_02_01.png"')
 
     def test_measure_single_practice(self):
         with create_measure_with_practices() as measure:
@@ -107,5 +110,5 @@ class ViewTests(TestCase):
                 reverse("measure", kwargs={"measure": measure.id}) + "?filter=ods/01"
             )
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'src="RG5/testmeasure_01_02.png"')
-            self.assertNotContains(response, 'src="RG5/testmeasure_02_01.png"')
+            self.assertContains(response, 'src="/static/RG5/testmeasure_01_02.png"')
+            self.assertNotContains(response, 'src="/static/RG5/testmeasure_02_01.png"')
