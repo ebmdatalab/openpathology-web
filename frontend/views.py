@@ -3,6 +3,7 @@ from django.db.models import Count
 from frontend.models import Group
 from frontend.models import Measure
 from frontend.models import Practice
+from frontend.models import chart_urls
 
 
 def _get_filtered_practices(request):
@@ -32,13 +33,22 @@ def measure(request, measure):
     #  * /liver_tests/?filter&group_by=lab
     measure = Measure.objects.get(pk=measure)
     practices = _get_filtered_practices(request)
-    urls_with_practices = {}
     ods_codes_for_practices = [
         practice.codes.get(system="ods").code for practice in practices
     ]
     groups = Group.objects.annotate(Count("practice")).filter(practice__count__gt=0)
     for g in groups:
         g.active = str(g.codes.first()) == request.GET.get("filter", None)
-    urls = measure.chart_urls_for_all(ods_practice_codes=ods_codes_for_practices)
+    urls = measure.chart_urls(ods_practice_codes=ods_codes_for_practices)
     context = {"urls": urls, "measure": measure, "groups": groups}
+    return render(request, "measure.html", context)
+
+
+def practice(request, practice):
+    """Show all measures by practice
+    """
+    practice = Practice.objects.get(pk=practice)
+    groups = Group.objects.annotate(Count("practice")).filter(practice=practice)
+    urls = chart_urls(ods_practice_codes=[practice.ods_code().code])
+    context = {"urls": urls, "measure": None, "groups": groups}
     return render(request, "measure.html", context)

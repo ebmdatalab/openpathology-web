@@ -137,3 +137,11 @@ class ViewTests(TestCase):
             html = lxml.html.document_fromstring(response.content)
             links = html.xpath("//img[contains(@class, 'measure-chart')]/@src")
             self.assertEqual(len(links), 0)
+
+    def test_practice(self):
+        with create_measure_with_practices() as measure:
+            response = self.client.get(
+                reverse("practice", kwargs={"practice": Practice.objects.first().pk})
+            )
+            self.assertContains(response, 'src="/static/testmeasure_01_02.png"')
+            self.assertNotContains(response, 'src="/static/testmeasure_02_01.png"')

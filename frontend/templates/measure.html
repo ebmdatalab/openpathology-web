@@ -4,8 +4,12 @@
 {% block content %}
 
 <div class="header">
+  {% if measure %}
   <h1>Measure {{ measure.title }}</h1>
   <p>{{ measure.why_it_matters }}</p>
+  {% elif practice %}
+  <h1>All measures for {{ practice.name }}</h1>
+  {% endif %}
 </div>
 
 <ul class="nav nav-pills">

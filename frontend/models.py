@@ -161,6 +161,9 @@ class Practice(models.Model):
         address += self.postcode
         return address
 
+    def ods_code(self):
+        return Coding.objects.get(system="ods", object_id=self.pk)
+
 
 def _sorted_files_at_glob(file_name_glob):
     # The final part of the filename, when split by underscore, is
