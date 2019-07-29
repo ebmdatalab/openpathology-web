@@ -69,3 +69,5 @@ class Command(BaseCommand):
                 practice = _get_or_create_practice(
                     row["practice_ods_code"], row["practice_name"]
                 )
+                practice.groups.add(ccg)
+                practice.groups.add(lab)
