@@ -128,3 +128,13 @@ class ViewTests(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, 'src="/static/testmeasure_01_02.png"')
             self.assertNotContains(response, 'src="/static/testmeasure_02_01.png"')
+
+    def test_measure_no_matching_practices(self):
+        with create_measure_with_practices() as measure:
+            response = self.client.get(
+                reverse("measure", kwargs={"measure": measure.id})
+                + "?filter=ods/nonexistent"
+            )
+            html = lxml.html.document_fromstring(response.content)
+            links = html.xpath("//img[contains(@class, 'measure-chart')]/@src")
+            self.assertEqual(len(links), 0)

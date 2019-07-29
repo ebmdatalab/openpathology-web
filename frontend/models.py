@@ -183,7 +183,7 @@ class Measure(models.Model):
         file_name_glob = "{}_*_*.png".format(self.id)
         file_name_glob = os.path.join(settings.PREGENERATED_CHARTS_ROOT, file_name_glob)
         urls = _sorted_files_at_glob(file_name_glob)
-        if ods_practice_codes:
+        if ods_practice_codes is not None:
             matched = []
             for url in urls:
                 for must_match in ods_practice_codes:
