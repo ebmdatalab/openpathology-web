@@ -1,3 +1,4 @@
+import lxml.html
 import os
 from contextlib import contextmanager
 from unittest.mock import patch
@@ -104,8 +105,12 @@ class ViewTests(TestCase):
                 reverse("measure", kwargs={"measure": measure.id})
             )
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'src="/static/testmeasure_01_02.png"')
-            self.assertContains(response, 'src="/static/testmeasure_02_01.png"')
+            html = lxml.html.document_fromstring(response.content)
+            links = html.xpath("//img[contains(@class, 'measure-chart')]/@src")
+            self.assertEqual(
+                links,
+                ["/static/testmeasure_02_01.png", "/static/testmeasure_01_02.png"],
+            )
 
     def test_non_matching_measure_all_practices(self):
         with create_measure_with_practices() as measure:

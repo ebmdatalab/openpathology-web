@@ -185,8 +185,8 @@ class Measure(models.Model):
         urls = _sorted_files_at_glob(file_name_glob)
         if ods_practice_codes:
             matched = []
-            for must_match in ods_practice_codes:
-                for url in urls:
+            for url in urls:
+                for must_match in ods_practice_codes:
                     if "_{}_".format(must_match) in url:
                         matched.append(url)
                         continue
