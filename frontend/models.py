@@ -171,27 +171,40 @@ def _sorted_files_at_glob(file_name_glob):
     return [os.path.relpath(x, start=settings.PREGENERATED_CHARTS_ROOT) for x in files]
 
 
+def chart_urls(ods_practice_codes=None, measure_id=None):
+    """Return list of URLs for pregenerated charts.
+
+    Narrows down to a specific measure and/or a list of practice codes.
+
+    """
+    if measure_id:
+        file_name_glob = "{}_*_*.png".format(measure_id)
+    elif len(ods_practice_codes) == 1:
+        file_name_glob = "*_{}_*.png".format(ods_practice_codes[0])
+
+    file_name_glob = os.path.join(settings.PREGENERATED_CHARTS_ROOT, file_name_glob)
+    urls = _sorted_files_at_glob(file_name_glob)
+    if ods_practice_codes is not None:
+        matched = []
+        for url in urls:
+            for must_match in ods_practice_codes:
+                if "_{}_".format(must_match) in url:
+                    matched.append(url)
+                    continue
+        urls = matched
+    return urls
+
+
 class Measure(models.Model):
     id = models.CharField(max_length=40, primary_key=True)
     title = models.CharField(max_length=500)
     why_it_matters = models.TextField(null=True, blank=True)
 
-    def chart_urls_for_all(self, ods_practice_codes=None):
-        """Return list of URLs for pregenerated charts for every practice
+    def chart_urls(self, ods_practice_codes=None):
+        """Return list of URLs for pregenerated charts, for this measure
 
         """
-        file_name_glob = "{}_*_*.png".format(self.id)
-        file_name_glob = os.path.join(settings.PREGENERATED_CHARTS_ROOT, file_name_glob)
-        urls = _sorted_files_at_glob(file_name_glob)
-        if ods_practice_codes is not None:
-            matched = []
-            for url in urls:
-                for must_match in ods_practice_codes:
-                    if "_{}_".format(must_match) in url:
-                        matched.append(url)
-                        continue
-            urls = matched
-        return urls
+        return chart_urls(ods_practice_codes=ods_practice_codes, measure_id=self.id)
 
     def __str__(self):
         return self.title

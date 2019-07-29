@@ -80,11 +80,10 @@ class ModelTests(TestCase):
         self.assertEqual(str(practice.groups.first().codes.first()), "ods/RG5")
 
     @override_settings(PREGENERATED_CHARTS_ROOT="/tmp/test_charts/")
-    def test_chart_urls_for_all(self):
+    def test_chart_urls(self):
         with create_measure_with_practices() as measure:
             self.assertEqual(
-                measure.chart_urls_for_all(),
-                ["testmeasure_02_01.png", "testmeasure_01_02.png"],
+                measure.chart_urls(), ["testmeasure_02_01.png", "testmeasure_01_02.png"]
             )
 
 
