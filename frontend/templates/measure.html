@@ -8,6 +8,19 @@
   <p>{{ measure.why_it_matters }}</p>
 </div>
 
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link {% if not request.GET.filter %}active{% endif %}"
+       href="?">All practices</a>
+  </li>
+  {% for group in groups %}
+  <li class="nav-item">
+    <a href="?filter={{ group.codes.first }}"
+       class="nav-link {% if group.active %}active{% endif %}"
+       >{{ group.name }} ({{ group.kind.name }})</a>
+  </li>
+    {% endfor %}
+</ul>
 <div class="row">
   <div class="col-sm">
     {% for src in urls %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from django.db.models import Count
+from frontend.models import Group
 from frontend.models import Measure
 from frontend.models import Practice
 
@@ -35,6 +36,9 @@ def measure(request, measure):
     ods_codes_for_practices = [
         practice.codes.get(system="ods").code for practice in practices
     ]
+    groups = Group.objects.annotate(Count("practice")).filter(practice__count__gt=0)
+    for g in groups:
+        g.active = str(g.codes.first()) == request.GET.get("filter", None)
     urls = measure.chart_urls_for_all(ods_practice_codes=ods_codes_for_practices)
-    context = {"urls": urls, "measure": measure}
+    context = {"urls": urls, "measure": measure, "groups": groups}
     return render(request, "measure.html", context)
