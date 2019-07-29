@@ -1,5 +1,14 @@
 id,title,why_it_matters
-HCTproportionabove,HCT: proportion above,Why this matters...
-Kproportionabove,K: proportion above ref range,Why this matters...
-Kproportionbelow,K: proportion below ref range,Why this matters...
-Kproportionoutside,K: proportion outside ref range,Why this matters...
+ALTper10k,,
+CRPperCRP-ESR,,
+CRPperCRP-ESR-PV,,
+HBper10k,,
+HBproportionabove,,
+HBproportionbelow,,
+Kper10k,,
+Kproportionabove,,
+Kproportionbelow,,
+TSHper10k,,
+TSHproportionabove,,
+TSHproportionbelow,,
+VDper10k,,
