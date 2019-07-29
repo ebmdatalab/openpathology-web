@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Measure
 
-# Register your models here.
+
+@admin.register(Measure)
+class MeasureAdmin(admin.ModelAdmin):
+    pass
