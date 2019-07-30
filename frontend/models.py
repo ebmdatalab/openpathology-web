@@ -169,7 +169,8 @@ def _sorted_files_at_glob(file_name_glob):
     # The final part of the filename, when split by underscore, is
     # a sort key generated when the chart is created
     files = sorted(
-        glob.glob(file_name_glob), key=lambda filename: filename.split("_")[-1]
+        glob.glob(file_name_glob),
+        key=lambda filename: int(filename.split("_")[-1].split(".")[0]),
     )
     return [os.path.relpath(x, start=settings.PREGENERATED_CHARTS_ROOT) for x in files]
 
