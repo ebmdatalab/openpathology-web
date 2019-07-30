@@ -27,8 +27,12 @@
 </ul>
 <div class="row">
   <div class="col-sm">
-    {% for src in urls %}
-    <img class="measure-chart" src="{% static src %}">
+    {% for measure in urls_and_codes %}
+      {% if measure.measure_id %}
+        <a href="{% url 'measure' measure=measure.measure_id %}"><img class="measure-chart" src="{% static measure.url %}"></a>
+      {% elif measure.practice_code %}
+        <a href="{% url 'practice' practice=measure.practice_code %}"><img class="measure-chart" src="{% static measure.url %}"></a>
+      {% endif %}
     {% endfor %}
   </div>
 </div>

@@ -25,7 +25,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path("measures/", views.measures, name="measures"),
     path("measure/<slug:measure>", views.measure, name="measure"),
-    path("practice/<slug:practice>", views.practice, name="practice"),
+    path("practice/<path:practice>", views.practice, name="practice"),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
     path(
         "get_involved/",

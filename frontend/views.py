@@ -40,15 +40,25 @@ def measure(request, measure):
     for g in groups:
         g.active = str(g.codes.first()) == request.GET.get("filter", None)
     urls = measure.chart_urls(ods_practice_codes=ods_codes_for_practices)
-    context = {"urls": urls, "measure": measure, "groups": groups}
+    codes = [x.split("_")[1] for x in urls]
+    urls_and_codes = [
+        {"measure_id": None, "practice_code": "ods/{}".format(x[0]), "url": x[1]}
+        for x in zip(codes, urls)
+    ]
+    context = {"urls_and_codes": urls_and_codes, "measure": measure, "groups": groups}
     return render(request, "measure.html", context)
 
 
 def practice(request, practice):
     """Show all measures by practice
     """
-    practice = Practice.objects.get(pk=practice)
+    practice = Practice.objects.get_by_entity_code(practice)
     groups = Group.objects.annotate(Count("practice")).filter(practice=practice)
     urls = chart_urls(ods_practice_codes=[practice.ods_code().code])
-    context = {"urls": urls, "measure": None, "groups": groups}
+    measures = [x.split("_")[0] for x in urls]
+    urls_and_codes = [
+        {"measure_id": x[0], "practice_code": None, "url": x[1]}
+        for x in zip(measures, urls)
+    ]
+    context = {"urls_and_codes": urls_and_codes, "measure": None, "groups": groups}
     return render(request, "measure.html", context)

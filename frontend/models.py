@@ -55,7 +55,7 @@ class Practice(models.Model):
             return Practice.objects.filter(
                 (Q(codes__system=code_system) & Q(codes__code=code))
                 | (Q(groups__codes__system=code_system) & Q(groups__codes__code=code))
-            )
+            ).distinct()
 
         def get_by_entity_code(self, code_filter):
             return self.filter_by_entity_code(code_filter).get()
