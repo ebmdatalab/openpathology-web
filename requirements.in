@@ -4,3 +4,5 @@ dj-database-url
 whitenoise
 psycopg2
 lxml
+pyyaml
+requests

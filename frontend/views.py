@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Count
+from django.views.generic import TemplateView
+
 from frontend.models import Group
 from frontend.models import Measure
 from frontend.models import Practice
@@ -62,3 +64,8 @@ def practice(request, practice):
     ]
     context = {"urls_and_codes": urls_and_codes, "measure": None, "groups": groups}
     return render(request, "measure.html", context)
+
+
+class DynamicTemplateView(TemplateView):
+    def get_template_names(self):
+        return ["blog/%s.html" % self.kwargs["template"]]

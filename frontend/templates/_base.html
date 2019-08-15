@@ -79,6 +79,7 @@
   {% url 'get_involved' as get_involved_url %}
   {% url 'data_format' as data_format_url %}
   {% url 'measures' as measures_url %}
+  {% url 'blog' as blog_url %}
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item {% if request.get_full_path == about_url %}active{% endif %}">
@@ -89,6 +90,9 @@
       </li>
       <li class="nav-item {% if request.get_full_path == data_format_url %}active{% endif %}">
         <a class="nav-link" href="{% url 'data_format' %}">Data specification</a>
+      </li>
+      <li class="nav-item {% if request.get_full_path == blog_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'blog' %}">Blog</a>
       </li>
       {% if user.is_superuser %}
       <li class="nav-item {% if request.get_full_path == measures_url %}active{% endif %}">

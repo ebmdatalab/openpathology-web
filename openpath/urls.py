@@ -23,6 +23,8 @@ from frontend import views
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("blog/", TemplateView.as_view(template_name="blog.html"), name="blog"),
+    path("blog/<slug:template>", views.DynamicTemplateView.as_view(), name="blog_page"),
     path("measures/", views.measures, name="measures"),
     path("measure/<slug:measure>", views.measure, name="measure"),
     path("practice/<path:practice>", views.practice, name="practice"),
