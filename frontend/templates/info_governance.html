@@ -1,0 +1,537 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="row">
+ <h1>Information Governance in OpenPathology</h1>
+</div>
+
+  <p>
+    This page provides of a summary of our Data Protection Impact
+    Assessment (DPIA), which has been signed off with our division's
+    Information Compliance team.
+  </p>
+
+<h2>How will we obtain data?</h2>
+
+  <p>Data will be collected from NHS pathology laboratories based
+  in NHS Hospital Trusts.</p>
+  <p>This data is stored by each Trust in their own LIMS (pathology
+  database), which are typically in different formats. &nbsp;When a
+  pathology request comes in from primary or secondary care, the
+  request is stored in the LIMS. Every LIMS is different. In each
+  case, we will ask for a monthly extract which covers the
+  requestor, their location, the test(s) requested, an internal
+  identifier for the sample, an internal (hospital) identifier for
+  the patient, sex, and age.</p>
+
+  <p>We will contact each Trust separately and follow their Data
+  Sharing procedures to agree an extract of this database.
+  &nbsp;When an agreement is signed, a LIMS operator will carry out
+  a database extract and provide the data to us in CSV or Excel
+  format.</p>
+  <p>Data will be transferred from Trusts via the<a href=
+  "https://www.google.com/url?q=https://www.medsci.ox.ac.uk/divisional-services/support-services-1/data-privacy/medical-sciences-office/document-storage-and-sharing/storage-options/filr&amp;sa=D&amp;ust=1567690663803000">&nbsp;</a><a href="https://www.google.com/url?q=https://www.medsci.ox.ac.uk/divisional-services/support-services-1/data-privacy/medical-sciences-office/document-storage-and-sharing/storage-options/filr&amp;sa=D&amp;ust=1567690663803000">Filr
+  service</a>&nbsp;provided by the University’s Medical Sciences
+  Division (MSD) IT service, and then transferred to the virtual
+  server over SSH. These services are provided by MSD IT, and meet
+  the University’s baseline standard.</p>
+  <h2 id="h.lkahftgs3f7">How will we store and process the
+  data?</h2>
+  <p>The data will be stored and initially processed on a network
+  drive accessed via a secure<a href=
+  "https://www.google.com/url?q=https://www.medsci.ox.ac.uk/support-services/teams/information-technology/servers-and-data-services/msd-it-virtual-servers&amp;sa=D&amp;ust=1567690663804000">&nbsp;</a><a href="https://www.google.com/url?q=https://www.medsci.ox.ac.uk/support-services/teams/information-technology/servers-and-data-services/msd-it-virtual-servers&amp;sa=D&amp;ust=1567690663804000">virtual
+  hosted server</a>, accessible to 3 named individuals in our team.
+  The server will be provided and managed by the University’s
+  Medical Sciences Division (MSD) IT service.</p>
+
+  <p>The individuals permitted access will process the data to
+  further anonymise and aggregate it into two formats, within the
+  secure area (marked Secured MSD IT Services in Appendix A).</p>
+  <ul>
+    <li>The first format will be entirely anonymised, suitable for
+    publication in full as data.</li>
+    <li>The second format will be pseudonymised (prior to us
+    receiving the data) and aggregated&nbsp;with low-number
+    suppression for incorporation into research publications; this
+    will contain high-level identifiable data in the form of sex
+    and age band, grouped by these and aggregated by test results,
+    and with low numbers (N &lt; 5) suppressed.</li>
+  </ul>
+  <p>Prior to publication, anonymisation of both formats will be
+  categorised by the SIRO as per the Departmental Anonymisation
+  policy. Examples are given in Appendix B.</p>
+
+  <p>The fully anonymised&nbsp;data will leave the secure area over
+  SSH and will be processed on third-party servers to perform
+  further statistical analyses and visualisations to help audit and
+  inform pathology activities by requesting clinicians. This data
+  will be freely available to the public, with the agreement of
+  each Trust, and as such no longer subject to strict security
+  controls.</p>
+
+  <p>Anonymised extracts of the aggregated, pseudonymised
+  data&nbsp;will be published in data tables in individual research
+  papers.</p>
+  <h2 id="h.ryu8wik71ivk">Purpose of data processing</h2>
+  <ul>
+    <li>To provide GPs simple, actionable feedback on their request
+    rates and results data, allowing them to e.g. identify outliers
+    for targeted improvement, and investigate those responding
+    quickly or slowly to changes in cost and evidence. This will
+    improve patient outcomes by helping address under- and
+    over-testing rates</li>
+    <li>By creating a tool which could be rolled out nationally we
+    save local NHS teams time, effort and money in building these
+    tools themselves.</li>
+    <li>To document variation in care in relation to pathology
+    testing, more widely than our recent similar studies.</li>
+  </ul>
+  <p>Our lawful basis is GDPR articles 6.1.e public interest and
+  9.2.j research. &nbsp;See Stage 2 part 4, above (cost saving for
+  NHS, improving patient outcomes)</p>
+  <h2 id="h.9k34xoi88n2g">Transparency</h2>
+  <p>We will add a page on our website for individuals whose data
+  may be included, providing the following transparency
+  information:</p>
+  <ol start="1">
+    <li>The purposes for which their data will be processed?</li>
+    <li>The people or organisations their data will be shared
+    with?</li>
+    <li>The lawful basis for processing their data?</li>
+    <li>Any international transfers of their personal data</li>
+    <li>When their personal data will be erased?</li>
+    <li>Their rights under GDPR?</li>
+  </ol>
+  <h2 id="h.jx9nr14pxzie">Data retention</h2>
+  <p>Data will be kept for 5 years, in order to provide time trends
+  analyses.</p>
+  <h2 id="h.rdk1dvnqzgoc">Ethics</h2>
+  <p>There is no need for ethics approval for the project at
+  present, as this was classed by the Ethics Team as a “service
+  development” project. We will seek appropriate ethical approvals
+  for research projects as required.</p>
+  <h2 id="h.gmyulgysl964">Data flow diagram</h2>
+  <p>
+    <img src="{% static 'data_flow.png' %}" alt="Diagram showing data flow between labs and openpathology" class="img-fluid img-thumbnail">
+  </p>
+
+  <h2 id="h.9q1s5ly810gt">Anonymisation schedule</h2>
+  <table class="table table-condensed table-bordered">
+    <tbody>
+      <tr>
+        <th colspan="1" rowspan="1">
+          <p>Field name</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Purpose</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Example aggregation for research publication</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Included in anonymised dataset?</p>
+        </th>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>Location</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Primary aggregation and analysis level, e.g. number of
+          tests per GP practice</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Not aggregated: data grouped by this field</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Yes: data grouped by this field</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>Test identifier</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Compare tests between locations</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Not aggregated: data grouped by this field</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Yes: data grouped by this field</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>Requestor</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Compare number of requests per clinician</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Count of requestor per location or test</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>No</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>Test results</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Compare results that have positive or negative
+          outcomes</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Count of positive or negative results; median of
+          results; deciles of results</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Yes: count of positive and negative results, summary
+          statistics of result</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>Internal patient identifier</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Compare number of repeat or new tests over time
+          per-patient</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Count of repeat or novel tests per-patient per
+          location and per test</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>No</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>Patient sex</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Filter tests by sex (some tests have different
+          meanings for different sexes); compare tests by sex</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Count of positive test results per age band, per
+          sex</p>
+
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>No</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>Patient age</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Filter tests by age band; compare results by age
+          band</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>Count of positive test results per age band, per
+          location</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>No</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Where a Lab provides an internal patient identifier, this will
+  be either a randomised key or a hospital unit number. We will
+  never accept data including an NHS number. Hospital patient
+  identifiers are always internal to the Trust and the ability to
+  match these to patients will not be held by this project.</p>
+  <p>Example extract of anonymised dataset for full
+  publication:</p>
+  <p>Note we would like to avoid low number suppression in this
+  dataset as it will make working with the data much easier and
+  allow better visualisations of the data. In terms of a
+  deidentification attack, we have not been able to think of a way
+  a person could be identified from a test and GP practice, even in
+  combination with other sources. An open data NHS dataset we work
+  with routinely contains data at a similar level (GP practice and
+  drug) and does not have low number suppression, so we are
+  familiar with thinking about these risks.</p>
+  <table class="table table-condensed table-bordered">
+    <tbody>
+      <tr>
+        <th colspan="1" rowspan="1">
+          <p>Location</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Test</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Within reference range</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Outside reference range</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Median value</p>
+        </th>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>P90112</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>42</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>5</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>302.5</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>P90113</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>32</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>3</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>250.6</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>P90114</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>22</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>52</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>410.2</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>P90112</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>HBA</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>3</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>1</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>3005.9</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>P90113</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>HBA</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>10</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>5</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>3011.0</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>P90114</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>HBA</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>20</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>12</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>4100.5</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example extract of aggregated data for research publication,
+  with low number suppression:</p>
+  <p>As this data includes age bands, to be cautious, we will
+  suppress low numbers to reduce the risk of reidentification.</p>
+  <table class="table table-condensed table-bordered">
+    <tbody>
+      <tr>
+        <th colspan="1" rowspan="1">
+          <p>Location</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Test</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Age band</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>% first test</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Within reference range</p>
+        </th>
+        <th colspan="1" rowspan="1">
+          <p>Outside reference range</p>
+        </th>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>99P</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>0-5</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>100</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>[suppressed]</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>[suppressed]</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>99P</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>6-10</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>99.5</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>34</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>11</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>99P</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>11-20</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>90.1</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>50</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>12</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>99P</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>21-30</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>85.0</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>3013</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>105</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>99P</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>31-40</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>67.5</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>3406</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>210</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="1" rowspan="1">
+          <p>99P</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>WBC</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>41-50</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>48.8</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>3678</p>
+        </td>
+        <td colspan="1" rowspan="1">
+          <p>581</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}

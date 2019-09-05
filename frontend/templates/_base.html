@@ -80,6 +80,7 @@
   {% url 'data_format' as data_format_url %}
   {% url 'measures' as measures_url %}
   {% url 'blog' as blog_url %}
+  {% url 'info_governance' as info_governance_url %}
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item {% if request.get_full_path == about_url %}active{% endif %}">
@@ -99,6 +100,9 @@
         <a class="nav-link" href="{% url 'measures' %}">Sample measures (under development)</a>
       </li>
       {% endif %}
+      <li class="nav-item {% if request.get_full_path == info_governance %}active{% endif %}">
+        <a class="nav-link" href="{% url 'info_governance' %}">Information governance</a>
+      </li>
     </ul>
   </div>
 </nav>
