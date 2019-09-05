@@ -30,6 +30,11 @@ urlpatterns = [
     path("practice/<path:practice>", views.practice, name="practice"),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
     path(
+        "info_governance/",
+        TemplateView.as_view(template_name="info_governance.html"),
+        name="info_governance",
+    ),
+    path(
         "get_involved/",
         TemplateView.as_view(template_name="get_involved.html"),
         name="get_involved",
