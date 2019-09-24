@@ -6,3 +6,11 @@ psycopg2
 lxml
 pyyaml
 requests
+
+# MatrixStore dependencies
+numpy
+scipy
+pyarrow
+lz4
+
+pip-tools
