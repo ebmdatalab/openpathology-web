@@ -62,7 +62,12 @@ def practice(request, practice):
         {"measure_id": x[0], "practice_code": None, "url": x[1]}
         for x in zip(measures, urls)
     ]
-    context = {"urls_and_codes": urls_and_codes, "measure": None, "groups": groups}
+    context = {
+        "urls_and_codes": urls_and_codes,
+        "measure": None,
+        "groups": groups,
+        "practice": practice,
+    }
     return render(request, "measure.html", context)
 
 

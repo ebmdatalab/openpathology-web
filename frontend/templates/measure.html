@@ -2,6 +2,16 @@
 {% load static %}
 
 {% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/measures">Measures</a></li>
+    {% if measure %}
+      <li class="breadcrumb-item active" aria-current="page">{{ measure.title }}</li>
+    {% else %}
+      <li class="breadcrumb-item active" aria-current="page">{{ practice.name }}</li>
+    {% endif %}
+  </ol>
+</nav>
 
 <div class="header">
   {% if measure %}
@@ -11,7 +21,7 @@
   <h1>All measures for {{ practice.name }}</h1>
   {% endif %}
 </div>
-
+{% if measure %}
 <ul class="nav nav-pills">
   <li class="nav-item">
     <a class="nav-link {% if not request.GET.filter %}active{% endif %}"
@@ -25,6 +35,7 @@
   </li>
     {% endfor %}
 </ul>
+{% endif %}
 <div class="row">
   <div class="col-sm">
     {% for measure in urls_and_codes %}

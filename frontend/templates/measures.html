@@ -6,15 +6,29 @@
 <div class="header">
   <h1>All Measures</h1>
 </div>
+<p>The following is a selection of experimental measures that we've found interesting during our initial investigations. Clicking through to the trends allows you to compare practice trends for each measure</p>
 
-<div class="row">
-  <div class="col-sm">
-    <ul>
-    {% for measure in measures %}
-      <li><a href="{% url 'measure' measure=measure.id %}">{{ measure.title }}</a></li>
-    {% endfor %}
-    </ul>
+
+{% for measure in measures %}
+ {% if forloop.counter0|divisibleby:2 %}
+  <div class="row">
+ {% endif %}
+ <div class="col-sm">
+   <div class="card mb-3">
+     <div class="card-body">
+
+       <h5 class="card-title">
+         {{ measure.title }}
+       </h5>
+       <p class="card-text">{{ measure.why_it_matters }}</p>
+       <a href="{% url 'measure' measure=measure.id %}" class="card-link">View practice trends</a>
+     </div>
+   </div>
+ </div>
+ {% if not forloop.counter0|divisibleby:2 %}
   </div>
+ {% endif %}
+{% endfor %}
 </div>
 
 {% endblock %}
