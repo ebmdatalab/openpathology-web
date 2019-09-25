@@ -6,6 +6,13 @@ xpath: //div[@class="entry-content"]
 date: 2019-09-02
 
 ---
+title: "Getting population sizes right"
+url: https://ebmdatalab.net/openpathology-getting-population-sizes-right/
+slug: getting-population-sizes-right
+xpath: //div[@class="entry-content"]
+date: 2019-09-09
+
+---
 title: "Validating pathology data against known shifts in clinical practice"
 url: https://ebmdatalab.net/validating-pathology-data-against-known-shifts-in-clinical-practice/
 slug: validating-pathology-data-against-known-shifts-in-clinical-practice

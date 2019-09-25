@@ -1,0 +1,100 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+<h1>Getting population sizes right</h1><small class='text-muted'>09 Sep, 2019</small><div class="entry-content" itemprop="text">
+<p>At <a href="http://openpathology.net">OpenPathology</a>, we’ve <a href="https://ebmdatalab.net/?p=5585">already found interesting variation in test request rates between practices</a>, but we’d also like to compare whole laboratories.</p>
+
+
+
+<p>The number of tests per patient is an important measure for understanding variation in test requesting across the country. For example, the <a href="https://gettingitrightfirsttime.co.uk/">Getting It Right First Time (GIRFT) initiative</a> uses this measurement to shine a light on clinically important variation and promote improvements in cost-effective care.</p>
+
+
+
+<p>For GIRFT, laboratories in England were asked to provide an estimate of their primary care populations. North Devon reported this as <strong>160,000</strong> patients, and Cornwall reported <strong>473,637</strong>.</p>
+
+
+
+<p>Below, we reproduce the GIRFT report for potassium (a common test, and part of a renal profile).  Cornwall is the large blue dot, and North Devon the large yellow dot. The data shows tests performed over one financial year.</p>
+
+
+
+<figure class="wp-block-image"><img src="https://lh6.googleusercontent.com/gZNihfxG43FBw61wfrjOOhJKWno6_kbjKrjMVJfk7obAmxd4J6hWDMIc7xO8i6ybotujq_gRgBKqpqmXXpZ8X2FiBikpo2VIWz1VtJd1zcBfGrs2SOEDrmMhFv2LW5Vit5QxvToN" alt=""></figure>
+
+
+
+<p>According to this, both North Devon GPs and Cornwall GPs request potassium tests at high rates compared with the national picture; but the North Devon rate is much higher than the Cornwall rate.  But what if the denominator data is wrong?</p>
+
+
+
+<h3><strong>OpenPathology</strong></h3>
+
+
+
+<p><a href="http://OpenPathology.net">OpenPathology.net</a> is a new approach for comparing variation in request rates and results. It is modelled on the highly successful <a href="https://openprescribing.net/">OpenPrescribing</a> platform and made by the <a href="https://openpathology.net/about/">same team</a>. We have <a href="https://ebmdatalab.net/?p=5585">started</a> comparing variation in three ways: between practices; between their CCGs; and between the laboratories that serve the practices. </p>
+
+
+
+<p>Laboratories are sending us anonymised data on all the tests they have performed over several years. Whereas GIRFT uses population estimates provided by each lab, which may vary in methodology, OpenPathology calculates populations directly for each practice, using up-to-date list size data from NHS Digital. Importantly, we calculate list sizes after filtering for those practices carrying out non-trivial volumes of testing at each lab.</p>
+
+
+
+<p>The following graph compares the mean practice requesting rate since 2014 for North Devon and Cornwall, with 95% confidence limits.  It shows that when actual practice list sizes are used in the denominator, potassium requesting rates between the two areas are almost identical. <br></p>
+
+
+
+<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_k_tests_per_10k.jpg" alt="" class="wp-image-5630" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_k_tests_per_10k.jpg 631w, https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_k_tests_per_10k-300x129.jpg 300w" sizes="(max-width: 631px) 100vw, 631px"><figcaption> Mean practice request rates for North Devon (ND) and Royal Cornwall (RC) hospitals. Coloured bands show 95% confidence intervals. </figcaption></figure>
+
+
+
+<p>It turns out that the true combined list size for North Devon is larger than reported, and that of Cornwall is smaller. Redrawing the GIRFT chart with the correct denominators gives a completely different picture; we would now say that potassium requesting is very similar between the two regions.</p>
+
+
+
+<figure class="wp-block-image"><img src="https://lh4.googleusercontent.com/ONqgFoy_CZux0jalemb-zX3l_VwAx0iGtrKNyuX_kehGPYGlI58hTqybhyqD9zCVxoZXq31CJ5Ju6InrroXrXilEfTLI5VjHXXc89YXkZt9AxnkIrAC7OebcoVcJB4XZb9Hl13I_" alt=""><figcaption>After</figcaption></figure>
+
+
+
+<h3><strong>Why are the reported list sizes inaccurate?</strong></h3>
+
+
+
+<p>We have explored why this may be the case for North Devon and Cornwall. Both laboratories obtained their list size from their hospital analytic departments. These departments used the combined list sizes of all practices <strong>who have clinical contracts with the hospital</strong>. It is very important to note that this is not necessarily coincident with the practices <strong>who have testing contracts with the laboratory.</strong> </p>
+
+
+
+<p>In the case of Cornwall and North Devon, there are two practices on the border who use Cornwall for clinical services but North Devon for laboratory services (giving us novel opportunities for interesting research, of which more later). If we take this into account, then the North Devon <strong>laboratory </strong>population should be about <strong>20,000 patients larger</strong> than reported, whilst the Cornwall laboratory population should be about <strong>20,000 patients smaller</strong>.</p>
+
+
+
+<h3><strong>Conclusions</strong></h3>
+
+
+
+<p>It is hard to keep track of changes in relationships between practices and laboratories. This is likely to be increasingly true as laboratories undergo significant reorganisation and consolidation of services. The best approach to list size denominators is to always derive them from individual practice data.</p>
+
+
+
+<p>Perhaps more importantly, this illustrates the relevance of collaborative, open, interdisciplinary working of the kind we carry out at the <a href="http://ebmdatalab.net">DataLab</a>. As anyone who has made an error in a spreadsheet formula knows, it’s very easy for simple mistakes to be propagated from data right through to decision makers. The fact that our team includes specialists from across the spectrum, including a GIRFT clinical lead for pathology (Tom Lewis), means we were quickly able to identify and analyse this problem.</p>
+
+
+
+<h2>What next?</h2>
+
+
+
+<p>Having established that we’re confident about our combined list sizes, our next blog post looks at variation at a CCG level, and sense checks it against known changes in clinical practices.</p>
+
+
+
+<hr class="wp-block-separator">
+
+
+
+<h2><strong>Stay up to date</strong></h2>
+
+
+
+<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-very-dark-gray-color has-background has-pale-cyan-blue-background-color" href="https://t.co/rxeS5Ot3DY?amp=1"><h3><strong> Join our <em>OpenPathology</em> mailing list </strong></h3></a></div>
+
+</div><hr><p><a href='{% url 'blog' %}'>Read more OpenPathology blogs</a></p>
+{% endblock %}
