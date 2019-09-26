@@ -34,7 +34,6 @@
           font-size: 3.5rem;
         }
       }
-
       body {
         padding-top: 5rem;
       }
@@ -67,14 +66,32 @@
       .nav-tabs {
         margin-bottom: 1rem;
       }
+      .navbar-brand {
+        text-align: center;
+        font-size: 2rem;
+        margin-top: -1rem;
+      }
+      .navbar-brand small {
+        display:none;
+        font-size:0.8rem;
+        margin-top:-0.6rem;
+      }
+      @media (min-width: 576px) {
+        .navbar-brand small {
+          display:block;
+        }
+      }
     </style>
   </head>
   <body class="d-flex flex-column h-100">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="/">Home</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+      <a class="navbar-brand" href="/">
+        OpenPathology
+      <small>supporting better diagnostic testing</small></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  {% url 'home' as home_url %}
   {% url 'about' as about_url %}
   {% url 'get_involved' as get_involved_url %}
   {% url 'data_format' as data_format_url %}
@@ -83,6 +100,9 @@
   {% url 'info_governance' as info_governance_url %}
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if request.get_full_path == home_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+      </li>
       <li class="nav-item {% if request.get_full_path == about_url %}active{% endif %}">
         <a class="nav-link" href="{% url 'about' %}">About us</a>
       </li>
