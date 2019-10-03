@@ -70,10 +70,9 @@ def update_deciles(page_state):
         return html.Div()
 
     practice_id = page_state.get("practice_id", None)
-    test_codes = page_state.get("test_codes", None)
-    if not test_codes:
-        test_codes = ["FBC"]
-    trace_df = get_count_data(numerator=test_codes, denominator="per1000")
+    test_codes = page_state.get("test_codes", [])
+    denominator = page_state.get("denominator", None)
+    trace_df = get_count_data(numerator=test_codes, denominator=denominator)
     traces = []
     deciles_traces = get_practice_decile_traces(trace_df)
     months = deciles_traces[0].x
@@ -114,15 +113,29 @@ def update_deciles(page_state):
         # Add the deciles
         traces.extend(deciles_traces)
 
+        # Make a title
+
+        if not test_codes:
+            numerator_text = "all tests"
+        else:
+            numerator_text = " + ".join(test_codes)
+        if not denominator:
+            denominator_text = "(raw numbers)"
+        elif denominator == ["per1000"]:
+            denominator_text = "per 1000 patients"
+        else:
+            denominator_text = "as a proportion of " + " + ".join(denominator)
+        title = "Count of {} {} at {}".format(
+            numerator_text, denominator_text, practice_id
+        )
+
         # Add the traces to per-practice graph
         graph = dcc.Graph(
             id="graph-{}".format(practice_id),
             figure={
                 "data": traces,
                 "layout": go.Layout(
-                    title="{} orders per 1000 patients at {}".format(
-                        " + ".join(test_codes), practice_id
-                    ),
+                    title=title,
                     yaxis={"range": [0, ymax]},
                     xaxis={"range": [months[0], months[-1]]},
                     showlegend=False,
