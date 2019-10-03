@@ -3,7 +3,8 @@ import dash_html_components as html
 import dash_table
 
 
-def layout(df):
+def layout(tests_df):
+    tests_df.columns = ["value", "label"]
     return html.Div(
         [
             # Hidden div inside the app that stores the page state
@@ -21,9 +22,14 @@ def layout(df):
             dcc.Link("Go to heatmap", href="/apps/heatmap", refresh=False),
             # Dropdown selector
             dcc.Dropdown(
-                id="test-selector-dropdown",
-                options=[{"label": x, "value": x} for x in df.test_code.unique()],
-                value="FBC",
+                id="test-selector-dropdown", options=tests_df.to_dict("records")
+            ),
+            dcc.Dropdown(
+                id="denominator-dropdown",
+                options=[
+                    {"value": "per1000", "label": "Per 1000 patients"},
+                    {"value": "proportion", "label": "As a proportion of"},
+                ],
             ),
             html.Div(id="error-container"),
             # All the charts we're interested in, in a spinner container

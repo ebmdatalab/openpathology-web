@@ -34,3 +34,6 @@ def get_count_data(sample_size=None):
         return df[df.loc[:, "practice_id"].isin(some_practices)]
     else:
         return df
+@cache.memoize()
+def get_test_list():
+    return pd.read_csv(settings.CSV_DIR / "test_codes.csv")

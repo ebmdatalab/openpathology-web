@@ -1,9 +1,9 @@
 def setup_app_and_layout():
     from app import app
     from layout import layout
-    from data import get_count_data
+    from data import get_test_list
 
-    app.layout = layout(get_count_data())
+    app.layout = layout(get_test_list())
     return app
 
 

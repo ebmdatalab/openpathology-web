@@ -1,5 +1,4 @@
 import logging
-import pandas as pd
 import dash
 from flask_caching import Cache
 import settings
