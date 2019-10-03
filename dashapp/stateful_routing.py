@@ -33,19 +33,27 @@ def get_state(possible_state_text):
 
 def update_state(state, **kw):
     """Update `state` with keyword values, if they are different from
-    current values
+    current values. Keyword values of None or empty lists denote that
+    the key should be removed from the state.
 
     Returns (changed, state) tuple
 
     """
     changed = False
     for k, v in kw.items():
-        if isinstance(k, list):
-            different = len(set(v) - set(state.get(k, []))) > 0
+        if isinstance(v, list):
+            v = [x for x in v if x]  # Falsey values get deleted
+            if not v and k not in state:
+                different = False
+            else:
+                different = len(set(v).symmetric_difference(set(state.get(k, [])))) > 0
         else:
-            different = state.get(k, None) != v
+            different = state.get(k, "_nevermatches_") != v
         if different:
-            state[k] = v
+            if not v:
+                del state[k]
+            else:
+                state[k] = v
             changed = True
     return (changed, state)
 
@@ -76,12 +84,12 @@ def update_url_from_page_state(page_state):
         Input("url-from-user", "pathname"),
         Input("heatmap-graph", "clickData"),
         Input("test-selector-dropdown", "value"),
-        Input("test-selector-table", "selected_row_ids"),
+        Input("denominator-dropdown", "value"),
     ],
     [State("page-state", "children")],
 )
 def update_state_from_inputs(
-    pathname, clickData, selected_test, selected_row_ids, page_state
+    pathname, clickData, selected_test, selected_denominator, page_state
 ):
     """
     Given a series of possible user inputs, update the state if it needs to be changed.
@@ -116,9 +124,13 @@ def update_state_from_inputs(
                 page_state, practice_id=practice_id, page_id="deciles"
             )
         if "test-selector-dropdown" in triggered_inputs:
+            selected_test = selected_test or None
             changed, page_state = update_state(page_state, test_codes=[selected_test])
-        if "test-selector-table" in triggered_inputs:
-            changed, page_state = update_state(page_state, test_codes=selected_row_ids)
+        if "denominator-dropdown" in triggered_inputs:
+            selected_denominator = selected_denominator or None
+            changed, page_state = update_state(
+                page_state, denominator=[selected_denominator]
+            )
         if not changed:
             logger.info("State unchanged")
             raise PreventUpdate

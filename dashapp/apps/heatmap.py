@@ -30,8 +30,10 @@ def update_heatmap(page_state):
     if page_state.get("page_id") != settings.HEATMAP_CHART_ID:
         return {}
 
-    test_codes = page_state.get("test_codes") or ["FBC"]
-    trace_df = get_count_data(numerator=test_codes, denominator="per1000")
+    test_codes = page_state.get("test_codes", [])
+    trace_df = get_count_data(
+        numerator=test_codes, denominator=page_state.get("denominator", None)
+    )
     vals_by_practice = trace_df.pivot(
         index="practice_id", columns="month", values="calc_value"
     )

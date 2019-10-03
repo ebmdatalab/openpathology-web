@@ -4,6 +4,7 @@ from app import cache
 import settings
 
 
+@cache.memoize()
 def get_data(sample_size=None):
     """Get suitably massaged data
     """
@@ -61,17 +62,23 @@ def get_count_data(
             and_query.append(f"(result_category == {settings.OVER_RANGE})")
         elif result_filter == "error":
             and_query.append("(result_category > 1)")
-    num_filter = and_query[:] + [f"(test_code.isin({numerator}))"]
-    filtered_df = df.query(" & ".join(num_filter))
+    num_filter = and_query[:]
+    if numerator:
+        num_filter += [f"(test_code.isin({numerator}))"]
+    if num_filter:
+        filtered_df = df.query(" & ".join(num_filter))
+    else:
+        filtered_df = df
     num_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
-    if denominator == "per1000":
+
+    if denominator == ["per1000"]:
         num_df_agg.loc[:, "calc_value"] = (
             num_df_agg["count"] / num_df_agg["total_list_size"] * 1000
         )
         num_df_agg.loc[:, "calc_value_error"] = (
             num_df_agg["error"] / num_df_agg["total_list_size"] * 1000
         )
-    elif denominator is None:
+    elif not denominator:
         num_df_agg.loc[:, "calc_value"] = num_df_agg["count"]
         num_df_agg.loc[:, "calc_value_error"] = num_df_agg["error"]
 
