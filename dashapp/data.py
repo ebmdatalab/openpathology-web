@@ -49,7 +49,7 @@ def get_count_data(
         cols = ["month", "total_list_size", "practice_id", "count", "error"]
         groupby = ["month", "total_list_size", "practice_id"]
     elif by == "test_code":
-        cols = ["month", "test_code", "count", "error"]
+        cols = ["month", "test_code", "count", "error", "total_list_size"]
         groupby = ["month", "test_code"]
     and_query = []
     if result_filter:
