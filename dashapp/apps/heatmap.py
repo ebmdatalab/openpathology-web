@@ -4,7 +4,7 @@ from dash.dependencies import Input, Output
 
 from app import app
 
-from app import get_count_data
+from data import get_count_data
 from stateful_routing import get_state
 import settings
 
