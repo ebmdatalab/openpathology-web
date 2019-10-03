@@ -1,0 +1,97 @@
+datalab_testcode,testname
+CREA,Creatinine
+K,Potassium
+GFR1,GFR1
+HB,Haemoglobin
+MCHC,Mean Corpuscular Haemoglobin Concentration 
+RBC,Red Blood Cell
+MONO,Monocyte
+WBC,White Blood Cell
+MCH,Mean Corpuscular Haemoglobin
+RDW,Red Cell Distribution Width
+MCV,Mean Corpuscular Volume
+LYMP,Lymphocyte
+BASO,Basophil
+EOS,Eosinophils
+PLT,Platelet Count
+NEUT,Neutrophil Count
+ALB,Albumin
+TP,"Protein, Total"
+ALKP,Alkaline Phosphatase
+ALT,ALT
+TBIL,"Bilirubin, Total"
+H1CF,HBA1C
+CRP,C-Reactive Protein
+CHOL,"Cholesterol, Total"
+HDL,"Cholesterol, HDL"
+HDLR,Cholesterol/high density lipoprotein ratio
+TSH,Serum TSH (thyroid stimulating hormone)
+UREA,Urea
+CL,Chloride
+CA,Calcium
+NHDL,"Cholesterol, non-HDL"
+PV,Plasma Viscosity
+FER,Ferritin
+GLUX,Glucose
+INR,INR
+UCRE,Urine Creatinine
+UACT,Urine Albumin/Creatinine Ratio
+VITB12,Vitamin B12
+FOL,Folate
+FT4,"T4, Free"
+PSA,"PSA, Total"
+TRIG,Triglycerides
+FILM,FILM
+GLU,Glucose
+AMY,Amylase
+FIB,Fibrinogen
+PHOS,Phosphate
+IGA,Immunoglobulin A
+APTT,APTT Ratio
+C125,CA 125
+UA,Urate
+MG,Magnesium
+IGG,Immunoglobulin G
+IGM,Immunoglobulin M
+GGT,Gamma G.T.
+FSH2,FSH
+CK,Creatine Kinase
+LH,LH (luteinising hormone)
+PTH,Parathyroid Hormone
+RF,Rheumatoid Factor
+UTP,Urine Total Protein
+PRL3,Prolactin
+LDH,LDH
+HCO3,Bicarbonate
+LITH,Lithium
+RETIC,Reticulyte Count
+RETP,Reticulyte Percent
+GF,Glandular Fever Screen
+FT3,Free T3
+AST,AST
+ADNA,ADNA
+SHBG,SHBG
+ENA,ENA
+ESR,ESR
+ASM,ASM
+IRO2,IRO2
+THEO,Theophylline
+OSMO,Osmolality
+UK,Urine Potassium (random)
+UNA,Urine Sodium (random)
+C3,C3
+C4,C4
+ANCA,ANCA
+UOSM,Urine Osmolality
+CANC,CANC
+PANC,PANC
+CAER,CAER
+DIG,Digoxin
+LACT,Lactate
+ACE,ACE
+VITA,VITA
+VITE,VITE
+C199,C199
+VALP,VALP
+GENT,Gentamicin
+UPOR,UPOR
