@@ -15,9 +15,6 @@ import settings
 logger = logging.getLogger(__name__)
 
 
-df = get_count_data()
-
-
 def get_practice_deciles(df):
     """Compute deciles across `calc_value` over `practice_id` for each month.
 
@@ -76,7 +73,7 @@ def update_deciles(page_state):
     test_codes = page_state.get("test_codes", None)
     if not test_codes:
         test_codes = ["FBC"]
-    trace_df = df[df["test_code"] == test_codes[0]]
+    trace_df = get_count_data(numerator=test_codes, denominator="per1000")
     traces = []
     deciles_traces = get_practice_decile_traces(trace_df)
     months = deciles_traces[0].x

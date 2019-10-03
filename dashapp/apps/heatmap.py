@@ -10,8 +10,6 @@ import settings
 
 logger = logging.getLogger(__name__)
 
-df = get_count_data()
-
 
 def sort_by_practice_ids(df):
     """Compute a sort order for the practice charts, based on the mean
@@ -33,8 +31,7 @@ def update_heatmap(page_state):
         return {}
 
     test_codes = page_state.get("test_codes") or ["FBC"]
-
-    trace_df = df[df["test_code"] == test_codes[0]]
+    trace_df = get_count_data(numerator=test_codes, denominator="per1000")
     vals_by_practice = trace_df.pivot(
         index="practice_id", columns="month", values="calc_value"
     )
