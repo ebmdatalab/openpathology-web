@@ -36,8 +36,7 @@ def update_state(state, **kw):
     current values. Keyword values of None or empty lists denote that
     the key should be removed from the state.
 
-    Returns (changed, state) tuple
-
+    Sets a `_dirty` key if any changes have been made
     """
     changed = False
     for k, v in kw.items():
@@ -55,7 +54,8 @@ def update_state(state, **kw):
             else:
                 state[k] = v
             changed = True
-    return (changed, state)
+    if changed:
+        state["_dirty"] = True
 
 
 @app.callback(Output("url-for-update", "pathname"), [Input("page-state", "children")])
@@ -75,6 +75,9 @@ def update_url_from_page_state(page_state):
             break
         except BuildError:
             pass
+    if not url:
+        logger.debug("No url found for state %s; PreventUpdate", page_state)
+        raise PreventUpdate
     return url
 
 
@@ -89,57 +92,65 @@ def update_url_from_page_state(page_state):
     [State("page-state", "children")],
 )
 def update_state_from_inputs(
-    pathname, clickData, selected_test, selected_denominator, page_state
+    pathname, clickData, selected_numerator, selected_denominator, page_state
 ):
     """
     Given a series of possible user inputs, update the state if it needs to be changed.
     """
     ctx = dash.callback_context
     triggered_inputs = [x["prop_id"].split(".")[0] for x in ctx.triggered]
-    if triggered_inputs == ["url-for-update"]:
-        # We have a hack where there's two `Location` elements, one
-        # for triggering updates, and one for being changed when the
-        # state changes. However, they both fire events when the
-        # location bar changes.  Ignore events from the one we treat
-        # as write-only.
-        raise PreventUpdate
-
+    logger.info("-- updating state from %s", triggered_inputs)
     page_state = get_state(page_state)
+
+    # Errors should already have been shown by this point. Reset error state.
     if "error" in page_state:
-        # Errors should already have been shown by this point. Reset error state.
         del page_state["error"]
-    changed = False
     try:
-        if "url-from-user" in triggered_inputs:
-            _, url_state = urls.match(pathname)
-            changed, page_state = update_state(page_state, **url_state)
-        if "heatmap-graph" in triggered_inputs:
-            # Hack: extract practice id from chart label data, which looks
-            # like this: {'points': [{'curveNumber': 0, 'x': '2016-05-01',
-            # 'y': 'practice 84', 'z': 86.10749488562395}]}. I think
-            # there's a cleaner way to pass ids as chart metadata
-            practice_id = clickData["points"][0]["y"].split(" ")[-1]
-            page_state["page_id"] = "deciles"
-            changed, page_state = update_state(
-                page_state, practice_id=practice_id, page_id="deciles"
-            )
-        if "numerator-dropdown" in triggered_inputs:
-            selected_test = selected_test or None
-            changed, page_state = update_state(page_state, test_codes=[selected_test])
-        if "denominator-dropdown" in triggered_inputs:
-            selected_denominator = selected_denominator or None
-            changed, page_state = update_state(
-                page_state, denominator=[selected_denominator]
-            )
-        if not changed:
-            logger.info("State unchanged")
-            raise PreventUpdate
+        _, url_state = urls.match(pathname)
+        update_state(page_state, **url_state)
     except NotFound:
         page_state["error"] = {
             "status_code": 404,
             "message": f"Unable to find page at {pathname}",
         }
+
+    update_state(page_state, test_codes=[selected_numerator])
+    update_state(page_state, denominator=[selected_denominator])
+
+    if "heatmap-graph" in triggered_inputs:
+        # Hack: extract practice id from chart label data, which looks
+        # like this: {'points': [{'curveNumber': 0, 'x': '2016-05-01',
+        # 'y': 'practice 84', 'z': 86.10749488562395}]}. I think
+        # there's a cleaner way to pass ids as chart metadata
+        practice_id = clickData["points"][0]["y"].split(" ")[-1]
+        page_state["page_id"] = "deciles"
+        update_state(page_state, practice_id=practice_id, page_id="deciles")
+
+    # Only trigger state changes if something has changed
+    if "_dirty" not in page_state:
+        logger.info("State unchanged")
+        raise PreventUpdate
+    del page_state["_dirty"]
+    logger.info("-- updating state from %s, to %s", triggered_inputs, page_state)
     return json.dumps(page_state)
+
+
+@app.callback(
+    Output("numerator-dropdown", "value"), [Input("url-from-user", "pathname")]
+)
+def update_numerator_dropdown_from_url(pathname):
+    """Cause the page location to match the current page state
+    """
+    logger.info("-- numerator dropdown being set from URL %s", pathname)
+    if pathname:
+        # Sometimes None for reasons explained here:
+        # https://github.com/plotly/dash/issues/133#issuecomment-330714608
+        _, url_state = urls.match(pathname)
+        if "test_codes" in url_state:
+            return url_state["test_codes"][0]
+        else:
+            return ""  # All tests
+    raise PreventUpdate
 
 
 @app.callback(Output("error-container", "children"), [Input("page-state", "children")])
