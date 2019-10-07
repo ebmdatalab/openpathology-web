@@ -83,7 +83,7 @@ def update_url_from_page_state(page_state):
     [
         Input("url-from-user", "pathname"),
         Input("heatmap-graph", "clickData"),
-        Input("test-selector-dropdown", "value"),
+        Input("numerator-dropdown", "value"),
         Input("denominator-dropdown", "value"),
     ],
     [State("page-state", "children")],
@@ -123,7 +123,7 @@ def update_state_from_inputs(
             changed, page_state = update_state(
                 page_state, practice_id=practice_id, page_id="deciles"
             )
-        if "test-selector-dropdown" in triggered_inputs:
+        if "numerator-dropdown" in triggered_inputs:
             selected_test = selected_test or None
             changed, page_state = update_state(page_state, test_codes=[selected_test])
         if "denominator-dropdown" in triggered_inputs:
