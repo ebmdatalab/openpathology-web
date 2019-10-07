@@ -114,7 +114,7 @@ def update_state_from_inputs(
             "message": f"Unable to find page at {pathname}",
         }
 
-    update_state(page_state, test_codes=[selected_numerator])
+    update_state(page_state, numerators=[selected_numerator])
     update_state(page_state, denominator=[selected_denominator])
 
     if "heatmap-graph" in triggered_inputs:
@@ -146,8 +146,8 @@ def update_numerator_dropdown_from_url(pathname):
         # Sometimes None for reasons explained here:
         # https://github.com/plotly/dash/issues/133#issuecomment-330714608
         _, url_state = urls.match(pathname)
-        if "test_codes" in url_state:
-            return url_state["test_codes"][0]
+        if "numerators" in url_state:
+            return url_state["numerators"][0]
         else:
             return ""  # All tests
     raise PreventUpdate

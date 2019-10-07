@@ -70,9 +70,9 @@ def update_deciles(page_state):
         return html.Div()
 
     practice_id = page_state.get("practice_id", None)
-    test_codes = page_state.get("test_codes", [])
+    numerators = page_state.get("numerators", [])
     denominator = page_state.get("denominator", None)
-    trace_df = get_count_data(numerator=test_codes, denominator=denominator)
+    trace_df = get_count_data(numerator=numerators, denominator=denominator)
     traces = []
     deciles_traces = get_practice_decile_traces(trace_df)
     months = deciles_traces[0].x
@@ -115,10 +115,10 @@ def update_deciles(page_state):
 
         # Make a title
 
-        if not test_codes:
+        if not numerators:
             numerator_text = "all tests"
         else:
-            numerator_text = " + ".join(test_codes)
+            numerator_text = " + ".join(numerators)
         if not denominator:
             denominator_text = "(raw numbers)"
         elif denominator == ["per1000"]:

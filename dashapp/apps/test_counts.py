@@ -18,12 +18,12 @@ def update_counts(page_state):
     page_state = get_state(page_state)
     if page_state.get("page_id") != settings.COUNTS_CHART_ID:
         return {}
-    test_codes = page_state.get("test_codes", list(get_test_list().datalab_testcode))
+    numerators = page_state.get("numerators", list(get_test_list().datalab_testcode))
     denominator = page_state.get("denominator", None)
-    df = get_count_data(numerator=test_codes, denominator=denominator, by="test_code")
+    df = get_count_data(numerator=numerators, denominator=denominator, by="test_code")
     traces = []
 
-    for test_code in test_codes:
+    for test_code in numerators:
         trace_df = df[df.test_code == test_code]
         traces.append(
             go.Scatter(
