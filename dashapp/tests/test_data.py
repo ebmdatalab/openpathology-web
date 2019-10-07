@@ -29,7 +29,7 @@ def make_df():
 @patch("data.get_data")
 def test_count_data_no_filter(mock_get_data):
     mock_get_data.return_value = make_df()
-    result = get_count_data(["FBC"], "per1000")
+    result = get_count_data(["FBC"], ["per1000"])
     assert result[result["practice_id"] == 1]["calc_value"].iloc[0] == 500
 
 
@@ -43,5 +43,5 @@ def test_count_data_no_filter_all_test_denom(mock_get_data):
 @patch("data.get_data")
 def test_count_data_only_within(mock_get_data):
     mock_get_data.return_value = make_df()
-    result = get_count_data(["FBC"], "per1000", result_filter="within_range")
+    result = get_count_data(["FBC"], ["per1000"], result_filter="within_range")
     assert result[result["practice_id"] == 1]["calc_value"].iloc[0] == 250
