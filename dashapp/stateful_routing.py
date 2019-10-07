@@ -115,7 +115,7 @@ def update_state_from_inputs(
         }
 
     update_state(page_state, numerators=[selected_numerator])
-    update_state(page_state, denominator=[selected_denominator])
+    update_state(page_state, denominators=[selected_denominator])
 
     if "heatmap-graph" in triggered_inputs:
         # Hack: extract practice id from chart label data, which looks
@@ -139,7 +139,7 @@ def update_state_from_inputs(
     Output("numerator-dropdown", "value"), [Input("url-from-user", "pathname")]
 )
 def update_numerator_dropdown_from_url(pathname):
-    """Cause the page location to match the current page state
+    """Cause the numerator dropdown to match the current page location
     """
     logger.info("-- numerator dropdown being set from URL %s", pathname)
     if pathname:
@@ -148,6 +148,24 @@ def update_numerator_dropdown_from_url(pathname):
         _, url_state = urls.match(pathname)
         if "numerators" in url_state:
             return url_state["numerators"][0]
+        else:
+            return ""  # All tests
+    raise PreventUpdate
+
+
+@app.callback(
+    Output("denominator-dropdown", "value"), [Input("url-from-user", "pathname")]
+)
+def update_denominator_dropdown_from_url(pathname):
+    """Cause the the denominator dropdown to match the current page location
+    """
+    logger.info("-- denominator dropdown being set from URL %s", pathname)
+    if pathname:
+        # Sometimes None for reasons explained here:
+        # https://github.com/plotly/dash/issues/133#issuecomment-330714608
+        _, url_state = urls.match(pathname)
+        if "denominators" in url_state:
+            return url_state["denominators"][0]
         else:
             return ""  # All tests
     raise PreventUpdate

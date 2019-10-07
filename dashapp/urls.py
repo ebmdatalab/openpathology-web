@@ -20,8 +20,16 @@ url_map = Map(
         Rule("/apps/<string:page_id>/<int:practice_id>", endpoint="graph/practice_id"),
         Rule("/apps/<string:page_id>/<tests:numerators>", endpoint="graph/numerators"),
         Rule(
+            "/apps/<string:page_id>/<tests:numerators>/<tests:denominators>",
+            endpoint="graph/numerators/denominators",
+        ),
+        Rule(
             "/apps/<page_id>/<tests:numerators>/<int:practice_id>",
             endpoint="graph/numerators/practice_id",
+        ),
+        Rule(
+            "/apps/<page_id>/<tests:numerators>/<tests:denominators>/<int:practice_id>",
+            endpoint="graph/numerators/denominators/practice_id",
         ),
     ],
     converters={"tests": TestListConverter},
