@@ -22,14 +22,14 @@ def layout(tests_df):
             dcc.Link("Go to heatmap", href="/apps/heatmap", refresh=False),
             # Dropdown selector
             dcc.Dropdown(
-                id="numerator-dropdown",
-                options=[{"value": "", "label": "All tests (select one)"}]
+                id="numerators-dropdown",
+                options=[{"value": "all", "label": "All tests (select one)"}]
                 + tests_df.to_dict("records"),
             ),
             dcc.Dropdown(
-                id="denominator-dropdown",
+                id="denominators-dropdown",
                 options=[
-                    {"value": "", "label": "Raw numbers"},
+                    {"value": "raw", "label": "Raw numbers"},
                     {"value": "per1000", "label": "Per 1000 patients"},
                     {"value": "FBC", "label": "As a proportion of FBC"},
                 ],

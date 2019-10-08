@@ -33,7 +33,7 @@ def _agg_count_data(df, by):
 
 def get_count_data(
     numerators=[],
-    denominators=None,
+    denominators=[],
     result_filter=None,
     by="practice_id",
     sample_size=None,
@@ -63,7 +63,7 @@ def get_count_data(
         elif result_filter == "error":
             and_query.append("(result_category > 1)")
     num_filter = and_query[:]
-    if numerators:
+    if numerators and numerators != ["all"]:
         num_filter += [f"(test_code.isin({numerators}))"]
     if num_filter:
         filtered_df = df.query(" & ".join(num_filter))
@@ -77,7 +77,7 @@ def get_count_data(
         num_df_agg.loc[:, "calc_value_error"] = (
             num_df_agg["error"] / num_df_agg["total_list_size"] * 1000
         )
-    elif not denominators:
+    elif not denominators or denominators == ["raw"]:
         num_df_agg.loc[:, "calc_value"] = num_df_agg["count"]
         num_df_agg.loc[:, "calc_value_error"] = num_df_agg["error"]
 

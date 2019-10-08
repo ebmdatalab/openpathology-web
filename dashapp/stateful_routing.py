@@ -86,8 +86,8 @@ def update_url_from_page_state(page_state):
     [
         Input("url-from-user", "pathname"),
         Input("heatmap-graph", "clickData"),
-        Input("numerator-dropdown", "value"),
-        Input("denominator-dropdown", "value"),
+        Input("numerators-dropdown", "value"),
+        Input("denominators-dropdown", "value"),
     ],
     [State("page-state", "children")],
 )
@@ -130,6 +130,13 @@ def update_state_from_inputs(
     if "_dirty" not in page_state:
         logger.info("State unchanged")
         raise PreventUpdate
+
+    # add default numerators and denonimators
+    if "numerators" not in page_state:
+        update_state(page_state, numerators=["all"])
+    if "denominators" not in page_state:
+        update_state(page_state, denominators=["raw"])
+
     del page_state["_dirty"]
     logger.info("-- updating state from %s, to %s", triggered_inputs, page_state)
     return json.dumps(page_state)

@@ -71,7 +71,7 @@ def update_deciles(page_state):
 
     practice_id = page_state.get("practice_id", None)
     numerators = page_state.get("numerators", [])
-    denominators = page_state.get("denominators", None)
+    denominators = page_state.get("denominators", [])
     trace_df = get_count_data(numerators=numerators, denominators=denominators)
     traces = []
     deciles_traces = get_practice_decile_traces(trace_df)
