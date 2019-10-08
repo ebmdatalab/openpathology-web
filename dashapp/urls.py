@@ -1,4 +1,4 @@
-from werkzeug.routing import Map, Rule
+from werkzeug.routing import Map, Rule, Submount
 from werkzeug.routing import UnicodeConverter
 
 
@@ -16,21 +16,28 @@ class TestListConverter(UnicodeConverter):
 
 url_map = Map(
     [
-        Rule("/apps/<string:page_id>", endpoint="index"),
-        Rule("/apps/<string:page_id>/<int:practice_id>", endpoint="graph/practice_id"),
-        Rule("/apps/<string:page_id>/<tests:numerators>", endpoint="graph/numerators"),
-        Rule(
-            "/apps/<string:page_id>/<tests:numerators>/<tests:denominators>",
-            endpoint="graph/numerators/denominators",
-        ),
-        Rule(
-            "/apps/<page_id>/<tests:numerators>/<int:practice_id>",
-            endpoint="graph/numerators/practice_id",
-        ),
-        Rule(
-            "/apps/<page_id>/<tests:numerators>/<tests:denominators>/<int:practice_id>",
-            endpoint="graph/numerators/denominators/practice_id",
-        ),
+        Submount(
+            "/apps",
+            [
+                Rule("/<string:page_id>", endpoint="index"),
+                Rule(
+                    "/<page_id>/<tests:numerators>/<tests:denominators>",
+                    endpoint="graph/numerators/denominators",
+                ),
+                Rule(
+                    "/<page_id>/<tests:numerators>/<tests:denominators>/<string:result_filter>",
+                    endpoint="graph/numerators/denominators/filter",
+                ),
+                Rule(
+                    "/<page_id>/<tests:numerators>/<tests:denominators>/<int:practice_id>",
+                    endpoint="graph/numerators/denominators/practice_id",
+                ),
+                Rule(
+                    "/<page_id>/<tests:numerators>/<tests:denominators>/<int:practice_id>/<string:result_filter>",
+                    endpoint="graph/numerators/denominators/practice_id/filter",
+                ),
+            ],
+        )
     ],
     converters={"tests": TestListConverter},
 )

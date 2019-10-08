@@ -63,7 +63,13 @@ def get_count_data(
 
     and_query = []
     if result_filter:
-        assert result_filter in ["within_range", "under_range", "over_range", "error"]
+        assert result_filter in [
+            "within_range",
+            "under_range",
+            "over_range",
+            "error",
+            "all",
+        ]
         if result_filter == "within_range":
             and_query.append(f"(result_category == {settings.WITHIN_RANGE})")
         elif result_filter == "under_range":

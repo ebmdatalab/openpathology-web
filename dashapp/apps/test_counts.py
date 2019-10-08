@@ -21,10 +21,15 @@ def update_counts(page_state):
 
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
+    result_filter = page_state.get("result_filter", [])
+
     if not numerators or numerators == ["all"]:
         numerators = list(get_test_list().datalab_testcode)
     df = get_count_data(
-        numerators=numerators, denominators=denominators, by="test_code"
+        numerators=numerators,
+        denominators=denominators,
+        by="test_code",
+        result_filter=result_filter,
     )
     traces = []
 

@@ -25,12 +25,17 @@ def layout(tests_df):
                 "Go to heatmap", id="heatmap-link", href="/apps/heatmap", refresh=False
             ),
             # Dropdown selector
+            html.Label("Numerators"),
             dcc.Dropdown(
                 id="numerators-dropdown",
                 multi=True,
+                # XXX use clientside javascript to make "all tests"
+                # disappear if you select just one:
+                # https://community.plot.ly/t/dash-0-41-0-released/22131
                 options=[{"value": "all", "label": "All tests"}]
                 + tests_df.to_dict("records"),
             ),
+            html.Label("Denominators"),
             dcc.Dropdown(
                 id="denominators-dropdown",
                 options=[
@@ -45,6 +50,23 @@ def layout(tests_df):
                 placeholder="Select tests",
                 options=tests_df.to_dict("records"),
                 style={"display": "none"},
+            ),
+            html.Label("Filter"),
+            dcc.Dropdown(
+                id="test-filter-dropdown",
+                options=[
+                    {"value": "all", "label": "All tests with results"},
+                    {
+                        "value": "within_range",
+                        "label": "Results within reference range",
+                    },
+                    {"value": "under_range", "label": "Results under reference range"},
+                    {"value": "over_range", "label": "Results over reference range"},
+                    {
+                        "value": "error",
+                        "label": "Results with non-numeric values (often errors)",
+                    },
+                ],
             ),
             html.Div(id="error-container"),
             # All the charts we're interested in, in a spinner container

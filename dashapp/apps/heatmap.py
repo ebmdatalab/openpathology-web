@@ -31,8 +31,10 @@ def update_heatmap(page_state):
         return {}
 
     numerators = page_state.get("numerators", [])
+    denominators = page_state.get("denominators", [])
+    result_filter = page_state.get("result_filter", [])
     trace_df = get_count_data(
-        numerators=numerators, denominators=page_state.get("denominators", None)
+        numerators=numerators, denominators=denominators, result_filter=result_filter
     )
     vals_by_practice = trace_df.pivot(
         index="practice_id", columns="month", values="calc_value"

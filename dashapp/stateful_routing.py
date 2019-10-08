@@ -94,6 +94,7 @@ def update_url_from_page_state(page_state):
         Input("numerators-dropdown", "value"),
         Input("denominators-dropdown", "value"),
         Input("denominator-tests-dropdown", "value"),
+        Input("test-filter-dropdown", "value"),
     ],
     [State("page-state", "children")],
 )
@@ -103,6 +104,7 @@ def update_state_from_inputs(
     selected_numerator,
     selected_denominator,
     denominator_tests,
+    selected_filter,
     page_state,
 ):
     """
@@ -133,7 +135,10 @@ def update_state_from_inputs(
     else:
         stored_denominators = [selected_denominator]
     update_state(
-        page_state, numerators=selected_numerator, denominators=stored_denominators
+        page_state,
+        numerators=selected_numerator,
+        denominators=stored_denominators,
+        result_filter=selected_filter,
     )
 
     if "heatmap-graph" in triggered_inputs:
@@ -206,6 +211,7 @@ def _create_link_update_func(selector_id):
 for selector_id, page_state_key in [
     ("numerators-dropdown", "numerators"),
     ("denominator-tests-dropdown", "denominators"),
+    ("test-filter-dropdown", "result_filter"),
 ]:
     app.callback(Output(selector_id, "value"), [Input("url-from-user", "pathname")])(
         _create_multi_dropdown_update_func(selector_id, page_state_key)
