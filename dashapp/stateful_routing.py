@@ -135,40 +135,34 @@ def update_state_from_inputs(
     return json.dumps(page_state)
 
 
-@app.callback(
-    Output("numerator-dropdown", "value"), [Input("url-from-user", "pathname")]
-)
-def update_numerator_dropdown_from_url(pathname):
-    """Cause the numerator dropdown to match the current page location
+def _create_dropdown_update_func():
+    """Create a callback function that updates a dropdown from a URL
     """
-    logger.info("-- numerator dropdown being set from URL %s", pathname)
-    if pathname:
-        # Sometimes None for reasons explained here:
-        # https://github.com/plotly/dash/issues/133#issuecomment-330714608
-        _, url_state = urls.match(pathname)
-        if "numerators" in url_state:
-            return url_state["numerators"][0]
-        else:
-            return ""  # All tests
-    raise PreventUpdate
+
+    def update_numerator_dropdown_from_url(pathname):
+        """Cause the numerator dropdown to match the current page location
+        """
+        logger.info("-- numerator dropdown being set from URL %s", pathname)
+        if pathname:
+            # Sometimes None for reasons explained here:
+            # https://github.com/plotly/dash/issues/133#issuecomment-330714608
+            try:
+                _, url_state = urls.match(pathname)
+                if "numerators" in url_state:
+                    return url_state["numerators"][0]
+                else:
+                    return ""  # All tests
+            except NotFound:
+                return ""
+        raise PreventUpdate
+
+    return update_numerator_dropdown_from_url
 
 
-@app.callback(
-    Output("denominator-dropdown", "value"), [Input("url-from-user", "pathname")]
-)
-def update_denominator_dropdown_from_url(pathname):
-    """Cause the the denominator dropdown to match the current page location
-    """
-    logger.info("-- denominator dropdown being set from URL %s", pathname)
-    if pathname:
-        # Sometimes None for reasons explained here:
-        # https://github.com/plotly/dash/issues/133#issuecomment-330714608
-        _, url_state = urls.match(pathname)
-        if "denominators" in url_state:
-            return url_state["denominators"][0]
-        else:
-            return ""  # All tests
-    raise PreventUpdate
+for selector in ["numerator-dropdown", "denominator-dropdown"]:
+    app.callback(Output(selector, "value"), [Input("url-from-user", "pathname")])(
+        _create_dropdown_update_func()
+    )
 
 
 @app.callback(Output("error-container", "children"), [Input("page-state", "children")])
