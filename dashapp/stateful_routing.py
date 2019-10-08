@@ -109,10 +109,10 @@ def update_state_from_inputs(
         _, url_state = urls.match(pathname)
         update_state(page_state, **url_state)
     except NotFound:
-        page_state["error"] = {
-            "status_code": 404,
-            "message": f"Unable to find page at {pathname}",
-        }
+        update_state(
+            page_state,
+            error={"status_code": 404, "message": f"Unable to find page at {pathname}"},
+        )
 
     update_state(page_state, numerators=[selected_numerator])
     update_state(page_state, denominators=[selected_denominator])
