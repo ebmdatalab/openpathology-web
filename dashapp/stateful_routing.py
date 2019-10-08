@@ -58,12 +58,7 @@ def update_state(state, **kw):
         state["_dirty"] = True
 
 
-@app.callback(Output("url-for-update", "pathname"), [Input("page-state", "children")])
-def update_url_from_page_state(page_state):
-    """Cause the page location to match the current page state
-    """
-    page_state = get_state(page_state)
-    logger.debug("Getting URL from page state %s", page_state)
+def _url_from_state(page_state):
     url = None
     # Find the last rule (`iter_rules` iterates over the map in
     # reverse order) that can match our state
@@ -79,6 +74,15 @@ def update_url_from_page_state(page_state):
         logger.debug("No url found for state %s; PreventUpdate", page_state)
         raise PreventUpdate
     return url
+
+
+@app.callback(Output("url-for-update", "pathname"), [Input("page-state", "children")])
+def update_url_from_page_state(page_state):
+    """Cause the page location to match the current page state
+    """
+    page_state = get_state(page_state)
+    logger.debug("Getting URL from page state %s", page_state)
+    return _url_from_state(page_state)
 
 
 @app.callback(
@@ -142,7 +146,7 @@ def update_state_from_inputs(
     return json.dumps(page_state)
 
 
-def _create_dropdown_update_func():
+def _create_dropdown_update_func(selector_id):
     """Create a callback function that updates a dropdown from a URL
     """
 
@@ -155,10 +159,10 @@ def _create_dropdown_update_func():
             # https://github.com/plotly/dash/issues/133#issuecomment-330714608
             try:
                 _, url_state = urls.match(pathname)
-                if "numerators" in url_state:
-                    return url_state["numerators"][0]
+                if selector_id in url_state:
+                    return url_state[selector_id][0]
                 else:
-                    return ""  # All tests
+                    return ""
             except NotFound:
                 return ""
         raise PreventUpdate
@@ -166,9 +170,29 @@ def _create_dropdown_update_func():
     return update_numerator_dropdown_from_url
 
 
-for selector in ["numerator-dropdown", "denominator-dropdown"]:
-    app.callback(Output(selector, "value"), [Input("url-from-user", "pathname")])(
-        _create_dropdown_update_func()
+def _create_link_update_func(selector_id):
+    """Create a callback function that updates a dropdown from a URL
+    """
+
+    def update_link_from_state(page_state):
+        """Substitute page_id in a given link with that found in the page_state
+        """
+        page_state = get_state(page_state)
+        page_state["page_id"] = selector_id
+        return _url_from_state(page_state)
+
+    return update_link_from_state
+
+
+for selector_id in ["numerators", "denominators"]:
+    app.callback(
+        Output(f"{selector_id}-dropdown", "value"), [Input("url-from-user", "pathname")]
+    )(_create_dropdown_update_func(selector_id))
+
+
+for link_id in ["counts", "deciles", "heatmap"]:
+    app.callback(Output(f"{link_id}-link", "href"), [Input("page-state", "children")])(
+        _create_link_update_func(link_id)
     )
 
 

@@ -15,11 +15,15 @@ def layout(tests_df):
             dcc.Location(id="url-for-update", refresh=False),
             # Navigation
             # XXX use routed URLs here!
-            dcc.Link("Go to test counts", href="/apps/counts"),
+            dcc.Link("Go to test counts", id="counts-link", href="/apps/counts"),
             html.Br(),
-            dcc.Link("Go to deciles", href="/apps/deciles", refresh=False),
+            dcc.Link(
+                "Go to deciles", id="deciles-link", href="/apps/deciles", refresh=False
+            ),
             html.Br(),
-            dcc.Link("Go to heatmap", href="/apps/heatmap", refresh=False),
+            dcc.Link(
+                "Go to heatmap", id="heatmap-link", href="/apps/heatmap", refresh=False
+            ),
             # Dropdown selector
             dcc.Dropdown(
                 id="numerators-dropdown",
