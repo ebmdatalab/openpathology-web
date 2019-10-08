@@ -75,6 +75,8 @@ def update_deciles(page_state):
     trace_df = get_count_data(numerators=numerators, denominators=denominators)
     traces = []
     deciles_traces = get_practice_decile_traces(trace_df)
+    if not deciles_traces:
+        return html.Div()
     months = deciles_traces[0].x
     ymax = trace_df.calc_value.max()
     if practice_id:
