@@ -48,9 +48,19 @@ def get_count_data(
     if by == "practice_id":
         cols = ["month", "total_list_size", "practice_id", "count", "error"]
         groupby = ["month", "total_list_size", "practice_id"]
+        required_cols = [
+            "month",
+            "total_list_size",
+            "practice_id",
+            "calc_value",
+            "calc_value_error",
+        ]
+
     elif by == "test_code":
         cols = ["month", "test_code", "count", "error", "total_list_size"]
         groupby = ["month", "test_code"]
+        required_cols = ["month", "test_code", "calc_value", "calc_value_error"]
+
     and_query = []
     if result_filter:
         assert result_filter in ["within_range", "under_range", "over_range", "error"]
@@ -82,6 +92,10 @@ def get_count_data(
         num_df_agg.loc[:, "calc_value_error"] = num_df_agg["error"]
 
     else:
+        if by == "test_code":
+            # The denominator needs to be summed across all tests
+            groupby = ["month"]
+
         denom_filter = and_query[:] + [f"(test_code.isin({denominators}))"]
         filtered_df = df.query(" & ".join(denom_filter))
         denom_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
@@ -98,7 +112,7 @@ def get_count_data(
         num_df_agg.loc[:, "calc_value_error"] = (
             num_df_agg["error"] / num_df_agg["error_denom"]
         )
-    return num_df_agg[groupby + ["calc_value", "calc_value_error"]]
+    return num_df_agg[required_cols]
 
 
 @cache.memoize()
