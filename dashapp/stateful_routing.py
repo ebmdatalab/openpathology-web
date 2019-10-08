@@ -64,7 +64,7 @@ def _url_from_state(page_state):
     # reverse order) that can match our state
     for endpoint in [x.endpoint for x in url_map.iter_rules()]:
         try:
-            logger.debug("Trying endpoint %s for state %s", endpoint, page_state)
+            logger.debug("  trying endpoint %s for state %s", endpoint, page_state)
             url = urls.build(endpoint, page_state, append_unknown=False)
             logger.debug("Found url %s", url)
             break
@@ -103,8 +103,8 @@ def update_state_from_inputs(
     """
     ctx = dash.callback_context
     triggered_inputs = [x["prop_id"].split(".")[0] for x in ctx.triggered]
-    logger.info("-- updating state from %s", triggered_inputs)
     page_state = get_state(page_state)
+    logger.info("-- updating state from %s", page_state)
 
     # Errors should already have been shown by this point. Reset error state.
     if "error" in page_state:
@@ -117,9 +117,8 @@ def update_state_from_inputs(
             page_state,
             error={"status_code": 404, "message": f"Unable to find page at {pathname}"},
         )
-
-    update_state(page_state, numerators=[selected_numerator])
-    update_state(page_state, denominators=[selected_denominator])
+    update_state(page_state, numerators=selected_numerator)
+    update_state(page_state, denominators=selected_denominator)
 
     if "heatmap-graph" in triggered_inputs:
         # Hack: extract practice id from chart label data, which looks
@@ -160,7 +159,7 @@ def _create_dropdown_update_func(selector_id):
             try:
                 _, url_state = urls.match(pathname)
                 if selector_id in url_state:
-                    return url_state[selector_id][0]
+                    return url_state[selector_id]
                 else:
                     return ""
             except NotFound:

@@ -27,11 +27,13 @@ def layout(tests_df):
             # Dropdown selector
             dcc.Dropdown(
                 id="numerators-dropdown",
-                options=[{"value": "all", "label": "All tests (select one)"}]
+                multi=True,
+                options=[{"value": "all", "label": "All tests"}]
                 + tests_df.to_dict("records"),
             ),
             dcc.Dropdown(
                 id="denominators-dropdown",
+                multi=True,
                 options=[
                     {"value": "raw", "label": "Raw numbers"},
                     {"value": "per1000", "label": "Per 1000 patients"},
