@@ -71,8 +71,8 @@ def update_deciles(page_state):
 
     practice_id = page_state.get("practice_id", None)
     numerators = page_state.get("numerators", [])
-    denominator = page_state.get("denominator", None)
-    trace_df = get_count_data(numerator=numerators, denominator=denominator)
+    denominators = page_state.get("denominators", None)
+    trace_df = get_count_data(numerators=numerators, denominators=denominators)
     traces = []
     deciles_traces = get_practice_decile_traces(trace_df)
     months = deciles_traces[0].x
@@ -116,17 +116,17 @@ def update_deciles(page_state):
         # Make a title
 
         if not numerators:
-            numerator_text = "all tests"
+            numerators_text = "all tests"
         else:
-            numerator_text = " + ".join(numerators)
-        if not denominator:
-            denominator_text = "(raw numbers)"
-        elif denominator == ["per1000"]:
-            denominator_text = "per 1000 patients"
+            numerators_text = " + ".join(numerators)
+        if not denominators:
+            denominators_text = "(raw numbers)"
+        elif denominators == ["per1000"]:
+            denominators_text = "per 1000 patients"
         else:
-            denominator_text = "as a proportion of " + " + ".join(denominator)
+            denominators_text = "as a proportion of " + " + ".join(denominators)
         title = "Count of {} {} at {}".format(
-            numerator_text, denominator_text, practice_id
+            numerators_text, denominators_text, practice_id
         )
 
         # Add the traces to per-practice graph

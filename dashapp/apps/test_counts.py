@@ -19,8 +19,10 @@ def update_counts(page_state):
     if page_state.get("page_id") != settings.COUNTS_CHART_ID:
         return {}
     numerators = page_state.get("numerators", list(get_test_list().datalab_testcode))
-    denominator = page_state.get("denominator", None)
-    df = get_count_data(numerator=numerators, denominator=denominator, by="test_code")
+    denominators = page_state.get("denominators", None)
+    df = get_count_data(
+        numerators=numerators, denominators=denominators, by="test_code"
+    )
     traces = []
 
     for test_code in numerators:

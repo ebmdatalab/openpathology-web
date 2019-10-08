@@ -32,16 +32,16 @@ def _agg_count_data(df, by):
 
 
 def get_count_data(
-    numerator=[],
-    denominator=None,
+    numerators=[],
+    denominators=None,
     result_filter=None,
     by="practice_id",
     sample_size=None,
 ):
     """Get anonymised count data (for all categories) by month and test_code and practice
 
-    numerator: an array of test codes
-    denominator: an array of tests codes, or `per1000`, or None
+    numerators: an array of test codes
+    denominators: an array of tests codes, or `per1000`, or None
     result_filter: ["within_range", "under_range", "over_range", "error"]
     """
     df = get_data(sample_size)
@@ -63,27 +63,26 @@ def get_count_data(
         elif result_filter == "error":
             and_query.append("(result_category > 1)")
     num_filter = and_query[:]
-    if numerator:
-        num_filter += [f"(test_code.isin({numerator}))"]
+    if numerators:
+        num_filter += [f"(test_code.isin({numerators}))"]
     if num_filter:
         filtered_df = df.query(" & ".join(num_filter))
     else:
         filtered_df = df
     num_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
-
-    if denominator == ["per1000"]:
+    if denominators == ["per1000"]:
         num_df_agg.loc[:, "calc_value"] = (
             num_df_agg["count"] / num_df_agg["total_list_size"] * 1000
         )
         num_df_agg.loc[:, "calc_value_error"] = (
             num_df_agg["error"] / num_df_agg["total_list_size"] * 1000
         )
-    elif not denominator:
+    elif not denominators:
         num_df_agg.loc[:, "calc_value"] = num_df_agg["count"]
         num_df_agg.loc[:, "calc_value_error"] = num_df_agg["error"]
 
     else:
-        denom_filter = and_query[:] + [f"(test_code.isin({denominator}))"]
+        denom_filter = and_query[:] + [f"(test_code.isin({denominators}))"]
         filtered_df = df.query(" & ".join(denom_filter))
         denom_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
         num_df_agg = num_df_agg.merge(
