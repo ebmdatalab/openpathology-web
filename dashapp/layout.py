@@ -33,12 +33,18 @@ def layout(tests_df):
             ),
             dcc.Dropdown(
                 id="denominators-dropdown",
-                multi=True,
                 options=[
-                    {"value": "raw", "label": "Raw numbers"},
                     {"value": "per1000", "label": "Per 1000 patients"},
-                    {"value": "FBC", "label": "As a proportion of FBC"},
+                    {"value": "raw", "label": "Raw numbers"},
+                    {"value": "other", "label": "As a proportion of other tests"},
                 ],
+            ),
+            dcc.Dropdown(
+                id="denominator-tests-dropdown",
+                multi=True,
+                placeholder="Select tests",
+                options=tests_df.to_dict("records"),
+                style={"display": "none"},
             ),
             html.Div(id="error-container"),
             # All the charts we're interested in, in a spinner container

@@ -50,7 +50,8 @@ def update_state(state, **kw):
             different = state.get(k, "_nevermatches_") != v
         if different:
             if not v:
-                del state[k]
+                if k in state:
+                    del state[k]
             else:
                 state[k] = v
             changed = True
@@ -92,11 +93,17 @@ def update_url_from_page_state(page_state):
         Input("heatmap-graph", "clickData"),
         Input("numerators-dropdown", "value"),
         Input("denominators-dropdown", "value"),
+        Input("denominator-tests-dropdown", "value"),
     ],
     [State("page-state", "children")],
 )
 def update_state_from_inputs(
-    pathname, clickData, selected_numerator, selected_denominator, page_state
+    pathname,
+    clickData,
+    selected_numerator,
+    selected_denominator,
+    denominator_tests,
+    page_state,
 ):
     """
     Given a series of possible user inputs, update the state if it needs to be changed.
@@ -117,8 +124,17 @@ def update_state_from_inputs(
             page_state,
             error={"status_code": 404, "message": f"Unable to find page at {pathname}"},
         )
-    update_state(page_state, numerators=selected_numerator)
-    update_state(page_state, denominators=selected_denominator)
+    if selected_denominator == "other":
+        # We store one of raw, per100 or TEST1+TEST in the URL. We
+        # always store that as the `denominators` value in the page
+        # state, even though the dropdown for selected_numerator may
+        # be `other`. This needs cleaning up! XXX
+        stored_denominators = denominator_tests
+    else:
+        stored_denominators = [selected_denominator]
+    update_state(
+        page_state, numerators=selected_numerator, denominators=stored_denominators
+    )
 
     if "heatmap-graph" in triggered_inputs:
         # Hack: extract practice id from chart label data, which looks
@@ -138,35 +154,39 @@ def update_state_from_inputs(
     if "numerators" not in page_state:
         update_state(page_state, numerators=["all"])
     if "denominators" not in page_state:
-        update_state(page_state, denominators=["raw"])
+        update_state(page_state, denominators=["per1000"])
 
     del page_state["_dirty"]
     logger.info("-- updating state from %s, to %s", triggered_inputs, page_state)
     return json.dumps(page_state)
 
 
-def _create_dropdown_update_func(selector_id):
+def _create_multi_dropdown_update_func(selector_id, page_state_key):
     """Create a callback function that updates a dropdown from a URL
     """
 
-    def update_numerator_dropdown_from_url(pathname):
-        """Cause the numerator dropdown to match the current page location
+    def update_multi_dropdown_from_url(pathname):
+        """Cause the specified multi dropdown to match the current page location
         """
-        logger.info("-- numerator dropdown being set from URL %s", pathname)
+        logger.info(
+            "-- numerator multi dropdown %s being set from URL %s",
+            selector_id,
+            pathname,
+        )
         if pathname:
             # Sometimes None for reasons explained here:
             # https://github.com/plotly/dash/issues/133#issuecomment-330714608
             try:
                 _, url_state = urls.match(pathname)
-                if selector_id in url_state:
-                    return url_state[selector_id]
+                if page_state_key in url_state:
+                    return url_state[page_state_key]
                 else:
                     return ""
             except NotFound:
                 return ""
         raise PreventUpdate
 
-    return update_numerator_dropdown_from_url
+    return update_multi_dropdown_from_url
 
 
 def _create_link_update_func(selector_id):
@@ -183,16 +203,54 @@ def _create_link_update_func(selector_id):
     return update_link_from_state
 
 
-for selector_id in ["numerators", "denominators"]:
-    app.callback(
-        Output(f"{selector_id}-dropdown", "value"), [Input("url-from-user", "pathname")]
-    )(_create_dropdown_update_func(selector_id))
+for selector_id, page_state_key in [
+    ("numerators-dropdown", "numerators"),
+    ("denominator-tests-dropdown", "denominators"),
+]:
+    app.callback(Output(selector_id, "value"), [Input("url-from-user", "pathname")])(
+        _create_multi_dropdown_update_func(selector_id, page_state_key)
+    )
 
 
 for link_id in ["counts", "deciles", "heatmap"]:
     app.callback(Output(f"{link_id}-link", "href"), [Input("page-state", "children")])(
         _create_link_update_func(link_id)
     )
+
+
+@app.callback(
+    Output("denominators-dropdown", "value"), [Input("url-from-user", "pathname")]
+)
+def update_denominator_dropdown_from_url(pathname):
+    """Cause the numerator dropdown to match the current page location
+    """
+    logger.info("-- numerator dropdown being set from URL %s", pathname)
+    if pathname:
+        # Sometimes None for reasons explained here:
+        # https://github.com/plotly/dash/issues/133#issuecomment-330714608
+        try:
+            _, url_state = urls.match(pathname)
+            if url_state["denominators"] == ["per1000"] or url_state[
+                "denominators"
+            ] == ["raw"]:
+                logger.info("  setting to %s", url_state["denominators"][0])
+                return url_state["denominators"][0]
+            else:
+                return "other"
+        except NotFound:
+            return ""
+    raise PreventUpdate
+
+
+@app.callback(
+    Output("denominator-tests-dropdown", "style"),
+    [Input("denominators-dropdown", "value")],
+)
+def show_or_hide_denominators_multi_dropdown(denominators_selector):
+    if denominators_selector == "other":
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
 
 
 @app.callback(Output("error-container", "children"), [Input("page-state", "children")])
