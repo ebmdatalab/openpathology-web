@@ -89,23 +89,22 @@ def update_url_from_page_state(page_state):
 @app.callback(
     Output("page-state", "children"),
     [
-        Input("url-from-user", "pathname"),
         Input("heatmap-graph", "clickData"),
         Input("numerators-dropdown", "value"),
         Input("denominators-dropdown", "value"),
         Input("denominator-tests-dropdown", "value"),
         Input("test-filter-dropdown", "value"),
     ],
-    [State("page-state", "children")],
+    [State("page-state", "children"), State("url-for-update", "pathname")],
 )
 def update_state_from_inputs(
-    pathname,
-    clickData,
+    click_data,
     selected_numerator,
     selected_denominator,
     denominator_tests,
     selected_filter,
     page_state,
+    current_path,
 ):
     """
     Given a series of possible user inputs, update the state if it needs to be changed.
@@ -113,18 +112,20 @@ def update_state_from_inputs(
     ctx = dash.callback_context
     triggered_inputs = [x["prop_id"].split(".")[0] for x in ctx.triggered]
     page_state = get_state(page_state)
-    logger.info("-- updating state from %s", page_state)
-
+    orig_page_state = page_state.copy()
     # Errors should already have been shown by this point. Reset error state.
     if "error" in page_state:
         del page_state["error"]
     try:
-        _, url_state = urls.match(pathname)
+        _, url_state = urls.match(current_path)
         update_state(page_state, **url_state)
     except NotFound:
         update_state(
             page_state,
-            error={"status_code": 404, "message": f"Unable to find page at {pathname}"},
+            error={
+                "status_code": 404,
+                "message": f"Unable to find page at {current_path}",
+            },
         )
     if selected_denominator == "other":
         # We store one of raw, per100 or TEST1+TEST in the URL. We
@@ -146,8 +147,7 @@ def update_state_from_inputs(
         # like this: {'points': [{'curveNumber': 0, 'x': '2016-05-01',
         # 'y': 'practice 84', 'z': 86.10749488562395}]}. I think
         # there's a cleaner way to pass ids as chart metadata
-        practice_id = clickData["points"][0]["y"].split(" ")[-1]
-        page_state["page_id"] = "deciles"
+        practice_id = int(click_data["points"][0]["y"].split(" ")[-1])
         update_state(page_state, practice_id=practice_id, page_id="deciles")
 
     # Only trigger state changes if something has changed
@@ -162,7 +162,12 @@ def update_state_from_inputs(
         update_state(page_state, denominators=["per1000"])
 
     del page_state["_dirty"]
-    logger.info("-- updating state from %s, to %s", triggered_inputs, page_state)
+    logger.info(
+        "-- updating state from %s, was %s, now %s",
+        triggered_inputs,
+        orig_page_state,
+        page_state,
+    )
     return json.dumps(page_state)
 
 
