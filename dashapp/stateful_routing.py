@@ -171,6 +171,19 @@ def update_state_from_inputs(
     return json.dumps(page_state)
 
 
+def _get_dropdown_default_by_id(component_id):
+    # XXX find out if this can be made safe to use. Seems like a useful method
+    # to make public.
+    component = None
+    for _, component in app.layout._traverse_with_paths():
+        if getattr(component, "id", None) == component_id:
+            break
+    if component is not None:
+        return component.options[0]["value"]
+    else:
+        return ""
+
+
 def _create_multi_dropdown_update_func(selector_id, page_state_key):
     """Create a callback function that updates a dropdown from a URL
     """
@@ -191,9 +204,9 @@ def _create_multi_dropdown_update_func(selector_id, page_state_key):
                 if page_state_key in url_state:
                     return url_state[page_state_key]
                 else:
-                    return ""
+                    return _get_dropdown_default_by_id(selector_id)
             except NotFound:
-                return ""
+                return _get_dropdown_default_by_id(selector_id)
         raise PreventUpdate
 
     return update_multi_dropdown_from_url
