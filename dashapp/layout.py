@@ -10,7 +10,7 @@ def layout(tests_df):
             # Hidden div inside the app that stores the page state
             html.Pre(id="page-state", style={"display": "none"}),
             # Two "locations" with the same function, to allow two
-            # different callbacks to use them.  Unfortunately they both get triggered.
+            # different callbacks to use them without cycles in the graph.
             dcc.Location(id="url-from-user", refresh=False),
             dcc.Location(id="url-for-update", refresh=False),
             # Navigation
