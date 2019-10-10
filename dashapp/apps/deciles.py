@@ -78,7 +78,7 @@ def update_deciles(page_state):
     if not deciles_traces:
         return html.Div()
     months = deciles_traces[0].x
-    ymax = trace_df.calc_value.max()
+    ymax = trace_df.calc_value.max() + trace_df.calc_value_error.max()
 
     if entity_id != "all":
         entity_ids = [entity_id]
@@ -96,21 +96,29 @@ def update_deciles(page_state):
         traces.append(
             go.Scatter(
                 x=entity_df["month"],
-                y=entity_df["calc_value"] + entity_df["calc_value_error"],
+                y=entity_df["calc_value"],
                 name=str(entity_id),
                 line=dict(color="red", width=1, dash="solid"),
             )
         )
         if entity_df["calc_value_error"].sum() > 0:
-            # If there's any error, draw a bottom bound and fill
+            # If there's any error, bounds and fill
+            traces.append(
+                go.Scatter(
+                    x=entity_df["month"],
+                    y=entity_df["calc_value"] + entity_df["calc_value_error"],
+                    name=str(entity_id),
+                    line=dict(color="red", width=1, dash="dot"),
+                    hoverinfo="skip",
+                )
+            )
             traces.append(
                 go.Scatter(
                     x=entity_df["month"],
                     y=entity_df["calc_value"] - entity_df["calc_value_error"],
                     name=str(entity_id),
-                    line=dict(color="red", width=1, dash="solid"),
                     fill="tonexty",
-                    hoverinfo="skip",
+                    line=dict(color="red", width=1, dash="dot"),
                 )
             )
 
