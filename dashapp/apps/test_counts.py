@@ -26,7 +26,7 @@ def update_counts(page_state):
     entity_type = page_state.get("entity_type", None)
     if entity_type == "practice":
         col_name = "practice_id"
-    elif entity_type == "test_code":
+    else:
         col_name = entity_type
     df = get_count_data(
         numerators=numerators,
@@ -35,7 +35,6 @@ def update_counts(page_state):
         result_filter=result_filter,
     )
     traces = []
-
     for entity_id in get_sorted_group_keys(df, col_name):
         trace_df = df[df[col_name] == entity_id]
         traces.append(

@@ -19,7 +19,7 @@ class AppConverter(BaseConverter):
 
 
 class EntityConverter(BaseConverter):
-    regex = r"(?:ccg|practice|lab|test_code)"
+    regex = r"(?:ccg_id|practice|lab|test_code)"
 
 
 url_map = Map(

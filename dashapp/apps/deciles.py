@@ -64,7 +64,7 @@ def update_deciles(page_state):
     entity_id = page_state.get("entity_id", None)
     if entity_type == "practice":
         col_name = "practice_id"
-    elif entity_type == "test_code":
+    else:
         col_name = entity_type
 
     trace_df = get_count_data(

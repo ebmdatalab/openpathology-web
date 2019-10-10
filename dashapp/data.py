@@ -20,6 +20,7 @@ def get_data(sample_size=None):
     # copy anonymised id into column named "practice_id"
     df = df.loc[pd.notnull(df["anon_id"])]
     df["practice_id"] = df["anon_id"].astype(str).str.replace(".0", "")
+
     if sample_size:
         some_practices = df.practice_id.sample(sample_size)
         return df[df.loc[:, "practice_id"].isin(some_practices)]
@@ -47,7 +48,7 @@ def get_count_data(
     df = get_data(sample_size)
     if by == "practice_id":
         cols = ["month", "total_list_size", "practice_id", "count", "error"]
-        groupby = ["month", "total_list_size", "practice_id"]
+        groupby = ["month", "practice_id"]
         required_cols = [
             "month",
             "total_list_size",
@@ -60,6 +61,16 @@ def get_count_data(
         cols = ["month", "test_code", "count", "error", "total_list_size"]
         groupby = ["month", "test_code"]
         required_cols = ["month", "test_code", "calc_value", "calc_value_error"]
+    elif by == "ccg_id":
+        cols = ["month", "total_list_size", "ccg_id", "count", "error"]
+        groupby = ["month", "ccg_id"]
+        required_cols = [
+            "month",
+            "total_list_size",
+            "ccg_id",
+            "calc_value",
+            "calc_value_error",
+        ]
 
     and_query = []
     if result_filter:

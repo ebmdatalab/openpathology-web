@@ -36,7 +36,7 @@ def update_heatmap(page_state):
     entity_type = page_state.get("entity_type", None)
     if entity_type == "practice":
         col_name = "practice_id"
-    elif entity_type == "test_code":
+    else:
         col_name = entity_type
     trace_df = get_count_data(
         numerators=numerators,

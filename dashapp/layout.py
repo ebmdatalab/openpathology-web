@@ -74,6 +74,7 @@ def layout(tests_df):
                 options=[
                     {"value": "practice", "label": "Practice"},
                     {"value": "test_code", "label": "Test code"},
+                    {"value": "ccg_id", "label": "CCG"},
                 ],
             ),
             html.Div(id="error-container"),
