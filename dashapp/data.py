@@ -109,12 +109,11 @@ def get_count_data(
         num_df_agg.loc[:, "calc_value_error"] = num_df_agg["error"]
 
     else:
+        # denominator is list of tests
         if by == "test_code":
             # The denominator needs to be summed across all tests
             groupby = ["month"]
-
-        denom_filter = and_query[:] + [f"(test_code.isin({denominators}))"]
-        filtered_df = df.query(" & ".join(denom_filter))
+        filtered_df = df.query(f"test_code.isin({denominators})")
         denom_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
         num_df_agg = num_df_agg.merge(
             denom_df_agg,
