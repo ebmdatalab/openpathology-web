@@ -33,10 +33,11 @@ def get_state(possible_state_text):
 
 def update_state(state, **kw):
     """Update `state` with keyword values, if they are different from
-    current values. Keyword values of None or empty lists denote that
-    the key should be removed from the state.
+    current values, and non-null. Keyword values of None or empty
+    lists denote that the key should be removed from the state.
 
     Sets a `_dirty` key if any changes have been made
+
     """
     changed = False
     for k, v in kw.items():
@@ -47,7 +48,7 @@ def update_state(state, **kw):
             else:
                 different = len(set(v).symmetric_difference(set(state.get(k, [])))) > 0
         else:
-            different = state.get(k, "_nevermatches_") != v
+            different = v is not None and state.get(k, "_nevermatches_") != v
         if different:
             if not v:
                 if k in state:
@@ -93,6 +94,7 @@ def update_url_from_page_state(page_state):
         Input("numerators-dropdown", "value"),
         Input("denominators-dropdown", "value"),
         Input("denominator-tests-dropdown", "value"),
+        Input("entity-dropdown", "value"),
         Input("test-filter-dropdown", "value"),
     ],
     [State("page-state", "children"), State("url-for-update", "pathname")],
@@ -102,6 +104,7 @@ def update_state_from_inputs(
     selected_numerator,
     selected_denominator,
     denominator_tests,
+    entity_type,
     selected_filter,
     page_state,
     current_path,
@@ -113,6 +116,19 @@ def update_state_from_inputs(
     triggered_inputs = [x["prop_id"].split(".")[0] for x in ctx.triggered]
     page_state = get_state(page_state)
     orig_page_state = page_state.copy()
+
+    # add defaults
+    if "numerators" not in page_state:
+        update_state(page_state, numerators=["all"])
+    if "denominators" not in page_state:
+        update_state(page_state, denominators=["per1000"])
+    if "entity_type" not in page_state:
+        update_state(page_state, entity_type="practice")
+    if "entity_id" not in page_state:
+        update_state(page_state, entity_id="all")
+    if "result_filter" not in page_state:
+        update_state(page_state, result_filter="all")
+
     # Errors should already have been shown by this point. Reset error state.
     if "error" in page_state:
         del page_state["error"]
@@ -140,6 +156,7 @@ def update_state_from_inputs(
         numerators=selected_numerator,
         denominators=stored_denominators,
         result_filter=selected_filter,
+        entity_type=entity_type,
     )
 
     if "heatmap-graph" in triggered_inputs:
@@ -147,19 +164,13 @@ def update_state_from_inputs(
         # like this: {'points': [{'curveNumber': 0, 'x': '2016-05-01',
         # 'y': 'practice 84', 'z': 86.10749488562395}]}. I think
         # there's a cleaner way to pass ids as chart metadata
-        practice_id = int(click_data["points"][0]["y"].split(" ")[-1])
-        update_state(page_state, practice_id=practice_id, page_id="deciles")
+        entity_id = click_data["points"][0]["y"].split(" ")[-1]
+        update_state(page_state, entity_id=entity_id, page_id="deciles")
 
     # Only trigger state changes if something has changed
     if "_dirty" not in page_state:
         logger.info("State unchanged")
         raise PreventUpdate
-
-    # add default numerators and denonimators
-    if "numerators" not in page_state:
-        update_state(page_state, numerators=["all"])
-    if "denominators" not in page_state:
-        update_state(page_state, denominators=["per1000"])
 
     del page_state["_dirty"]
     logger.info(
@@ -184,32 +195,30 @@ def _get_dropdown_default_by_id(component_id):
         return ""
 
 
-def _create_multi_dropdown_update_func(selector_id, page_state_key):
+def _create_dropdown_update_func(selector_id, page_state_key, is_multi):
     """Create a callback function that updates a dropdown from a URL
     """
 
-    def update_multi_dropdown_from_url(pathname):
+    def update_dropdown_from_url(pathname):
         """Cause the specified multi dropdown to match the current page location
         """
-        logger.info(
-            "-- numerator multi dropdown %s being set from URL %s",
-            selector_id,
-            pathname,
-        )
+        logger.info("-- multi dropdown %s being set from URL %s", selector_id, pathname)
         if pathname:
             # Sometimes None for reasons explained here:
             # https://github.com/plotly/dash/issues/133#issuecomment-330714608
+            default = _get_dropdown_default_by_id(selector_id)
             try:
                 _, url_state = urls.match(pathname)
                 if page_state_key in url_state:
                     return url_state[page_state_key]
                 else:
-                    return _get_dropdown_default_by_id(selector_id)
+                    logger.info("****-> %s", default)
+                    return is_multi and [default] or default
             except NotFound:
-                return _get_dropdown_default_by_id(selector_id)
+                return is_multi and [default] or default
         raise PreventUpdate
 
-    return update_multi_dropdown_from_url
+    return update_dropdown_from_url
 
 
 def _create_link_update_func(selector_id):
@@ -226,13 +235,14 @@ def _create_link_update_func(selector_id):
     return update_link_from_state
 
 
-for selector_id, page_state_key in [
-    ("numerators-dropdown", "numerators"),
-    ("denominator-tests-dropdown", "denominators"),
-    ("test-filter-dropdown", "result_filter"),
+for selector_id, page_state_key, is_multi in [
+    ("numerators-dropdown", "numerators", True),
+    ("denominator-tests-dropdown", "denominators", True),
+    ("test-filter-dropdown", "result_filter", False),
+    ("entity-dropdown", "entity_type", False),
 ]:
     app.callback(Output(selector_id, "value"), [Input("url-from-user", "pathname")])(
-        _create_multi_dropdown_update_func(selector_id, page_state_key)
+        _create_dropdown_update_func(selector_id, page_state_key, is_multi)
     )
 
 
@@ -242,6 +252,7 @@ for link_id in ["counts", "deciles", "heatmap"]:
     )
 
 
+# XXX can I use the _create_multi_dropdown_update_func pattern above for this?
 @app.callback(
     Output("denominators-dropdown", "value"), [Input("url-from-user", "pathname")]
 )
@@ -254,13 +265,17 @@ def update_denominator_dropdown_from_url(pathname):
         # https://github.com/plotly/dash/issues/133#issuecomment-330714608
         try:
             _, url_state = urls.match(pathname)
-            if url_state["denominators"] == ["per1000"] or url_state[
-                "denominators"
-            ] == ["raw"]:
-                logger.info("  setting to %s", url_state["denominators"][0])
-                return url_state["denominators"][0]
+            if "denominators" in url_state:
+                if url_state["denominators"] == ["per1000"] or url_state[
+                    "denominators"
+                ] == ["raw"]:
+                    logger.info("  setting to %s", url_state["denominators"][0])
+                    return url_state["denominators"][0]
+                else:
+                    return "other"
             else:
-                return "other"
+                # default for when someone visits /apps/decile (for example)
+                return "per1000"
         except NotFound:
             return ""
     raise PreventUpdate

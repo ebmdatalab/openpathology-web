@@ -11,7 +11,7 @@ import settings
 logger = logging.getLogger(__name__)
 
 
-def sort_by_practice_ids(df):
+def sort_by_index(df):
     """Compute a sort order for the practice charts, based on the mean
     calc_value of the last 6 months.
 
@@ -33,21 +33,29 @@ def update_heatmap(page_state):
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
     result_filter = page_state.get("result_filter", [])
+    entity_type = page_state.get("entity_type", None)
+    if entity_type == "practice":
+        col_name = "practice_id"
+    elif entity_type == "test_code":
+        col_name = entity_type
     trace_df = get_count_data(
-        numerators=numerators, denominators=denominators, result_filter=result_filter
+        numerators=numerators,
+        denominators=denominators,
+        result_filter=result_filter,
+        by=col_name,
     )
-    vals_by_practice = trace_df.pivot(
-        index="practice_id", columns="month", values="calc_value"
+    vals_by_entity = trace_df.pivot(
+        index=col_name, columns="month", values="calc_value"
     )
     # Sort by mean value of last 6 months
-    vals_by_practice = sort_by_practice_ids(vals_by_practice)
-    practices = ["practice {}".format(x) for x in vals_by_practice.index]
+    vals_by_entity = sort_by_index(vals_by_entity)
+    entities = ["entity {}".format(x) for x in vals_by_entity.index]
     # sort with hottest at top
-    trace = go.Heatmap(z=vals_by_practice, x=vals_by_practice.columns, y=practices)
+    trace = go.Heatmap(z=vals_by_entity, x=vals_by_entity.columns, y=entities)
     target_rowheight = 20
-    height = max(350, target_rowheight * len(practices))
+    height = max(350, target_rowheight * len(entities))
     logger.debug(
-        "Target rowheight of {} for {} practices".format(height, len(practices))
+        "Target rowheight of {} for {} {}s".format(height, len(entities), entity_type)
     )
     return {
         "data": [trace],
@@ -58,8 +66,8 @@ def update_heatmap(page_state):
             yaxis={
                 "fixedrange": True,
                 "tickmode": "array",
-                "tickvals": practices,
-                "ticktext": practices,
+                "tickvals": entities,
+                "ticktext": entities,
             },
         ),
     }

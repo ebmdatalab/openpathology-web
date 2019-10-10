@@ -17,9 +17,9 @@ def get_data(sample_size=None):
     df.loc[df["count"] == 3, "error"] = 2
     df["error"].fillna(0, inplace=True)
 
-    # copy anonymised id into column named "practice_id" as an integer
+    # copy anonymised id into column named "practice_id"
     df = df.loc[pd.notnull(df["anon_id"])]
-    df["practice_id"] = df["anon_id"].astype(int)
+    df["practice_id"] = df["anon_id"].astype(str).str.replace(".0", "")
     if sample_size:
         some_practices = df.practice_id.sample(sample_size)
         return df[df.loc[:, "practice_id"].isin(some_practices)]

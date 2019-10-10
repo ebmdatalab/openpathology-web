@@ -27,3 +27,14 @@ for chart in settings.CHARTS:
     app.callback(
         Output("{}-container".format(chart), "style"), [Input("page-state", "children")]
     )(_create_show_chart_func(chart))
+
+
+def get_sorted_group_keys(df, group_by):
+    """Compute a sort order for the practice charts, based on the mean
+    calc_value of the last 6 months"""
+    df2 = df.pivot_table(index=group_by, columns="month", values="calc_value")
+    entity_ids = df2.reindex(
+        df2.fillna(0).iloc[:, -6:].mean(axis=1).sort_values(ascending=False).index,
+        axis=0,
+    ).index
+    return entity_ids

@@ -18,6 +18,10 @@ class AppConverter(BaseConverter):
     regex = r"(?:deciles|heatmap|counts)"
 
 
+class EntityConverter(BaseConverter):
+    regex = r"(?:ccg|practice|lab|test_code)"
+
+
 url_map = Map(
     [
         Submount(
@@ -25,25 +29,17 @@ url_map = Map(
             [
                 Rule("/<app:page_id>", endpoint="index"),
                 Rule(
-                    "/<app:page_id>/<tests:numerators>/<tests:denominators>",
-                    endpoint="graph/numerators/denominators",
-                ),
-                Rule(
-                    "/<app:page_id>/<tests:numerators>/<tests:denominators>/<string:result_filter>",
-                    endpoint="graph/numerators/denominators/filter",
-                ),
-                Rule(
-                    "/<app:page_id>/<tests:numerators>/<tests:denominators>/<int:practice_id>",
-                    endpoint="graph/numerators/denominators/practice_id",
-                ),
-                Rule(
-                    "/<app:page_id>/<tests:numerators>/<tests:denominators>/<int:practice_id>/<string:result_filter>",
+                    "/<app:page_id>/by/<entity_type:entity_type>/<string:entity_id>/numerators/<tests:numerators>/denominators/<tests:denominators>/filter/<string:result_filter>",
                     endpoint="graph/numerators/denominators/practice_id/filter",
                 ),
             ],
         )
     ],
-    converters={"tests": TestListConverter, "app": AppConverter},
+    converters={
+        "tests": TestListConverter,
+        "app": AppConverter,
+        "entity_type": EntityConverter,
+    },
 )
 
 urls = url_map.bind(

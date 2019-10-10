@@ -4,6 +4,7 @@ import plotly.graph_objs as go
 from dash.dependencies import Input, Output
 
 from app import app
+from apps.base import get_sorted_group_keys
 from data import get_count_data
 from data import get_test_list
 from stateful_routing import get_state
@@ -22,24 +23,26 @@ def update_counts(page_state):
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
     result_filter = page_state.get("result_filter", [])
-
-    if not numerators or numerators == ["all"]:
-        numerators = list(get_test_list().datalab_testcode)
+    entity_type = page_state.get("entity_type", None)
+    if entity_type == "practice":
+        col_name = "practice_id"
+    elif entity_type == "test_code":
+        col_name = entity_type
     df = get_count_data(
         numerators=numerators,
         denominators=denominators,
-        by="test_code",
+        by=col_name,
         result_filter=result_filter,
     )
     traces = []
 
-    for test_code in numerators:
-        trace_df = df[df.test_code == test_code]
+    for entity_id in get_sorted_group_keys(df, col_name):
+        trace_df = df[df[col_name] == entity_id]
         traces.append(
             go.Scatter(
                 x=trace_df["month"],
                 y=trace_df["calc_value"],
-                name=test_code,
+                name=entity_id,
                 showlegend=True,
             )
         )

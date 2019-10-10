@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output
 
 import numpy as np
 from app import app
+from apps.base import get_sorted_group_keys
 from data import get_count_data
 from stateful_routing import get_state
 import settings
@@ -21,9 +22,7 @@ def get_practice_deciles(df):
     Returns a list of (decile, value) tuples (e.g. (10, 4.223))
     """
     deciles = np.array(range(10, 100, 10))
-    vals_by_practice = df.pivot(
-        index="practice_id", columns="month", values="calc_value"
-    )
+    vals_by_practice = df.pivot(columns="month", values="calc_value")
     deciles_data = np.nanpercentile(vals_by_practice, axis=0, q=deciles)
     return zip(deciles, deciles_data)
 
@@ -50,17 +49,6 @@ def get_practice_decile_traces(df):
     return deciles_traces
 
 
-def get_sorted_practice_ids(df):
-    """Compute a sort order for the practice charts, based on the mean
-    calc_value of the last 6 months"""
-    df2 = df.pivot(index="practice_id", columns="month", values="calc_value")
-    practice_ids = df2.reindex(
-        df2.fillna(0).iloc[:, -6:].mean(axis=1).sort_values(ascending=False).index,
-        axis=0,
-    ).index
-    return practice_ids
-
-
 @app.callback(
     Output("deciles-container", "children"), [Input("page-state", "children")]
 )
@@ -69,13 +57,21 @@ def update_deciles(page_state):
     if page_state.get("page_id") != settings.DECILES_CHART_ID:
         return html.Div()
 
-    practice_id = page_state.get("practice_id", None)
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
     result_filter = page_state.get("result_filter", [])
+    entity_type = page_state.get("entity_type", None)
+    entity_id = page_state.get("entity_id", None)
+    if entity_type == "practice":
+        col_name = "practice_id"
+    elif entity_type == "test_code":
+        col_name = entity_type
 
     trace_df = get_count_data(
-        numerators=numerators, denominators=denominators, result_filter=result_filter
+        numerators=numerators,
+        denominators=denominators,
+        result_filter=result_filter,
+        by=col_name,
     )
     traces = []
     deciles_traces = get_practice_decile_traces(trace_df)
@@ -83,33 +79,35 @@ def update_deciles(page_state):
         return html.Div()
     months = deciles_traces[0].x
     ymax = trace_df.calc_value.max()
-    if practice_id:
-        practice_ids = [int(practice_id)]
+
+    if entity_id != "all":
+        entity_ids = [entity_id]
     else:
-        practice_ids = get_sorted_practice_ids(trace_df)
+        entity_ids = get_sorted_group_keys(trace_df, col_name)
+    limit = 80  # XXX this is cos we can't draw so many charts without breaking
+    # the browser. Ideally we'd fix this with load-on-scroll
 
     # Create a graph for each practice
     graphs = []
-    for practice_id in practice_ids:
-
-        prac_df = trace_df[trace_df["practice_id"] == practice_id]
+    for entity_id in entity_ids[:limit]:
+        entity_df = trace_df[trace_df[col_name] == entity_id]
         traces = []
         # First, plot the practice line
         traces.append(
             go.Scatter(
-                x=prac_df["month"],
-                y=prac_df["calc_value"] + prac_df["calc_value_error"],
-                name=str(practice_id),
+                x=entity_df["month"],
+                y=entity_df["calc_value"] + entity_df["calc_value_error"],
+                name=str(entity_id),
                 line=dict(color="red", width=1, dash="solid"),
             )
         )
-        if prac_df["calc_value_error"].sum() > 0:
+        if entity_df["calc_value_error"].sum() > 0:
             # If there's any error, draw a bottom bound and fill
             traces.append(
                 go.Scatter(
-                    x=prac_df["month"],
-                    y=prac_df["calc_value"] - prac_df["calc_value_error"],
-                    name=str(practice_id),
+                    x=entity_df["month"],
+                    y=entity_df["calc_value"] - entity_df["calc_value_error"],
+                    name=str(entity_id),
                     line=dict(color="red", width=1, dash="solid"),
                     fill="tonexty",
                     hoverinfo="skip",
@@ -132,12 +130,12 @@ def update_deciles(page_state):
         else:
             denominators_text = "as a proportion of " + " + ".join(denominators)
         title = "Count of {} {} at {}".format(
-            numerators_text, denominators_text, practice_id
+            numerators_text, denominators_text, entity_id
         )
 
         # Add the traces to per-practice graph
         graph = dcc.Graph(
-            id="graph-{}".format(practice_id),
+            id="graph-{}".format(entity_id),
             figure={
                 "data": traces,
                 "layout": go.Layout(

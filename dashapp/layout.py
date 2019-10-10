@@ -68,6 +68,14 @@ def layout(tests_df):
                     },
                 ],
             ),
+            html.Label("Group by"),
+            dcc.Dropdown(
+                id="entity-dropdown",
+                options=[
+                    {"value": "practice", "label": "Practice"},
+                    {"value": "test_code", "label": "Test code"},
+                ],
+            ),
             html.Div(id="error-container"),
             # All the charts we're interested in, in a spinner container
             dcc.Loading(
