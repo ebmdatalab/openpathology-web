@@ -128,7 +128,8 @@ def get_count_data(
         num_df_agg.loc[:, "calc_value_error"] = (
             num_df_agg["error"] / num_df_agg["error_denom"]
         )
-    return num_df_agg[required_cols]
+    # The fillname is to work around this bug: https://github.com/plotly/plotly.js/issues/3296
+    return num_df_agg[required_cols].sort_values("month").fillna(0)
 
 
 @cache.memoize()
