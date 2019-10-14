@@ -20,7 +20,6 @@ def get_data(sample_size=None):
     # copy anonymised id into column named "practice_id"
     df = df.loc[pd.notnull(df["anon_id"])]
     df["practice_id"] = df["anon_id"].astype(str).str.replace(".0", "")
-
     if sample_size:
         some_practices = df.practice_id.sample(sample_size)
         return df[df.loc[:, "practice_id"].isin(some_practices)]
@@ -28,14 +27,12 @@ def get_data(sample_size=None):
         return df
 
 
-def _agg_count_data(df, by):
-    return
-
-
 def get_count_data(
     numerators=[],
     denominators=[],
     result_filter=None,
+    practice_filter_entity=None,
+    entity_ids_for_practice_filter=[],
     by="practice_id",
     sample_size=None,
 ):
@@ -47,16 +44,18 @@ def get_count_data(
     """
     df = get_data(sample_size)
     if by == "practice_id":
-        cols = ["month", "total_list_size", "practice_id", "count", "error"]
-        groupby = ["month", "practice_id"]
+        cols = ["month", "total_list_size", "practice_id", "ccg_id", "count", "error"]
+        groupby = ["month", "practice_id", "ccg_id"]
         required_cols = [
             "month",
             "total_list_size",
             "practice_id",
             "calc_value",
             "calc_value_error",
+            "ccg_id",
         ]
-
+    # XXX how do we do this.
+    # We group by X, then do calc-value; but what about the percentiles?
     elif by == "test_code":
         cols = ["month", "test_code", "count", "error", "total_list_size"]
         groupby = ["month", "test_code"]
@@ -72,7 +71,12 @@ def get_count_data(
             "calc_value_error",
         ]
 
-    and_query = []
+    base_and_query = []
+    if practice_filter_entity and "all" not in entity_ids_for_practice_filter:
+        base_and_query.append(
+            f"({practice_filter_entity}.isin({entity_ids_for_practice_filter}))"
+        )
+    numerator_and_query = base_and_query[:]
     if result_filter:
         assert result_filter in [
             "within_range",
@@ -82,18 +86,17 @@ def get_count_data(
             "all",
         ]
         if result_filter == "within_range":
-            and_query.append(f"(result_category == {settings.WITHIN_RANGE})")
+            numerator_and_query.append(f"(result_category == {settings.WITHIN_RANGE})")
         elif result_filter == "under_range":
-            and_query.append(f"(result_category == {settings.UNDER_RANGE})")
+            numerator_and_query.append(f"(result_category == {settings.UNDER_RANGE})")
         elif result_filter == "over_range":
-            and_query.append(f"(result_category == {settings.OVER_RANGE})")
+            numerator_and_query.append(f"(result_category == {settings.OVER_RANGE})")
         elif result_filter == "error":
-            and_query.append("(result_category > 1)")
-    num_filter = and_query[:]
+            numerator_and_query.append("(result_category > 1)")
     if numerators and numerators != ["all"]:
-        num_filter += [f"(test_code.isin({numerators}))"]
-    if num_filter:
-        filtered_df = df.query(" & ".join(num_filter))
+        numerator_and_query += [f"(test_code.isin({numerators}))"]
+    if numerator_and_query:
+        filtered_df = df.query(" & ".join(numerator_and_query))
     else:
         filtered_df = df
     num_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
@@ -113,7 +116,9 @@ def get_count_data(
         if by == "test_code":
             # The denominator needs to be summed across all tests
             groupby = ["month"]
-        filtered_df = df.query(f"test_code.isin({denominators})")
+        denominator_and_query = base_and_query[:]
+        denominator_and_query += [f"test_code.isin({denominators})"]
+        filtered_df = df.query(denominator_and_query)
         denom_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
         num_df_agg = num_df_agg.merge(
             denom_df_agg,
@@ -135,3 +140,10 @@ def get_count_data(
 @cache.memoize()
 def get_test_list():
     return pd.read_csv(settings.CSV_DIR / "test_codes.csv")
+
+
+@cache.memoize()
+def get_ccg_list():
+    """Get suitably massaged data
+    """
+    return [{"value": x, "label": x} for x in get_data().ccg_id.unique()]

@@ -94,8 +94,9 @@ def update_url_from_page_state(page_state):
         Input("numerators-dropdown", "value"),
         Input("denominators-dropdown", "value"),
         Input("denominator-tests-dropdown", "value"),
-        Input("entity-dropdown", "value"),
+        Input("groupby-dropdown", "value"),
         Input("test-filter-dropdown", "value"),
+        Input("ccg-dropdown", "value"),
     ],
     [State("page-state", "children"), State("url-for-update", "pathname")],
 )
@@ -104,8 +105,9 @@ def update_state_from_inputs(
     selected_numerator,
     selected_denominator,
     denominator_tests,
-    entity_type,
+    groupby,
     selected_filter,
+    selected_ccg,
     page_state,
     current_path,
 ):
@@ -122,10 +124,12 @@ def update_state_from_inputs(
         update_state(page_state, numerators=["all"])
     if "denominators" not in page_state:
         update_state(page_state, denominators=["per1000"])
-    if "entity_type" not in page_state:
-        update_state(page_state, entity_type="practice")
-    if "entity_id" not in page_state:
-        update_state(page_state, entity_id="all")
+    if "groupby" not in page_state:
+        update_state(page_state, groupby="practice")
+    if "practice_filter_entity" not in page_state:
+        update_state(page_state, practice_filter_entity="ccg_id")
+    if "entity_ids_for_practice_filter" not in page_state:
+        update_state(page_state, entity_ids_for_practice_filter=["all"])
     if "result_filter" not in page_state:
         update_state(page_state, result_filter="all")
 
@@ -156,7 +160,8 @@ def update_state_from_inputs(
         numerators=selected_numerator,
         denominators=stored_denominators,
         result_filter=selected_filter,
-        entity_type=entity_type,
+        groupby=groupby,
+        entity_ids_for_practice_filter=selected_ccg,
     )
 
     if "heatmap-graph" in triggered_inputs:
@@ -164,8 +169,8 @@ def update_state_from_inputs(
         # like this: {'points': [{'curveNumber': 0, 'x': '2016-05-01',
         # 'y': 'practice 84', 'z': 86.10749488562395}]}. I think
         # there's a cleaner way to pass ids as chart metadata
-        entity_id = click_data["points"][0]["y"].split(" ")[-1]
-        update_state(page_state, entity_id=entity_id, page_id="deciles")
+        entity_ids = click_data["points"][0]["y"].split(" ")[-1]
+        update_state(page_state, entity_ids=entity_ids, page_id="deciles")
 
     # Only trigger state changes if something has changed
     if "_dirty" not in page_state:
@@ -239,7 +244,8 @@ for selector_id, page_state_key, is_multi in [
     ("numerators-dropdown", "numerators", True),
     ("denominator-tests-dropdown", "denominators", True),
     ("test-filter-dropdown", "result_filter", False),
-    ("entity-dropdown", "entity_type", False),
+    ("groupby-dropdown", "groupby", False),
+    ("ccg-dropdown", "entity_ids_for_practice_filter", True),
 ]:
     app.callback(Output(selector_id, "value"), [Input("url-from-user", "pathname")])(
         _create_dropdown_update_func(selector_id, page_state_key, is_multi)

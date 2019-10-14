@@ -33,18 +33,24 @@ def update_heatmap(page_state):
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
     result_filter = page_state.get("result_filter", [])
-    entity_type = page_state.get("entity_type", None)
-    if entity_type == "practice":
+    groupby = page_state.get("groupby", None)
+    practice_filter_entity = page_state.get("practice_filter_entity", None)
+    entity_ids_for_practice_filter = page_state.get(
+        "entity_ids_for_practice_filter", []
+    )
+    if groupby == "practice":
         col_name = "practice_id"
     else:
-        col_name = entity_type
+        col_name = groupby
     trace_df = get_count_data(
         numerators=numerators,
         denominators=denominators,
         result_filter=result_filter,
+        practice_filter_entity=practice_filter_entity,
+        entity_ids_for_practice_filter=entity_ids_for_practice_filter,
         by=col_name,
     )
-    vals_by_entity = trace_df.pivot(
+    vals_by_entity = trace_df.pivot_table(
         index=col_name, columns="month", values="calc_value"
     )
     # Sort by mean value of last 6 months
@@ -55,7 +61,7 @@ def update_heatmap(page_state):
     target_rowheight = 20
     height = max(350, target_rowheight * len(entities))
     logger.debug(
-        "Target rowheight of {} for {} {}s".format(height, len(entities), entity_type)
+        "Target rowheight of {} for {} {}s".format(height, len(entities), groupby)
     )
     return {
         "data": [trace],

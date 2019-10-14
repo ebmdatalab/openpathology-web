@@ -23,15 +23,22 @@ def update_counts(page_state):
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
     result_filter = page_state.get("result_filter", [])
-    entity_type = page_state.get("entity_type", None)
-    if entity_type == "practice":
+    groupby = page_state.get("groupby", None)
+    practice_filter_entity = page_state.get("practice_filter_entity", None)
+    entity_ids_for_practice_filter = page_state.get(
+        "entity_ids_for_practice_filter", []
+    )
+
+    if groupby == "practice":
         col_name = "practice_id"
     else:
-        col_name = entity_type
+        col_name = groupby
     df = get_count_data(
         numerators=numerators,
         denominators=denominators,
         by=col_name,
+        practice_filter_entity=practice_filter_entity,
+        entity_ids_for_practice_filter=entity_ids_for_practice_filter,
         result_filter=result_filter,
     )
     traces = []

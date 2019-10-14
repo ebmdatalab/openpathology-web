@@ -3,7 +3,7 @@ import dash_html_components as html
 import dash_table
 
 
-def layout(tests_df):
+def layout(tests_df, ccgs_list):
     tests_df.columns = ["value", "label"]
     return html.Div(
         [
@@ -35,23 +35,7 @@ def layout(tests_df):
                 options=[{"value": "all", "label": "All tests"}]
                 + tests_df.to_dict("records"),
             ),
-            html.Label("Denominators"),
-            dcc.Dropdown(
-                id="denominators-dropdown",
-                options=[
-                    {"value": "per1000", "label": "Per 1000 patients"},
-                    {"value": "raw", "label": "Raw numbers"},
-                    {"value": "other", "label": "As a proportion of other tests"},
-                ],
-            ),
-            dcc.Dropdown(
-                id="denominator-tests-dropdown",
-                multi=True,
-                placeholder="Select tests",
-                options=tests_df.to_dict("records"),
-                style={"display": "none"},
-            ),
-            html.Label("Filter"),
+            html.Label("Which test results?"),
             dcc.Dropdown(
                 id="test-filter-dropdown",
                 options=[
@@ -68,14 +52,36 @@ def layout(tests_df):
                     },
                 ],
             ),
+            html.Label("Denominators"),
+            dcc.Dropdown(
+                id="denominators-dropdown",
+                options=[
+                    {"value": "per1000", "label": "Per 1000 patients"},
+                    {"value": "raw", "label": "Raw numbers"},
+                    {"value": "other", "label": "As a proportion of other tests"},
+                ],
+            ),
+            dcc.Dropdown(
+                id="denominator-tests-dropdown",
+                multi=True,
+                placeholder="Select tests",
+                options=tests_df.to_dict("records"),
+                style={"display": "none"},
+            ),
             html.Label("Group by"),
             dcc.Dropdown(
-                id="entity-dropdown",
+                id="groupby-dropdown",
                 options=[
                     {"value": "practice", "label": "Practice"},
                     {"value": "test_code", "label": "Test code"},
                     {"value": "ccg_id", "label": "CCG"},
                 ],
+            ),
+            html.Label("Showing which CCGs?"),
+            dcc.Dropdown(
+                id="ccg-dropdown",
+                multi=True,
+                options=[{"value": "all", "label": "All CCGs"}] + ccgs_list,
             ),
             html.Div(id="error-container"),
             # All the charts we're interested in, in a spinner container

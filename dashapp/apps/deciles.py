@@ -60,17 +60,23 @@ def update_deciles(page_state):
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
     result_filter = page_state.get("result_filter", [])
-    entity_type = page_state.get("entity_type", None)
-    entity_id = page_state.get("entity_id", None)
-    if entity_type == "practice":
+    groupby = page_state.get("groupby", None)
+    practice_filter_entity = page_state.get("practice_filter_entity", None)
+    entity_ids_for_practice_filter = page_state.get(
+        "entity_ids_for_practice_filter", []
+    )
+
+    if groupby == "practice":
         col_name = "practice_id"
     else:
-        col_name = entity_type
+        col_name = groupby
 
     trace_df = get_count_data(
         numerators=numerators,
         denominators=denominators,
         result_filter=result_filter,
+        practice_filter_entity=practice_filter_entity,
+        entity_ids_for_practice_filter=entity_ids_for_practice_filter,
         by=col_name,
     )
     traces = []
@@ -80,10 +86,12 @@ def update_deciles(page_state):
     months = deciles_traces[0].x
     ymax = trace_df.calc_value.max() + trace_df.calc_value_error.max()
 
-    if entity_id != "all":
-        entity_ids = [entity_id]
-    else:
+    if "all" in entity_ids_for_practice_filter:
         entity_ids = get_sorted_group_keys(trace_df, col_name)
+    elif groupby == "practice":
+        entity_ids = get_sorted_group_keys(
+            trace_df[trace_df.ccg_id.isin(entity_ids)], col_name
+        )
     limit = 80  # XXX this is cos we can't draw so many charts without breaking
     # the browser. Ideally we'd fix this with load-on-scroll
 
