@@ -1,31 +1,45 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
+import dash_bootstrap_components as dbc
 
 
 def layout(tests_df, ccgs_list):
-    tests_df.columns = ["value", "label"]
-    return html.Div(
+    tests_df.columns = ["value", "label"]  # XXX refactor
+    navbar = dbc.NavbarSimple(
+        children=[
+            dbc.NavItem(
+                dbc.NavLink("Top-level counts", id="counts-link", href="/apps/counts")
+            ),
+            dbc.NavItem(
+                dbc.NavLink(
+                    "Compare using deciles", id="deciles-link", href="/apps/deciles"
+                )
+            ),
+            dbc.NavItem(
+                dbc.NavLink(
+                    "Compare using heatmap", id="heatmap-link", href="/apps/heatmap"
+                )
+            ),
+        ],
+        brand="OpenPathology",
+        brand_href="#",
+        sticky="top",
+    )
+    state_components = html.Div(
         [
             # Hidden div inside the app that stores the page state
+            # XXX possibly use https://dash.plot.ly/dash-core-components/store
             html.Pre(id="page-state", style={"display": "none"}),
             # Two "locations" with the same function, to allow two
             # different callbacks to use them without cycles in the graph.
             dcc.Location(id="url-from-user", refresh=False),
             dcc.Location(id="url-for-update", refresh=False),
-            # Navigation
-            # XXX use routed URLs here!
-            dcc.Link("Go to test counts", id="counts-link", href="/apps/counts"),
-            html.Br(),
-            dcc.Link(
-                "Go to deciles", id="deciles-link", href="/apps/deciles", refresh=False
-            ),
-            html.Br(),
-            dcc.Link(
-                "Go to heatmap", id="heatmap-link", href="/apps/heatmap", refresh=False
-            ),
-            # Dropdown selector
-            html.Label("Numerators"),
+        ]
+    )
+    numerators_form = dbc.FormGroup(
+        [
+            dbc.Label("Numerators"),
             dcc.Dropdown(
                 id="numerators-dropdown",
                 multi=True,
@@ -35,7 +49,11 @@ def layout(tests_df, ccgs_list):
                 options=[{"value": "all", "label": "All tests"}]
                 + tests_df.to_dict("records"),
             ),
-            html.Label("Which test results?"),
+        ]
+    )
+    filters_form = dbc.FormGroup(
+        [
+            dbc.Label("Which test results?"),
             dcc.Dropdown(
                 id="test-filter-dropdown",
                 options=[
@@ -52,7 +70,11 @@ def layout(tests_df, ccgs_list):
                     },
                 ],
             ),
-            html.Label("Denominators"),
+        ]
+    )
+    denominators_form = dbc.FormGroup(
+        [
+            dbc.Label("Denominators"),
             dcc.Dropdown(
                 id="denominators-dropdown",
                 options=[
@@ -68,7 +90,11 @@ def layout(tests_df, ccgs_list):
                 options=tests_df.to_dict("records"),
                 style={"display": "none"},
             ),
-            html.Label("Group by"),
+        ]
+    )
+    groupby_form = dbc.FormGroup(
+        [
+            dbc.Label("Group by"),
             dcc.Dropdown(
                 id="groupby-dropdown",
                 options=[
@@ -77,42 +103,56 @@ def layout(tests_df, ccgs_list):
                     {"value": "ccg_id", "label": "CCG"},
                 ],
             ),
-            html.Label("Showing which CCGs?"),
+        ]
+    )
+    ccg_filter_form = dbc.FormGroup(
+        [
+            dbc.Label("Showing which CCGs?"),
             dcc.Dropdown(
                 id="ccg-dropdown",
                 multi=True,
                 options=[{"value": "all", "label": "All CCGs"}] + ccgs_list,
             ),
-            html.Div(id="error-container"),
-            # All the charts we're interested in, in a spinner container
-            dcc.Loading(
-                id="loading-heatmap",
-                children=[
-                    # We make empty graph objects for every graph we might
-                    # draw, and show/hide them based on current state
-                    html.Div(
-                        id="heatmap-container",
-                        style={"display": "none"},
-                        children=[dcc.Graph(id="heatmap-graph")],
-                    ),
-                    html.Div(
-                        id="counts-container",
-                        style={"display": "none"},
-                        children=[
-                            dcc.Graph(id="counts-graph"),
-                            dash_table.DataTable(
-                                id="test-selector-table",
-                                columns=[
-                                    {"name": "test_code", "id": "test_code"},
-                                    {"name": "count", "id": "count"},
-                                ],
-                                sort_action="native",
-                                row_selectable="multi",
-                            ),
-                        ],
-                    ),
-                    html.Div(id="deciles-container", style={"display": "block"}),
-                ],
-            ),
         ]
     )
+    form = dbc.Container(
+        dbc.Row(
+            [
+                dbc.Col([numerators_form, denominators_form, groupby_form]),
+                dbc.Col([filters_form, ccg_filter_form]),
+            ]
+        )
+    )
+    body = dbc.Container(
+        dbc.Row(
+            dbc.Col(
+                html.Div(
+                    [
+                        html.Div(id="error-container"),
+                        # All the charts we're interested in, in a spinner container
+                        dcc.Loading(
+                            id="loading-heatmap",
+                            children=[
+                                # We make empty graph objects for every graph we might
+                                # draw, and show/hide them based on current state
+                                html.Div(
+                                    id="heatmap-container",
+                                    style={"display": "none"},
+                                    children=[dcc.Graph(id="heatmap-graph")],
+                                ),
+                                html.Div(
+                                    id="counts-container",
+                                    style={"display": "none"},
+                                    children=[dcc.Graph(id="counts-graph")],
+                                ),
+                                html.Div(
+                                    id="deciles-container", style={"display": "block"}
+                                ),
+                            ],
+                        ),
+                    ]
+                )
+            )
+        )
+    )
+    return html.Div([navbar, state_components, form, body])

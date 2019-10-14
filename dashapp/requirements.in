@@ -5,3 +5,4 @@ dash
 dash-daq
 requests
 numpy
+dash-bootstrap-components
