@@ -118,7 +118,7 @@ def get_count_data(
             groupby = ["month"]
         denominator_and_query = base_and_query[:]
         denominator_and_query += [f"test_code.isin({denominators})"]
-        filtered_df = df.query(denominator_and_query)
+        filtered_df = df.query(" & ".join(denominator_and_query))
         denom_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
         num_df_agg = num_df_agg.merge(
             denom_df_agg,
