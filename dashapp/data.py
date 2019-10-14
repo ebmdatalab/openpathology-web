@@ -8,7 +8,7 @@ import settings
 def get_data(sample_size=None):
     """Get suitably massaged data
     """
-    df = pd.read_csv(settings.CSV_DIR / "cornwall_data_processed_anonymised.csv")
+    df = pd.read_csv(settings.CSV_DIR / "test_data.csv.zip")
 
     # Convert month to datetime
     df.loc[:, "month"] = pd.to_datetime(df["month"])
