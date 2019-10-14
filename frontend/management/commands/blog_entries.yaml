@@ -18,3 +18,17 @@ url: https://ebmdatalab.net/validating-pathology-data-against-known-shifts-in-cl
 slug: validating-pathology-data-against-known-shifts-in-clinical-practice
 xpath: //div[@class="entry-content"]
 date: 2019-09-10
+
+---
+title: "Fake seasonality in potassium results – dangerous and avoidable"
+url: https://ebmdatalab.net/openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable/
+slug: openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable
+xpath: //div[@class="entry-content"]
+date: 2019-10-14
+
+---
+title: "Seasonality in Haemoglobin test results"
+url: https://ebmdatalab.net/openpathology-seasonality-in-haemoglobin-test-results/
+slug: openpathology-seasonality-in-haemoglobin-test-resultsopenpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable
+xpath: //div[@class="entry-content"]
+date: 2019-10-14

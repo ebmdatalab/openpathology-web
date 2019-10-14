@@ -1,0 +1,142 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+<h1>Seasonality in Haemoglobin test results</h1><small class='text-muted'>14 Oct, 2019</small><div class="entry-content" itemprop="text">
+<p>In our initial analyses of pathology data from the South West for our <a href="https://openpathology.net/">OpenPathology.net</a> project, we have noticed subtle but consistent variation in haemoglobin test results throughout the year. Haemoglobin (Hb) levels falling below certain threshold values typically give a diagnosis of anaemia. </p>
+
+
+
+<p> In the following regional sample we see that the mean Hb concentration across both males and females differs by 2-3 g/l between the summer low and the winter peak:</p>
+
+
+
+<figure class="wp-block-image"><img src="https://docs.google.com/drawings/u/2/d/si5-6Ehy74qe6qvAH5T3e_Q/image?w=460&amp;h=291&amp;rev=91&amp;ac=1&amp;parent=1SUMJ2DBQqCheatdfnnYVemRjz7gpH4tWcEhhYdSc1yw" alt=""></figure>
+
+
+
+<p class="has-small-font-size"><em>Fig 1: Mean Hb concentration in one regional group of practices. Month 1=January.</em></p>
+
+
+
+<p>To put this in context, adjustments to the cutoff point for anaemia are documented for altitude (+2 to +67 g/l), smoking status (+3 to +7 g/l) and pregnancy (-10 to -15 g/l)<sup>1</sup>, and haemoglobin levels also vary with age. So, the seasonality we see is relatively small and, in the context of ongoing monitoring of an individual patient, likely to be hardly noticeable. </p>
+
+
+
+<p>However, over the whole tested population, it seems likely that more patients will fall under the threshold and be flagged as anaemic in summer compared to winter. We can see this effect more clearly by plotting the distribution of test result values in our region, and comparing these with the reference range limits:</p>
+
+
+
+<figure class="wp-block-image"><img src="https://lh4.googleusercontent.com/MoanZRjMTDBGNnc9pqolavtFheT_VSQM8akEP-qe3dxlXzTHS3ckFTJ50NYPMBPTnakEQ3KIUE6xicIJYGMowyGPML8yjLzYCthSKFu5Wir29ED3PsiRRHj0q0JQTg4NS6nbtrBF" alt=""></figure>
+
+
+
+<figure class="wp-block-image"><img src="https://lh5.googleusercontent.com/OeeecPf970ik7ucF_5ddDqiG-Vpxqunjg5dJAWuuPS6b2RoOWBN7S5PWrCNPMb6mxJ3QLfKCTako4VWoIEWJa0NZCzFbazrcXCB_Aw_e3fI8hDPzDKwudi3GVmr9q7KrDl9vlK7F" alt=""></figure>
+
+
+
+<p class="has-small-font-size"><em>Fig 2. Haemoglobin (Hb) test results (g/L) across one region, for females (F) and males (M), ordered in primary care settings. Solid blue line = median concentration; dashed=deciles; dotted=extreme percentiles (1-9, 91-99); red lines = reference ranges</em><br></p>
+
+
+
+<p>We can see that in summer approximately 20% of test results for women are below the reference range (i.e. “anaemic”), but only around 18% in winter. Taking a practice with 10,000 patients requesting 500 tests per month, assuming 300 of these are for women, this could represent an additional 6 patients (60 vs 54) being flagged as anaemic in a summer month compared to winter. </p>
+
+
+
+<p>Is this seasonality clinically significant? There are several sources of variation which can introduce uncertainty in test results (which we will discuss in several other blogs), and this seasonal effect appears to be another contributor, though potentially a minor one. </p>
+
+
+
+<p>It is worth noting that the consequences of even mildly abnormal results can be significant – causing considerable worry for patients (e.g. video below), as well as potentially unnecessary further testing and treatment. <br></p>
+
+
+
+<figure class="wp-block-embed-youtube alignleft wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+
+</div></figure>
+
+
+
+<h4><strong>What could be causing it? </strong></h4>
+
+
+
+<p><strong>Sampling? </strong></p>
+
+
+
+<ul><li>Perhaps the population being tested by GPs varies by month, and more people with low haemoglobin happen to be tested in summer. </li><li>A sampling effect could also be caused by our current small sample size – we’d love to include more data! (<a href="https://openpathology.net/get_involved/">How to get involved</a>)</li></ul>
+
+
+
+<p><strong>Degradation? </strong></p>
+
+
+
+<ul><li>Any degradation of haemoglobin in the blood sample during transport or storage could reduce the resulting test result value, which could feasibly be accelerated in warmer conditions. </li><li>We see an artefactual effect in <a href="/openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable/">potassium tests</a>, where diffusion of potassium in and out of red cells is affected by temperature.</li><li>However, there is no obvious documentation of an issue with haemoglobin stability. </li></ul>
+
+
+
+<p><strong>Natural adaptation to temperature? </strong></p>
+
+
+
+<ul><li>Seasonality in haemoglobin levels has been noted in the literature, often in people tested routinely, including blood donors, pregnant women<sup>2</sup> and thalassemia patients. </li><li>For example, more blood donors are turned away in summer due to low haemoglobin concentrations<sup>3,4</sup>, and thalassemia patients also report lower haemoglobin levels in summer<sup>5</sup>. </li><li>The effect has been attributed to increased plasma volume in warmer conditions, i.e. blood becomes more “dilute” to help the body acclimatise to warmer weather<sup>6</sup>, but absolute haemoglobin levels remain unchanged. </li><li>This could mean that patients dropping into the “anaemic” category in summer in fact have sufficient haemoglobin levels.</li><li>Interestingly, the observation of seasonality in on-the-spot testing (such as at blood donation centres), would appear to rule out the possibility of there being a significant issue with haemoglobin stability. These observations also make it unlikely that it is a sampling issue.</li></ul>
+
+
+
+<h2>What next?</h2>
+
+
+
+<p>We’re interested in investigating this effect across more regions, as we import more data into the tool. If your region would like to <a href="https://openpathology.net/get_involved/">get involved</a> please let us know. Or if you have any thoughts on this topic do get in touch. </p>
+
+
+
+<p>There are many other factors that can contribute to variation in test results. Our next blog series will take a brief look at some of the problems inherent in how we define a “normal” result, and how we consider variance in measurements. </p>
+
+
+
+<hr class="wp-block-separator">
+
+
+
+<h2>Keep up to date</h2>
+
+
+
+<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-very-dark-gray-color has-background has-pale-cyan-blue-background-color" href="https://t.co/rxeS5Ot3DY?amp=1"><h3><strong> Join our <em>OpenPathology</em> mailing list </strong></h3></a></div>
+
+
+
+<hr class="wp-block-separator">
+
+
+
+<h4>References</h4>
+
+
+
+<p>1. Sullivan, K. M., Mei, Z., Grummer-Strawn, L. &amp; Parvanta, I. Haemoglobin adjustments to define anaemia. <em>Trop. Med. Int. Health</em> <strong>13</strong>, 1267–1271 (2008).</p>
+
+
+
+<p>2. Cullen, R. Significant anaemia and seasonal variations of haemoglobin concentrations in pregnant women. <em>J. Ir. Med. Assoc.</em> <strong>44</strong>, 102–107 (1959).</p>
+
+
+
+<p>3. Bäckman, S. <em>et al.</em> Season and time of day affect capillary blood hemoglobin level and low hemoglobin deferral in blood donors: analysis in a national blood bank. <em>Transfusion </em> <strong>56</strong>, 1287–1294 (2016).</p>
+
+
+
+<p>4. Hoekstra, T., Veldhuizen, I., van Noord, P. A. H. &amp; de Kort, W. L. A. M. Seasonal influences on hemoglobin levels and deferral rates in whole-blood and plasma donors. <em>Transfusion </em> <strong>47</strong>, 895–900 (2007).</p>
+
+
+
+<p>5. Borgna-Pignatti, C. <em>et al.</em> Seasonal variation of pretransfusion hemoglobin levels in patients with thalassemia major. <em>Blood</em> <strong>107</strong>, 355–357 (2006).</p>
+
+
+
+<p>6. Senay, L. C., Mitchell, D. &amp; Wyndham, C. H. Acclimatization in a hot, humid environment: body fluid adjustments. <em>J. Appl. Physiol.</em> <strong>40</strong>, 786–796 (1976).</p>
+
+</div><hr><p><a href='{% url 'blog' %}'>Read more OpenPathology blogs</a></p>
+{% endblock %}
