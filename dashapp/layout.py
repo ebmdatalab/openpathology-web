@@ -1,25 +1,69 @@
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_table
 import dash_bootstrap_components as dbc
+from urls import urls
 
 
-def layout(tests_df, ccgs_list):
+def pairs(seq):
+    i = iter(seq)
+    for item in i:
+        try:
+            item_2 = next(i)
+        except StopIteration:
+            item_2 = None
+        yield item, item_2
+
+
+def make_measure_card(measure):
+    measure_url = urls.build("analysis", measure)
+
+    return dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H4(measure["title"], className="card-title"),
+                    html.P(measure["description"]),
+                    dcc.Link("Read more", href=measure_url),
+                ]
+            )
+        ],
+        className="mb3",
+    )
+
+
+def make_index_content(measures):
+    container = dbc.Container()
+    rows = []
+    for x, y in pairs(measures.to_dict("records")):
+        row = dbc.Row()
+        cols = []
+        if x:
+            cols.append(dbc.Col(make_measure_card(x)))
+        if y:
+            cols.append(dbc.Col(make_measure_card(y)))
+        row.children = cols
+        rows.append(row)
+    container.children = rows
+    return container
+
+
+def layout(tests_df, ccgs_list, measures):
     tests_df.columns = ["value", "label"]  # XXX refactor
     navbar = dbc.NavbarSimple(
         children=[
             dbc.NavItem(
-                dbc.NavLink("Top-level counts", id="counts-link", href="/apps/counts")
+                dbc.NavLink("Measures", id="measures-link", href="/apps/measures")
+            ),
+            dbc.NavItem(
+                dbc.NavLink("Single chart", id="counts-link", href="/apps/counts")
             ),
             dbc.NavItem(
                 dbc.NavLink(
-                    "Compare using deciles", id="deciles-link", href="/apps/deciles"
+                    "Many charts with deciles", id="deciles-link", href="/apps/deciles"
                 )
             ),
             dbc.NavItem(
-                dbc.NavLink(
-                    "Compare using heatmap", id="heatmap-link", href="/apps/heatmap"
-                )
+                dbc.NavLink("Heatmap", id="heatmap-link", href="/apps/heatmap")
             ),
         ],
         brand="OpenPathology",
@@ -148,6 +192,11 @@ def layout(tests_df, ccgs_list):
                                 ),
                                 html.Div(
                                     id="deciles-container", style={"display": "block"}
+                                ),
+                                html.Div(
+                                    id="measures-container",
+                                    style={"display": "none"},
+                                    children=make_index_content(measures),
                                 ),
                             ],
                         ),

@@ -147,3 +147,7 @@ def get_ccg_list():
     """Get suitably massaged data
     """
     return [{"value": x, "label": x} for x in get_data().ccg_id.unique()]
+
+
+def get_measures():
+    return pd.read_csv(settings.CSV_DIR / "measures.csv")
