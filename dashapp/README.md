@@ -44,14 +44,5 @@ smooth-scroll handler for this, per [these notes](https://community.plot.ly/t/sc
 
 Scratchpad:
 
-* Think about the actual useful design:
-  * We have per 1000 or selection of tests as a denominator
-  * We have count of tests or count inside/outside reference range as numerator
-    *  Could also do *within* reference range
-  * A user will first build a measure, which is a multi-select for numerators and a multi-select for denominators
-  * They can then optionally save the measure
-  * This means it must be possible to bookmark any measure
-  * We then want to show X entity in the context of Y, so that would practices in the context of england or practices in the context of CCGs or CCGs in the context of England
-  * Deciles would always be based on X. Y would drive the dropdowns atthe top of each page and allow you to switch between them.
-
-* What does this require of the data? I need to run off the raw data and make calc_value on the fly. We could allow the user to select "over range", "under range", and "error".
+* Make "all tests" disappear if you select just one https://community.plot.ly/t/dash-0-41-0-released/22131
+* Allow measures to be saved
