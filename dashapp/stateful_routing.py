@@ -5,11 +5,13 @@ The state is stored as stringified JSON stored in a hidden div.
 
 """
 import json
+import urllib
 import logging
 import dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import dash_html_components as html
+import dash_core_components as dcc
 
 from app import app
 from werkzeug.routing import NotFound
@@ -311,5 +313,28 @@ def show_error_from_page_state(page_state):
                 className="alert alert-danger",
             )
         ]
+    else:
+        return []
+
+
+@app.callback(
+    Output("description-container", "children"), [Input("url-from-user", "search")]
+)
+def show_measure_description_from_url(search):
+    """
+    """
+    if search:
+        text = urllib.parse.parse_qs(search[1:])
+        title = description = ""
+        if "title" in text:
+            title = text["title"][0]
+        if "description" in text:
+            description = text["description"][0]
+        if title or description:
+            return [
+                dcc.Markdown(
+                    f"## {title}\n\n{description}", className="alert alert-info"
+                )
+            ]
     else:
         return []

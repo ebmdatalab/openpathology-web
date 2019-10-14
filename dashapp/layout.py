@@ -128,6 +128,7 @@ def layout(tests_df, ccgs_list):
             dbc.Col(
                 html.Div(
                     [
+                        html.Div(id="description-container"),
                         html.Div(id="error-container"),
                         # All the charts we're interested in, in a spinner container
                         dcc.Loading(
