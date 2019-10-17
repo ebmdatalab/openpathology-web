@@ -30,10 +30,6 @@ def get_count_data(
     sample_size=None,
 ):
     """Get anonymised count data (for all categories) by month and test_code and practice
-
-    numerators: an array of test codes
-    denominators: an array of tests codes, or `per1000`, or None
-    result_filter: ["within_range", "under_range", "over_range", "error"]
     """
     df = get_data(sample_size)
     if by == "practice_id":
@@ -72,6 +68,10 @@ def get_count_data(
             "month",
             "test_code",
             "result_category",
+            "numerator",
+            "numerator_error",
+            "denominator",
+            "denominator_error",
             "calc_value",
             "calc_value_error",
             "practice_id",
@@ -109,6 +109,8 @@ def get_count_data(
     else:
         num_df_agg = filtered_df
     if denominators == ["per1000"]:
+        num_df_agg.loc[:, "denominator"] = num_df_agg["total_list_size"]
+        num_df_agg.loc[:, "denominator_error"] = num_df_agg["error"]
         num_df_agg.loc[:, "calc_value"] = (
             num_df_agg["count"] / num_df_agg["total_list_size"] * 1000
         )
@@ -116,6 +118,8 @@ def get_count_data(
             num_df_agg["error"] / num_df_agg["total_list_size"] * 1000
         )
     elif not denominators or denominators == ["raw"]:
+        num_df_agg.loc[:, "denominator"] = num_df_agg["count"]
+        num_df_agg.loc[:, "denominator_error"] = num_df_agg["error"]
         num_df_agg.loc[:, "calc_value"] = num_df_agg["count"]
         num_df_agg.loc[:, "calc_value_error"] = num_df_agg["error"]
 
@@ -141,6 +145,12 @@ def get_count_data(
         num_df_agg.loc[:, "calc_value_error"] = (
             num_df_agg["error"] / num_df_agg["error_denom"]
         )
+        num_df_agg = num_df_agg.rename(
+            columns={"count_denom": "denominator", "error_denom": "denominator_error"}
+        )
+    num_df_agg = num_df_agg.rename(
+        columns={"count": "numerator", "error": "numerator_error"}
+    )
     # The fillname is to work around this bug: https://github.com/plotly/plotly.js/issues/3296
     return num_df_agg[required_cols].sort_values("month").fillna(0)
 

@@ -215,12 +215,12 @@ def layout(tests_df, ccgs_list, measures):
                                                         "id": "practice_id",
                                                     },
                                                     {
-                                                        "name": "value",
-                                                        "id": "calc_value",
+                                                        "name": "numerator",
+                                                        "id": "numerator",
                                                     },
                                                     {
-                                                        "name": "error",
-                                                        "id": "calc_value_error",
+                                                        "name": "denominator",
+                                                        "id": "denominator",
                                                     },
                                                 ],
                                                 filter_action="native",
