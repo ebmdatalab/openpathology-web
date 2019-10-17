@@ -157,6 +157,33 @@ def anonymise(df):
     return df
 
 
+def report_oddness(df):
+    report = (
+        df.query("result_category > 1")
+        .groupby(["test_code", "lab", "result_category"])
+        .count()
+        .reset_index()[["result_category", "lab", "test_code", "month"]]
+    )
+    denominators = (
+        df.groupby(["test_code", "lab"])
+        .count()
+        .reset_index()[["lab", "test_code", "month"]]
+    )
+    report = report.merge(
+        denominators,
+        how="inner",
+        left_on=["test_code", "lab"],
+        right_on=["test_code", "lab"],
+    )
+    report["percentage"] = report["month_x"] / report["month_y"].count()
+    report["result_category"] = report["result_category"].replace(settings.ERROR_CODES)
+    odd = report[report["percentage"] > 10]
+    if odd.count():
+        print("The following error codes are more than 10% of all the results:")
+        print()
+        print(report[["result_category", "test_code", "lab", "percentage"]])
+
+
 @app.cli.command("process_file")
 @click.argument("lab_code")
 @click.argument("filename")
@@ -192,4 +219,5 @@ def postprocess_file(filenames):
     for filename in filenames:
         df = pd.concat([df, pd.read_csv(filename)])
     df = anonymise(df)
+    report_oddness(df)
     df.to_csv(settings.CSV_DIR / f"all_processed.csv", index=False)
