@@ -4,7 +4,7 @@ from app import cache
 import settings
 
 
-@cache.memoize()
+# @cache.memoize()
 def get_data(sample_size=None):
     """Get suitably massaged data
     """
@@ -53,6 +53,10 @@ def get_count_data(
         cols = ["month", "test_code", "count", "error", "total_list_size"]
         groupby = ["month", "test_code"]
         required_cols = ["month", "test_code", "calc_value", "calc_value_error"]
+    elif by == "result_category":
+        cols = ["month", "result_category", "count", "error", "total_list_size"]
+        groupby = ["month", "result_category"]
+        required_cols = ["month", "result_category", "calc_value", "calc_value_error"]
     elif by == "ccg_id":
         cols = ["month", "total_list_size", "ccg_id", "count", "error"]
         groupby = ["month", "ccg_id"]
@@ -63,7 +67,19 @@ def get_count_data(
             "calc_value",
             "calc_value_error",
         ]
-
+    elif not by:
+        cols = [
+            "month",
+            "test_code",
+            "result_category",
+            "calc_value",
+            "calc_value_error",
+            "practice_id",
+            "ccg_id",
+            "total_list_size",
+        ]
+        required_cols = cols
+        groupby = None
     base_and_query = []
     if practice_filter_entity and "all" not in entity_ids_for_practice_filter:
         base_and_query.append(
@@ -71,13 +87,6 @@ def get_count_data(
         )
     numerator_and_query = base_and_query[:]
     if result_filter:
-        assert result_filter in [
-            "within_range",
-            "under_range",
-            "over_range",
-            "error",
-            "all",
-        ]
         if result_filter == "within_range":
             numerator_and_query.append(f"(result_category == {settings.WITHIN_RANGE})")
         elif result_filter == "under_range":
@@ -86,13 +95,19 @@ def get_count_data(
             numerator_and_query.append(f"(result_category == {settings.OVER_RANGE})")
         elif result_filter == "error":
             numerator_and_query.append("(result_category > 1)")
+        elif str(result_filter).isnumeric():
+            numerator_and_query.append(f"(result_category == {result_filter})")
+
     if numerators and numerators != ["all"]:
         numerator_and_query += [f"(test_code.isin({numerators}))"]
     if numerator_and_query:
         filtered_df = df.query(" & ".join(numerator_and_query))
     else:
         filtered_df = df
-    num_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
+    if groupby:
+        num_df_agg = filtered_df[cols].groupby(groupby).sum().reset_index()
+    else:
+        num_df_agg = filtered_df
     if denominators == ["per1000"]:
         num_df_agg.loc[:, "calc_value"] = (
             num_df_agg["count"] / num_df_agg["total_list_size"] * 1000

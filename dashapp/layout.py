@@ -1,7 +1,9 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+import dash_table
 from urls import urls
+import settings
 
 
 def pairs(seq):
@@ -108,10 +110,12 @@ def layout(tests_df, ccgs_list, measures):
                     },
                     {"value": "under_range", "label": "Results under reference range"},
                     {"value": "over_range", "label": "Results over reference range"},
-                    {
-                        "value": "error",
-                        "label": "Results with non-numeric values (often errors)",
-                    },
+                    {"value": "error", "label": "Any results with errors"},
+                ]
+                + [
+                    {"value": x, "label": "Specific error: " + y}
+                    for x, y in settings.ERROR_CODES.items()
+                    if x > 1
                 ],
             ),
         ]
@@ -145,6 +149,7 @@ def layout(tests_df, ccgs_list, measures):
                     {"value": "practice", "label": "Practice"},
                     {"value": "test_code", "label": "Test code"},
                     {"value": "ccg_id", "label": "CCG"},
+                    {"value": "result_category", "label": "Result"},
                 ],
             ),
         ]
@@ -188,7 +193,45 @@ def layout(tests_df, ccgs_list, measures):
                                 html.Div(
                                     id="counts-container",
                                     style={"display": "none"},
-                                    children=[dcc.Graph(id="counts-graph")],
+                                    children=[
+                                        dcc.Graph(id="counts-graph"),
+                                        html.Div(
+                                            dash_table.DataTable(
+                                                id="counts-table",
+                                                columns=[
+                                                    {
+                                                        "name": "month",
+                                                        "id": "month",
+                                                        "type": "datetime",
+                                                    },
+                                                    {"name": "test", "id": "test_code"},
+                                                    {
+                                                        "name": "result",
+                                                        "id": "result_category",
+                                                    },
+                                                    {"name": "ccg", "id": "ccg_id"},
+                                                    {
+                                                        "name": "practice",
+                                                        "id": "practice_id",
+                                                    },
+                                                    {
+                                                        "name": "value",
+                                                        "id": "calc_value",
+                                                    },
+                                                    {
+                                                        "name": "error",
+                                                        "id": "calc_value_error",
+                                                    },
+                                                ],
+                                                filter_action="native",
+                                                sort_action="native",
+                                                sort_mode="multi",
+                                                page_action="native",
+                                                page_current=0,
+                                                page_size=50,
+                                            )
+                                        ),
+                                    ],
                                 ),
                                 html.Div(
                                     id="deciles-container", style={"display": "block"}

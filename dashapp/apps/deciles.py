@@ -85,12 +85,11 @@ def update_deciles(page_state):
         return html.Div()
     months = deciles_traces[0].x
     ymax = trace_df.calc_value.max() + trace_df.calc_value_error.max()
-
     if "all" in entity_ids_for_practice_filter:
         entity_ids = get_sorted_group_keys(trace_df, col_name)
-    elif groupby == "practice":
+    else:
         entity_ids = get_sorted_group_keys(
-            trace_df[trace_df.ccg_id.isin(entity_ids)], col_name
+            trace_df[trace_df.ccg_id.isin(entity_ids_for_practice_filter)], col_name
         )
     limit = 80  # XXX this is cos we can't draw so many charts without breaking
     # the browser. Ideally we'd fix this with load-on-scroll

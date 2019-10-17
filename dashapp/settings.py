@@ -26,3 +26,17 @@ CACHE_CONFIG = {
     "CACHE_TYPE": "filesystem",
     "CACHE_DIR": "/tmp/",
 }
+
+
+ERROR_CODES = {
+    0: "within range",
+    -1: "under range",
+    1: "over range",
+    2: "no ref range",
+    3: "unparseable result",
+    4: "invalid sex",
+    5: "invalid range with direction",
+    6: "discarded age",
+    7: "invalid ref range",
+    9: "no test code",
+}
