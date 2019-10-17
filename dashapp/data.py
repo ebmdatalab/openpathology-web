@@ -8,18 +8,11 @@ import settings
 def get_data(sample_size=None):
     """Get suitably massaged data
     """
-    df = pd.read_csv(settings.CSV_DIR / "test_data.csv.zip")
+    df = pd.read_csv(settings.CSV_DIR / "all_processed.csv")
 
     # Convert month to datetime
     df.loc[:, "month"] = pd.to_datetime(df["month"])
 
-    # estimate errors from data suppression
-    df.loc[df["count"] == 3, "error"] = 2
-    df["error"].fillna(0, inplace=True)
-
-    # copy anonymised id into column named "practice_id"
-    df = df.loc[pd.notnull(df["anon_id"])]
-    df["practice_id"] = df["anon_id"].astype(str).str.replace(".0", "")
     if sample_size:
         some_practices = df.practice_id.sample(sample_size)
         return df[df.loc[:, "practice_id"].isin(some_practices)]
@@ -137,9 +130,13 @@ def get_count_data(
     return num_df_agg[required_cols].sort_values("month").fillna(0)
 
 
-@cache.memoize()
 def get_test_list():
-    return pd.read_csv(settings.CSV_DIR / "test_codes.csv")
+    """Get a list of tests suitable for showing in HTML dropdown forms
+    """
+    df = pd.read_csv(settings.CSV_DIR / "test_codes.csv")
+    df = df[["datalab_testcode", "testname"]]
+    df = df.rename(columns={"datalab_testcode": "value", "testname": "label"})
+    return df
 
 
 @cache.memoize()

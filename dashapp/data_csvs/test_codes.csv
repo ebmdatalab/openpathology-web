@@ -1,97 +1,97 @@
-datalab_testcode,testname
-CREA,Creatinine
-K,Potassium
-GFR1,GFR1
-HB,Haemoglobin
-MCHC,Mean Corpuscular Haemoglobin Concentration 
-RBC,Red Blood Cell
-MONO,Monocyte
-WBC,White Blood Cell
-MCH,Mean Corpuscular Haemoglobin
-RDW,Red Cell Distribution Width
-MCV,Mean Corpuscular Volume
-LYMP,Lymphocyte
-BASO,Basophil
-EOS,Eosinophils
-PLT,Platelet Count
-NEUT,Neutrophil Count
-ALB,Albumin
-TP,"Protein, Total"
-ALKP,Alkaline Phosphatase
-ALT,ALT
-TBIL,"Bilirubin, Total"
-H1CF,HBA1C
-CRP,C-Reactive Protein
-CHOL,"Cholesterol, Total"
-HDL,"Cholesterol, HDL"
-HDLR,Cholesterol/high density lipoprotein ratio
-TSH,Serum TSH (thyroid stimulating hormone)
-UREA,Urea
-CL,Chloride
-CA,Calcium
-NHDL,"Cholesterol, non-HDL"
-PV,Plasma Viscosity
-FER,Ferritin
-GLUX,Glucose
-INR,INR
-UCRE,Urine Creatinine
-UACT,Urine Albumin/Creatinine Ratio
-VITB12,Vitamin B12
-FOL,Folate
-FT4,"T4, Free"
-PSA,"PSA, Total"
-TRIG,Triglycerides
-FILM,FILM
-GLU,Glucose
-AMY,Amylase
-FIB,Fibrinogen
-PHOS,Phosphate
-IGA,Immunoglobulin A
-APTT,APTT Ratio
-C125,CA 125
-UA,Urate
-MG,Magnesium
-IGG,Immunoglobulin G
-IGM,Immunoglobulin M
-GGT,Gamma G.T.
-FSH2,FSH
-CK,Creatine Kinase
-LH,LH (luteinising hormone)
-PTH,Parathyroid Hormone
-RF,Rheumatoid Factor
-UTP,Urine Total Protein
-PRL3,Prolactin
-LDH,LDH
-HCO3,Bicarbonate
-LITH,Lithium
-RETIC,Reticulyte Count
-RETP,Reticulyte Percent
-GF,Glandular Fever Screen
-FT3,Free T3
-AST,AST
-ADNA,ADNA
-SHBG,SHBG
-ENA,ENA
-ESR,ESR
-ASM,ASM
-IRO2,IRO2
-THEO,Theophylline
-OSMO,Osmolality
-UK,Urine Potassium (random)
-UNA,Urine Sodium (random)
-C3,C3
-C4,C4
-ANCA,ANCA
-UOSM,Urine Osmolality
-CANC,CANC
-PANC,PANC
-CAER,CAER
-DIG,Digoxin
-LACT,Lactate
-ACE,ACE
-VITA,VITA
-VITE,VITE
-C199,C199
-VALP,VALP
-GENT,Gentamicin
-UPOR,UPOR
+datalab_testcode,testname,nd_testcode,cornwall_testcode,lanc_testcode
+CREA,Creatinine,CREA,CREA,CRE
+K,Potassium,K,K,POT
+GFR1,GFR1,GFR1,CGFR,GFR
+HB,Haemoglobin,HB,HB1,HB
+MCHC,Mean Corpuscular Haemoglobin Concentration ,MCHC,CHC1,MCHC
+RBC,Red Blood Cell,RBC,RBC,RBC
+MONO,Monocyte,MONO,MONO,MONC
+WBC,White Blood Cell,WBC,WBC,WBC
+MCH,Mean Corpuscular Haemoglobin,MCH,MCH,HPSMCH
+RDW,Red Cell Distribution Width,RDW,RDW,RDWC
+MCV,Mean Corpuscular Volume,MCV,MCV,MCV
+LYMP,Lymphocyte,LYMP,LYMP,LYA
+BASO,Basophil,BASO,BASO,BASC
+EOS,Eosinophils,EOS,EOSI,EOSC
+PLT,Platelet Count,PLT,PLT,PLT
+NEUT,Neutrophil Count,NEUT,NEUT,GRA
+ALB,Albumin,ALB,ALB,ALB
+TP,"Protein, Total",TP,TP,TP
+ALKP,Alkaline Phosphatase,ALKP,ALP,ALP
+ALT,ALT,ALT,ALT,ALT
+TBIL,"Bilirubin, Total",TBIL,TBIL,TBIL
+H1CF,HBA1C,H1CF,A1CI,HBA1CBA
+CRP,C-Reactive Protein,CRP,CRP,CRP
+CHOL,"Cholesterol, Total",CHOL,CHO,CHOL
+HDL,"Cholesterol, HDL",HDL,HDL,HDL
+HDLR,Cholesterol/high density lipoprotein ratio,HDLR,CHDR,RR
+TSH,Serum TSH (thyroid stimulating hormone),TSH,TSH,TSHC
+UREA,Urea,UREA,UREA,URE
+CL,Chloride,CL,CL,CHL
+CA,Calcium,CA,CAL,TCA
+NHDL,"Cholesterol, non-HDL",NHDL,NHDL,NHDL
+PV,Plasma Viscosity,PV,PV,PLV
+FER,Ferritin,FER,FER,FER
+GLUX,Glucose,GLUX,GLU?,GLU0
+INR,INR,INR,INR,YAB
+UCRE,Urine Creatinine,UCRE,UCRE,UCREM
+UACT,Urine Albumin/Creatinine Ratio,UACT,UMCR,UACRR
+VITB12,Vitamin B12,B12,VB12,B12
+FOL,Folate,FOL,FOL,SF
+FT4,"T4, Free",FT4,FT4,FT4
+PSA,"PSA, Total",PSA,PSA,PSA
+TRIG,Triglycerides,TRIG,TG,TG
+FILM,FILM,FILM,FCOM,FILM
+GLU,Glucose,GLU,GLU,GLU0
+AMY,Amylase,AMY,AM,AMY
+FIB,Fibrinogen,FIB,FIB,FACTI
+PHOS,Phosphate,PHOS,PHOS,IPHO
+IGA,Immunoglobulin A,IGA,IGA,CSA
+APTT,APTT Ratio,APT1,APTT,PTTC
+C125,CA 125,C125,C125,CA125
+UA,Urate,UA,UA,UA
+MG,Magnesium,MG,MG,MAG
+IGG,Immunoglobulin G,IGG,IGG,FIG
+IGM,Immunoglobulin M,IGM,IGM,FIM
+GGT,Gamma G.T.,GGT,GGT,GGT
+FSH2,FSH,FSH2,FSH,FSH
+CK,Creatine Kinase,CK,CK,CK
+LH,LH (luteinising hormone),LH2,LH,LH
+PTH,Parathyroid Hormone,PTH,PTH,PTH
+RF,Rheumatoid Factor,RF,RF,RL
+UTP,Urine Total Protein,UTP,UP,UPC
+PRL3,Prolactin,PRL3,PROL,PROLZ
+LDH,LDH,LDH,LDH,LDH
+HCO3,Bicarbonate,HCO3,BIC,BIC
+LITH,Lithium,LITH,LI,LI
+RETIC,Reticulyte Count,RET#,RETA,RETC
+RETP,Reticulyte Percent,RET%,RETP,RETP
+GF,Glandular Fever Screen,GF,GF,IM
+FT3,Free T3,FT3,FT3,FT3
+AST,AST,AST,AST,ASTA
+ADNA,ADNA,ADNA,DNAA?,DN
+SHBG,SHBG,SHBG,SHBG,SHBG
+ENA,ENA,ENA,ENA,ENT
+ESR,ESR,ESR,ESR,E
+ASM,ASM,ASM,ASM,SMO
+IRO2,IRO2,IRO2,IRON,IRO
+THEO,Theophylline,THEO,THEO,THEO
+OSMO,Osmolality,OSMO,OSMO,OSM
+UK,Urine Potassium (random),UK,UK,UPOT
+UNA,Urine Sodium (random),UNA,UNA,USOD
+C3,C3,C3,C3,C3
+C4,C4,C4,C4,C4
+ANCA,ANCA,ANCA,ANCA,NCA
+UOSM,Urine Osmolality,UOSM,UOSM,UOSM
+CANC,CANC,CANC,CANC,NCA
+PANC,PANC,PANC,PANC,NCA
+CAER,CAER,CAER,CAER,ACER
+DIG,Digoxin,DIG,DIG,DIG
+LACT,Lactate,LACT,LACT,LAC
+ACE,ACE,ACE,ACE,ACE
+VITA,VITA,VITA,VITA,DVITA
+VITE,VITE,VITE,VITE,VITE
+C199,C199,C199,C199,CA1909
+VALP,VALP,VALP,VALP,VALP
+GENT,Gentamicin,GENT,GENT,GENT
+UPOR,UPOR,UPOR,UPOR,UPORQS

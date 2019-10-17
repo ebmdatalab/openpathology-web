@@ -48,7 +48,6 @@ def make_index_content(measures):
 
 
 def layout(tests_df, ccgs_list, measures):
-    tests_df.columns = ["value", "label"]  # XXX refactor
     navbar = dbc.NavbarSimple(
         children=[
             dbc.NavItem(
@@ -95,6 +94,7 @@ def layout(tests_df, ccgs_list, measures):
             ),
         ]
     )
+
     filters_form = dbc.FormGroup(
         [
             dbc.Label("Which test results?"),
