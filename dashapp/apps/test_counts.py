@@ -48,11 +48,20 @@ def update_counts(page_state):
         else:
             label = entity_id
         trace_df = df[df[col_name] == entity_id]
+        trace_df["label"] = (
+            trace_df["numerator"].astype(str)
+            + " "
+            + label
+            + " per "
+            + trace_df["denominator"].astype(str)
+            + " patients"
+        )
         traces.append(
             go.Scatter(
                 x=trace_df["month"],
                 y=trace_df["calc_value"],
-                name=label,
+                text=trace_df["label"],
+                hoverinfo="text",
                 showlegend=True,
             )
         )

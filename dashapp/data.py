@@ -39,6 +39,8 @@ def get_count_data(
             "month",
             "total_list_size",
             "practice_id",
+            "numerator",
+            "denominator",
             "calc_value",
             "calc_value_error",
             "ccg_id",
@@ -48,17 +50,33 @@ def get_count_data(
     elif by == "test_code":
         cols = ["month", "test_code", "count", "error", "total_list_size"]
         groupby = ["month", "test_code"]
-        required_cols = ["month", "test_code", "calc_value", "calc_value_error"]
+        required_cols = [
+            "month",
+            "test_code",
+            "calc_value",
+            "calc_value_error",
+            "numerator",
+            "denominator",
+        ]
     elif by == "result_category":
         cols = ["month", "result_category", "count", "error", "total_list_size"]
         groupby = ["month", "result_category"]
-        required_cols = ["month", "result_category", "calc_value", "calc_value_error"]
+        required_cols = [
+            "month",
+            "result_category",
+            "calc_value",
+            "calc_value_error",
+            "numerator",
+            "denominator",
+        ]
     elif by == "ccg_id":
         cols = ["month", "total_list_size", "ccg_id", "count", "error"]
         groupby = ["month", "ccg_id"]
         required_cols = [
             "month",
             "total_list_size",
+            "numerator",
+            "denominator",
             "ccg_id",
             "calc_value",
             "calc_value_error",
@@ -68,17 +86,19 @@ def get_count_data(
             "month",
             "test_code",
             "result_category",
-            "numerator",
-            "numerator_error",
-            "denominator",
-            "denominator_error",
             "calc_value",
             "calc_value_error",
             "practice_id",
             "ccg_id",
             "total_list_size",
         ]
-        required_cols = cols
+        required_cols = cols + [
+            "numerator",
+            "numerator_error",
+            "denominator",
+            "denominator_error",
+        ]
+
         groupby = None
     base_and_query = []
     if practice_filter_entity and "all" not in entity_ids_for_practice_filter:
