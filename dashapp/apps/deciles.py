@@ -104,6 +104,8 @@ def update_deciles(page_state):
             go.Scatter(
                 x=entity_df["month"],
                 y=entity_df["calc_value"],
+                text=trace_df["label"],
+                hoverinfo="text",
                 name=str(entity_id),
                 line=dict(color="red", width=1, dash="solid"),
             )
@@ -126,6 +128,7 @@ def update_deciles(page_state):
                     name=str(entity_id),
                     fill="tonexty",
                     line=dict(color="red", width=1, dash="dot"),
+                    hoverinfo="skip",
                 )
             )
 

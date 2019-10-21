@@ -50,14 +50,23 @@ def update_heatmap(page_state):
         entity_ids_for_practice_filter=entity_ids_for_practice_filter,
         by=col_name,
     )
-    vals_by_entity = trace_df.pivot_table(
-        index=col_name, columns="month", values="calc_value"
+    vals_by_entity = sort_by_index(
+        trace_df.pivot(index=col_name, columns="month", values="calc_value")
     )
-    # Sort by mean value of last 6 months
-    vals_by_entity = sort_by_index(vals_by_entity)
+    # Get labels and order them identically to the values
+    labels_by_entity = trace_df.pivot(
+        index=col_name, columns="month", values="label"
+    ).reindex(vals_by_entity.index)
+
     entities = ["entity {}".format(x) for x in vals_by_entity.index]
     # sort with hottest at top
-    trace = go.Heatmap(z=vals_by_entity, x=vals_by_entity.columns, y=entities)
+    trace = go.Heatmap(
+        z=vals_by_entity,
+        x=vals_by_entity.columns,
+        y=entities,
+        text=labels_by_entity,
+        hoverinfo="text",
+    )
     target_rowheight = 20
     height = max(350, target_rowheight * len(entities))
     logger.debug(

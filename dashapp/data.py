@@ -41,6 +41,7 @@ def get_count_data(
             "practice_id",
             "numerator",
             "denominator",
+            "label",
             "calc_value",
             "calc_value_error",
             "ccg_id",
@@ -55,6 +56,7 @@ def get_count_data(
             "test_code",
             "calc_value",
             "calc_value_error",
+            "label",
             "numerator",
             "denominator",
         ]
@@ -66,6 +68,7 @@ def get_count_data(
             "result_category",
             "calc_value",
             "calc_value_error",
+            "label",
             "numerator",
             "denominator",
         ]
@@ -75,6 +78,7 @@ def get_count_data(
         required_cols = [
             "month",
             "total_list_size",
+            "label",
             "numerator",
             "denominator",
             "ccg_id",
@@ -93,6 +97,7 @@ def get_count_data(
             "total_list_size",
         ]
         required_cols = cols + [
+            "label",
             "numerator",
             "numerator_error",
             "denominator",
@@ -171,6 +176,15 @@ def get_count_data(
     num_df_agg = num_df_agg.rename(
         columns={"count": "numerator", "error": "numerator_error"}
     )
+    num_df_agg["label"] = (
+        num_df_agg["numerator"].astype(str)
+        + " "
+        + " + ".join(numerators)
+        + " per "
+        + num_df_agg["denominator"].astype(str)
+        + " patients"
+    )
+
     # The fillname is to work around this bug: https://github.com/plotly/plotly.js/issues/3296
     return num_df_agg[required_cols].sort_values("month").fillna(0)
 
