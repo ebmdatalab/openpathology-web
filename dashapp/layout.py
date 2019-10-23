@@ -1,3 +1,4 @@
+import dash_daq as daq
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
@@ -164,11 +165,17 @@ def layout(tests_df, ccgs_list, measures):
             ),
         ]
     )
+    datatable_toggle_form = dbc.FormGroup(
+        [
+            dbc.Label("Show raw practice-level data"),
+            daq.ToggleSwitch(id="datatable-toggle", value=False),
+        ]
+    )
     form = dbc.Container(
         dbc.Row(
             [
                 dbc.Col([numerators_form, denominators_form, groupby_form]),
-                dbc.Col([filters_form, ccg_filter_form]),
+                dbc.Col([filters_form, ccg_filter_form, datatable_toggle_form]),
             ]
         )
     )
@@ -193,45 +200,7 @@ def layout(tests_df, ccgs_list, measures):
                                 html.Div(
                                     id="counts-container",
                                     style={"display": "none"},
-                                    children=[
-                                        dcc.Graph(id="counts-graph"),
-                                        html.Div(
-                                            dash_table.DataTable(
-                                                id="counts-table",
-                                                columns=[
-                                                    {
-                                                        "name": "month",
-                                                        "id": "month",
-                                                        "type": "datetime",
-                                                    },
-                                                    {"name": "test", "id": "test_code"},
-                                                    {
-                                                        "name": "result",
-                                                        "id": "result_category",
-                                                    },
-                                                    {"name": "ccg", "id": "ccg_id"},
-                                                    {
-                                                        "name": "practice",
-                                                        "id": "practice_id",
-                                                    },
-                                                    {
-                                                        "name": "numerator",
-                                                        "id": "numerator",
-                                                    },
-                                                    {
-                                                        "name": "denominator",
-                                                        "id": "denominator",
-                                                    },
-                                                ],
-                                                filter_action="native",
-                                                sort_action="native",
-                                                sort_mode="multi",
-                                                page_action="native",
-                                                page_current=0,
-                                                page_size=50,
-                                            )
-                                        ),
-                                    ],
+                                    children=[dcc.Graph(id="counts-graph")],
                                 ),
                                 html.Div(
                                     id="deciles-container", style={"display": "block"}
@@ -241,6 +210,51 @@ def layout(tests_df, ccgs_list, measures):
                                     style={"display": "none"},
                                     children=make_index_content(measures),
                                 ),
+                            ],
+                        ),
+                        html.Div(
+                            id="counts-table-container",
+                            style={"display": "none"},
+                            children=[
+                                dcc.Loading(
+                                    id="loading-table",
+                                    children=[
+                                        dash_table.DataTable(
+                                            id="counts-table",
+                                            columns=[
+                                                {
+                                                    "name": "month",
+                                                    "id": "month",
+                                                    "type": "datetime",
+                                                },
+                                                {"name": "test", "id": "test_code"},
+                                                {
+                                                    "name": "result",
+                                                    "id": "result_category",
+                                                },
+                                                {"name": "ccg", "id": "ccg_id"},
+                                                {
+                                                    "name": "practice",
+                                                    "id": "practice_id",
+                                                },
+                                                {
+                                                    "name": "numerator",
+                                                    "id": "numerator",
+                                                },
+                                                {
+                                                    "name": "denominator",
+                                                    "id": "denominator",
+                                                },
+                                            ],
+                                            filter_action="native",
+                                            sort_action="native",
+                                            sort_mode="multi",
+                                            page_action="native",
+                                            page_current=0,
+                                            page_size=50,
+                                        )
+                                    ],
+                                )
                             ],
                         ),
                     ]

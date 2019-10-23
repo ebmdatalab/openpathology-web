@@ -41,16 +41,28 @@ def get_sorted_group_keys(df, group_by):
     return entity_ids
 
 
-@app.callback(Output("counts-table", "data"), [Input("page-state", "children")])
-def update_counts_table(page_state):
+@app.callback(
+    Output("counts-table-container", "style"), [Input("datatable-toggle", "value")]
+)
+def toggle_counts_table_visibility(toggle_state):
+    if toggle_state:
+        return {"display": "block"}
+    else:
+        return {"display": "none"}
+
+
+@app.callback(
+    Output("counts-table", "data"),
+    [Input("page-state", "children"), Input("datatable-toggle", "value")],
+)
+def update_counts_table(page_state, toggle_state):
     page_state = get_state(page_state)
-    if page_state.get("page_id") != settings.COUNTS_CHART_ID:
+    if not toggle_state:
         return []
 
     numerators = page_state.get("numerators", [])
     denominators = page_state.get("denominators", [])
     result_filter = page_state.get("result_filter", [])
-    groupby = page_state.get("groupby", None)
     practice_filter_entity = page_state.get("practice_filter_entity", None)
     entity_ids_for_practice_filter = page_state.get(
         "entity_ids_for_practice_filter", []
