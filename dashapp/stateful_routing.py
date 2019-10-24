@@ -99,6 +99,7 @@ def update_url_from_page_state(page_state):
         Input("groupby-dropdown", "value"),
         Input("test-filter-dropdown", "value"),
         Input("ccg-dropdown", "value"),
+        Input("chart-dropdown", "value"),
     ],
     [State("page-state", "children"), State("url-for-update", "pathname")],
 )
@@ -110,6 +111,7 @@ def update_state_from_inputs(
     groupby,
     selected_filter,
     selected_ccg,
+    selected_chart,
     page_state,
     current_path,
 ):
@@ -164,6 +166,7 @@ def update_state_from_inputs(
         result_filter=selected_filter,
         groupby=groupby,
         entity_ids_for_practice_filter=selected_ccg,
+        page_id=selected_chart,
     )
 
     if "heatmap-graph" in triggered_inputs:
@@ -248,15 +251,10 @@ for selector_id, page_state_key, is_multi in [
     ("test-filter-dropdown", "result_filter", False),
     ("groupby-dropdown", "groupby", False),
     ("ccg-dropdown", "entity_ids_for_practice_filter", True),
+    ("chart-dropdown", "page_id", False),
 ]:
     app.callback(Output(selector_id, "value"), [Input("url-from-user", "pathname")])(
         _create_dropdown_update_func(selector_id, page_state_key, is_multi)
-    )
-
-
-for link_id in ["counts", "deciles", "heatmap"]:
-    app.callback(Output(f"{link_id}-link", "href"), [Input("page-state", "children")])(
-        _create_link_update_func(link_id)
     )
 
 

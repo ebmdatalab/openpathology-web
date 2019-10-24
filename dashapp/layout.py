@@ -55,18 +55,7 @@ def layout(tests_df, ccgs_list, measures):
         children=[
             dbc.NavItem(
                 dbc.NavLink("Measures", id="measures-link", href="/apps/measures")
-            ),
-            dbc.NavItem(
-                dbc.NavLink("Single chart", id="counts-link", href="/apps/counts")
-            ),
-            dbc.NavItem(
-                dbc.NavLink(
-                    "Many charts with deciles", id="deciles-link", href="/apps/deciles"
-                )
-            ),
-            dbc.NavItem(
-                dbc.NavLink("Heatmap", id="heatmap-link", href="/apps/heatmap")
-            ),
+            )
         ],
         brand="OpenPathology",
         brand_href="#",
@@ -78,8 +67,12 @@ def layout(tests_df, ccgs_list, measures):
             # XXX possibly use https://dash.plot.ly/dash-core-components/store
             html.Pre(id="page-state", style={"display": "none"}),
             # Two "locations" with the same function, to allow two
-            # different callbacks to use them without cycles in the graph.
+            # different callbacks to use them without cycles in the
+            # graph.  This one represents URLs from the user,
+            # i.e. bookmarked or directly edited
             dcc.Location(id="url-from-user", refresh=False),
+            # This one represents the URL that was want to change to
+            # reflect the current page state
             dcc.Location(id="url-for-update", refresh=False),
         ]
     )
@@ -167,15 +160,36 @@ def layout(tests_df, ccgs_list, measures):
     )
     datatable_toggle_form = dbc.FormGroup(
         [
-            dbc.Label("Show raw practice-level data"),
-            daq.ToggleSwitch(id="datatable-toggle", value=False),
+            daq.ToggleSwitch(
+                id="datatable-toggle", label="Show raw practice-level data", value=False
+            )
+        ]
+    )
+    chart_selector_form = dbc.FormGroup(
+        [
+            dbc.Label("Chart type"),
+            dcc.Dropdown(
+                id="chart-dropdown",
+                options=[
+                    {"value": "heatmap", "label": "Heatmap"},
+                    {"value": "counts", "label": "Counts"},
+                    {"value": "deciles", "label": "Deciles"},
+                ],
+            ),
         ]
     )
     form = dbc.Container(
         dbc.Row(
             [
                 dbc.Col([numerators_form, denominators_form, groupby_form]),
-                dbc.Col([filters_form, ccg_filter_form, datatable_toggle_form]),
+                dbc.Col(
+                    [
+                        filters_form,
+                        ccg_filter_form,
+                        chart_selector_form,
+                        datatable_toggle_form,
+                    ]
+                ),
             ]
         )
     )
