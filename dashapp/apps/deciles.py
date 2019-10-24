@@ -137,7 +137,7 @@ def update_deciles(page_state):
 
         # Make a title
 
-        if not numerators:
+        if not numerators or "all" in numerators:
             numerators_text = "all tests"
         else:
             numerators_text = " + ".join(numerators)
@@ -147,8 +147,19 @@ def update_deciles(page_state):
             denominators_text = "per 1000 patients"
         else:
             denominators_text = "as a proportion of " + " + ".join(denominators)
-        title = "Count of {} {} at {}".format(
-            numerators_text, denominators_text, entity_id
+        if result_filter and result_filter != "all":
+            try:
+                filter_text = (
+                    ", only showing results " + settings.ERROR_CODES[int(result_filter)]
+                )
+            except ValueError:
+                filter_text = ", only showing results " + result_filter
+
+        else:
+            filter_text = ""
+
+        title = "Count of {} {} for {}{}".format(
+            numerators_text, denominators_text, entity_id, filter_text
         )
 
         # Add the traces to per-practice graph

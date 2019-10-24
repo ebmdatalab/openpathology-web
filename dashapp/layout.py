@@ -93,7 +93,7 @@ def layout(tests_df, ccgs_list, measures):
 
     filters_form = dbc.FormGroup(
         [
-            dbc.Label("Which test results?"),
+            dbc.Label("Filter tests by result type"),
             dcc.Dropdown(
                 id="test-filter-dropdown",
                 options=[
@@ -104,7 +104,6 @@ def layout(tests_df, ccgs_list, measures):
                     },
                     {"value": "under_range", "label": "Results under reference range"},
                     {"value": "over_range", "label": "Results over reference range"},
-                    {"value": "error", "label": "Any results with errors"},
                 ]
                 + [
                     {"value": x, "label": "Specific error: " + y}
