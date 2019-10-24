@@ -175,13 +175,14 @@ def report_oddness(df):
         left_on=["test_code", "lab"],
         right_on=["test_code", "lab"],
     )
-    report["percentage"] = report["month_x"] / report["month_y"].count()
+    report["percentage"] = report["month_x"] / report["month_y"]
     report["result_category"] = report["result_category"].replace(settings.ERROR_CODES)
-    odd = report[report["percentage"] > 10]
-    if odd.count():
+    odd = report[report["percentage"] > 0.1]
+    if len(odd):
         print("The following error codes are more than 10% of all the results:")
         print()
-        print(report[["result_category", "test_code", "lab", "percentage"]])
+        with pd.option_context("display.max_rows", None, "display.max_columns", None):
+            print(odd[["result_category", "test_code", "lab", "percentage"]])
 
 
 @app.cli.command("process_file")
@@ -217,7 +218,8 @@ def process_file(lab_code, filename):
 def postprocess_file(filenames):
     df = pd.DataFrame()
     for filename in filenames:
-        df = pd.concat([df, pd.read_csv(filename)])
+        if not filename.endswith("/all_processed.csv"):
+            df = pd.concat([df, pd.read_csv(filename)], sort=False)
     df = anonymise(df)
     report_oddness(df)
     df.to_csv(settings.CSV_DIR / f"all_processed.csv", index=False)
