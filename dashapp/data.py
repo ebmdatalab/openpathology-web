@@ -4,7 +4,7 @@ from app import cache
 import settings
 
 
-# @cache.memoize()
+@cache.memoize()
 def get_data(sample_size=None):
     """Get suitably massaged data
     """
@@ -20,6 +20,7 @@ def get_data(sample_size=None):
         return df
 
 
+@cache.memoize()
 def get_count_data(
     numerators=[],
     denominators=[],
