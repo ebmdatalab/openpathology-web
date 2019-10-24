@@ -3,6 +3,7 @@ import plotly.graph_objs as go
 from dash.dependencies import Input, Output
 
 from app import app
+from apps.base import get_chart_title
 
 from data import get_count_data
 from stateful_routing import get_state
@@ -72,9 +73,13 @@ def update_heatmap(page_state):
     logger.debug(
         "Target rowheight of {} for {} {}s".format(height, len(entities), groupby)
     )
+    entity_id = f"{col_name}s"
+    title = get_chart_title(numerators, denominators, result_filter, entity_id)
+
     return {
         "data": [trace],
         "layout": go.Layout(
+            title=title,
             width=800,
             height=height,
             xaxis={"fixedrange": True},

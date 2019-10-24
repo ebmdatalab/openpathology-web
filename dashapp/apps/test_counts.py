@@ -5,6 +5,8 @@ from dash.dependencies import Input, Output
 
 from app import app
 from apps.base import get_sorted_group_keys
+from apps.base import get_chart_title
+
 from data import get_count_data
 from data import get_test_list
 from stateful_routing import get_state
@@ -42,6 +44,7 @@ def update_counts(page_state):
         result_filter=result_filter,
     )
     traces = []
+    title = get_chart_title(numerators, denominators, result_filter, col_name)
     for entity_id in get_sorted_group_keys(df, col_name):
         if col_name == "result_category":
             label = settings.ERROR_CODES[entity_id]
@@ -58,4 +61,4 @@ def update_counts(page_state):
                 showlegend=True,
             )
         )
-    return {"data": traces}
+    return {"data": traces, "layout": go.Layout(title=title)}

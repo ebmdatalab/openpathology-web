@@ -8,6 +8,7 @@ from dash.dependencies import Input, Output
 import numpy as np
 from app import app
 from apps.base import get_sorted_group_keys
+from apps.base import get_chart_title
 from data import get_count_data
 from stateful_routing import get_state
 import settings
@@ -138,33 +139,7 @@ def update_deciles(page_state):
         # Add the deciles
         traces.extend(deciles_traces)
 
-        # Make a title
-
-        if not numerators or "all" in numerators:
-            numerators_text = "all tests"
-        else:
-            numerators_text = " + ".join(numerators)
-        if not denominators:
-            denominators_text = "(raw numbers)"
-        elif denominators == ["per1000"]:
-            denominators_text = "per 1000 patients"
-        else:
-            denominators_text = "as a proportion of " + " + ".join(denominators)
-        if result_filter and result_filter != "all":
-            try:
-                filter_text = (
-                    ", only showing results " + settings.ERROR_CODES[int(result_filter)]
-                )
-            except ValueError:
-                filter_text = ", only showing results " + result_filter
-
-        else:
-            filter_text = ""
-
-        title = "Count of {} {} for {}{}".format(
-            numerators_text, denominators_text, entity_id, filter_text
-        )
-
+        title = get_chart_title(numerators, denominators, result_filter, entity_id)
         # Add the traces to per-practice graph
         graph = dcc.Graph(
             id="graph-{}".format(entity_id),

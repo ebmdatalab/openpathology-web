@@ -86,3 +86,34 @@ def update_counts_table(page_state, toggle_state):
     df["month"] = df["month"].dt.strftime("%Y-%m-%d")
     df["result_category"] = df["result_category"].replace(settings.ERROR_CODES)
     return df.to_dict("records")
+
+
+def get_chart_title(numerators, denominators, result_filter, entity_id):
+
+    # Make a title
+
+    if not numerators or "all" in numerators:
+        numerators_text = "all tests"
+    else:
+        numerators_text = " + ".join(numerators)
+    if not denominators:
+        denominators_text = "(raw numbers)"
+    elif denominators == ["per1000"]:
+        denominators_text = "per 1000 patients"
+    else:
+        denominators_text = "as a proportion of " + " + ".join(denominators)
+    if result_filter and result_filter != "all":
+        try:
+            filter_text = (
+                ", only showing results " + settings.ERROR_CODES[int(result_filter)]
+            )
+        except ValueError:
+            filter_text = ", only showing results " + result_filter
+
+    else:
+        filter_text = ""
+
+    title = "Count of {} {} for {}{}".format(
+        numerators_text, denominators_text, entity_id, filter_text
+    )
+    return title
