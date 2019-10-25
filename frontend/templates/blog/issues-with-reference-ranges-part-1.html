@@ -1,0 +1,116 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+<h1>Issues with reference ranges – Part 1</h1><small class='text-muted'>24 Oct, 2019</small><div class="entry-content" itemprop="text">
+<p>As the <a href="http://openpathology.net">OpenPathology</a> project has progressed, we have started to build measures to describe variation between practices, and groups of practices. </p>
+
+
+
+<p>While comparing<strong> rates</strong> of requests per head of population can be used as a simple measure of possible over- or under-use of tests compared to other practices, it doesn’t take into account the general health needs of the population, so it can be difficult to rule out warranted variation. Therefore, comparing variation in rates of <strong>abnormal results</strong> is another useful measure to consider. </p>
+
+
+
+<h4>What is an abnormal result?</h4>
+
+
+
+<p>To decide if a result is abnormal, results are typically compared to a <strong>reference range</strong> when reported back to a GP. For example, a result of 113 g/L of haemoglobin may be below the “lower limit of normal”, and indicates a person may be slightly anaemic. Here is how that might be communicated in your GP practice’s Electronic Health Record:</p>
+
+
+
+<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/image-7.png" alt="" class="wp-image-5612" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/image-7.png 537w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-7-300x34.png 300w" sizes="(max-width: 537px) 100vw, 537px"></figure>
+
+
+
+<p>Of course, a GP will exercise clinical judgement in deciding what to do here. This example is <em>only just</em> abnormal, and the GP would probably advise you not to worry about it. </p>
+
+
+
+<p>Nonetheless, for a patient, the impact of being told a result is abnormal can be <a href="https://www.youtube.com/watch?v=Bf0aPxYLjEQ&amp;feature=youtu.be">profound</a>, so it’s important that patients and clinicians understand the inherent limitations of lab methods. </p>
+
+
+
+<h4>What are the problems?</h4>
+
+
+
+<p>The limitations include sources of error and uncertainty in the measurements themselves, and unknowns relating to reference ranges. Aside from making it very hard to judge the significance of results, these issues make it even harder to draw conclusions about results from different labs.</p>
+
+
+
+<p>We’ll discuss these issues in detail in this series of blogs:</p>
+
+
+
+<ul><li><strong>Part 1</strong> – Uncertainty (this blog): The uncertainty of any test result can be large, and varies between laboratories and types of test;</li><li><strong>Part 2</strong> – Defining reference ranges:  <ul><li>The most common basis for reference ranges is a statistical definition based on a healthy population, telling you nothing about disease, and</li></ul><ul><li>Reference ranges are unlikely to be adequately sensitive in most cases. </li></ul></li><li> <strong>Part 3</strong> – Variation in reference ranges: Reference ranges themselves can vary between labs for unclear reasons.<br></li></ul>
+
+
+
+<h2>Uncertainty in test results</h2>
+
+
+
+<p>A patient who finds the following test result in their online health record might reasonably assume their haemoglobin levels are clinically low, at 113g/L:</p>
+
+
+
+<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/image-7.png" alt="" class="wp-image-5612" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/image-7.png 537w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-7-300x34.png 300w" sizes="(max-width: 537px) 100vw, 537px"></figure>
+
+
+
+<p>However, it would be more accurate to say “we are 95% confident that the concentration of haemoglobin in your blood is in the range 107.8 – 118.2” (depending on the lab where the test was carried out).</p>
+
+
+
+<p>There are several factors that contribute to making this figure uncertain, such as:</p>
+
+
+
+<ul><li>For any test, every healthy person has a natural “setting point” around which their levels fluctuate. This is not only for tests that are affected by cyclical rhythms like sex hormones, but also for more stable tests. For example, studies show that cholesterol can vary by 6% day-to-day within a healthy patient. This is called “within-subject” variation.</li></ul>
+
+
+
+<ul><li>Next, there’s <em>preanalytical variation</em>, which includes variation resulting from inconsistent storing of specimens (something we explored in <a href="https://ebmdatalab.net/?p=5602">this blog post about potassium</a>), and <em>postanalytical</em> <em>variation</em> from errors in copying or transferring results. </li></ul>
+
+
+
+<ul><li>The final source of error arises in the laboratory. <em>Analytical variation</em> occurs when the same blood specimen presents different results each time it is measured.  This can occur for several reasons, such as precision errors within the hardware, or operator error.  For example, in August 2019, tests shows that in a <em>single blood specimen</em>, haemoglobin was reported as anywhere between 98 to 106 dL/g in different machines across the country. </li></ul>
+
+
+
+<p>Taking all this into account, there is a considerable amount of uncertainty in any given measurement, and they should be treated with caution. </p>
+
+
+
+<p>One way we’ve found of visualising this uncertainty is to plot results as points, with bars showing the range of uncertainty. In this chart, any measurement whose uncertainty bars overlap the red dotted lines cannot be confidently said to be within or outside reference ranges; these are coloured orange, and account for 18% of all measurements in this sample.</p>
+
+
+
+<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/image-8.png" alt="" class="wp-image-5653" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/image-8.png 556w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-8-300x217.png 300w" sizes="(max-width: 556px) 100vw, 556px"></figure>
+
+
+
+<p>The distribution of test results with a 95% certainty is clearer if you sort the results:</p>
+
+
+
+<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/image-9.png" alt="" class="wp-image-5654" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/image-9.png 556w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-9-300x217.png 300w" sizes="(max-width: 556px) 100vw, 556px"></figure>
+
+
+
+<p>In the <a href="/openpathology-issues-with-reference-ranges-part-2/">next blog</a> we discuss some of the implications of comparing these uncertain values to reference ranges.</p>
+
+
+
+<hr class="wp-block-separator">
+
+
+
+<h2><strong>Keep up to date</strong></h2>
+
+
+
+<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-very-dark-gray-color has-background has-pale-cyan-blue-background-color" href="https://t.co/rxeS5Ot3DY?amp=1"><h3><strong> Join our <em>OpenPathology</em> mailing list </strong></h3></a></div>
+
+</div><hr><p><a href='{% url 'blog' %}'>Read more OpenPathology blogs</a></p>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+<h1>Issues with reference ranges – Part 2</h1><small class='text-muted'>24 Oct, 2019</small><div class="entry-content" itemprop="text">
+<p>This is the second instalment in our <a href="/openpathology-issues-with-reference-ranges-part-1/">series</a> of commentaries on reference ranges used to interpret pathology test results. Here we describe two issues relating to how meaningful reference ranges are. </p>
+
+
+
+<h2>Reference ranges are usually indicators of statistical outliers in a healthy reference population</h2>
+
+
+
+<p>The most common type of reference range is defined as the interval between which 95% of the values of a <strong>healthy</strong> reference population fall into. In other words, 2.5% of the time, healthy people will have haemoglobin concentrations less than the lower limit.</p>
+
+
+
+<figure class="wp-block-image"><img src="http://ucsdlabmed.wdfiles.com/local--resized-images/chapter-1/Slide1(1).JPG/medium.jpg" alt="Image result for reference range 95%"><figcaption> <a href="http://ucsdlabmed.wikidot.com/chapter-1">http://ucsdlabmed.wikidot.com/chapter-1</a> </figcaption></figure>
+
+
+
+<p>An interesting implication of this is that the greater the number of different tests performed, the greater the chance of finding an “abnormal” result in a healthy person. In primary care, it is common practice to order “batteries” of tests in one go: take one sample of blood, and get lots of results. Most blood samples are sent with a request for “Full Blood Count”, which often includes 16 or more tests (including haemoglobin).</p>
+
+
+
+<p>Statistically, testing 16 things each with a 5% chance of being “abnormal”  means there is a 56% chance that at least one of these tests will be “abnormal”, but not necessarily indicating anything clinically significant. This is why performing full blood counts as part of routine screening is not recommended. The 2017 <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5638475/">Cochrane review</a> on this topic stated: </p>
+
+
+
+<blockquote class="wp-block-quote"><p><em>Up to 11% of results are abnormal but less than 1% of results require management change. It is unclear which patients benefit and serious disease is almost never found</em>. </p></blockquote>
+
+
+
+<p>Instead, most tests should be ordered in a targeted way to avoid chance findings of clinically insignificant results, leading to unnecessary follow-ups and <a href="https://www.youtube.com/watch?v=Bf0aPxYLjEQ&amp;feature=youtu.be">patient anxiety</a>.  </p>
+
+
+
+<p>The final complicating factor is that patients presenting themselves to doctors are <strong>not</strong> a normal, healthy population. In a cohort with a high prevalence of disease, the predictive value of a positive test result is considerably higher than in a healthy cohort. </p>
+
+
+
+<h2>Reference ranges are unlikely to be adequately sensitive in most cases</h2>
+
+
+
+<p>In the previous blog about <a href="/openpathology-issues-with-reference-ranges-part-1/">uncertainty in test results</a>, we visualised a single result with bars indicating uncertainty, like this:</p>
+
+
+
+<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/image-10.png" alt="" class="wp-image-5657" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/image-10.png 445w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-10-300x169.png 300w" sizes="(max-width: 445px) 100vw, 445px"></figure>
+
+
+
+<p>Every healthy person’s <em>setting point</em> is different. This is called the “between-subject” variation, and is the basis for calculating reference ranges: only the extreme outliers are considered “abnormal”.  In other words, in a sample of one hundred <strong>healthy</strong> people, the blue dot above would appear outside the red lines 5% of the time.</p>
+
+
+
+<p>The confidence bar in the figure above, on the other hand, shows the <em>within-subject</em> variation: we can expect one healthy individual’s true haemoglobin level to be somewhere within that range 95% of the time.  </p>
+
+
+
+<p>When within-subject variation is very small as a proportion of the between-subject variation, that test is said to have “high individuality”. The problem with such tests is that a result that is highly abnormal for one individual is still very unlikely to fall outside the reference ranges, because it is not highly abnormal for the population as a whole.</p>
+
+
+
+<p>It happens that the vast majority of common tests have high individuality, which means:</p>
+
+
+
+<ul><li>The practice of repeating unusual results that are close to the limits of a reference range is of limited value;</li><li>It is generally agreed that population-based reference values are of <a href="https://www.tandfonline.com/doi/pdf/10.3109/10408368909106595">limited value</a> in the detection of unusual results for an individual.</li></ul>
+
+
+
+<p>A better way to identify abnormality in such cases is to repeat a test with a new specimen and <a href="https://hrcak.srce.hr/index.php?show=clanak&amp;id_clanak_jezik=64028">see if it changes enough to be significant</a>. However, despite wide agreement that reference ranges are often inappropriate, they remain the primary way labs provide interpretation alongside results to GP. The lack of progress here may in part be because these concepts are <a href="https://www.ncbi.nlm.nih.gov/pubmed/21958344">hard to explain and interpret</a>.</p>
+
+
+
+<hr class="wp-block-separator">
+
+
+
+<h2><strong>Keep up to date</strong></h2>
+
+
+
+<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-very-dark-gray-color has-background has-pale-cyan-blue-background-color" href="https://t.co/rxeS5Ot3DY?amp=1"><h3><strong> Join our <em>OpenPathology</em> mailing list </strong></h3></a></div>
+
+
+<p></p>
+</div><hr><p><a href='{% url 'blog' %}'>Read more OpenPathology blogs</a></p>
+{% endblock %}
