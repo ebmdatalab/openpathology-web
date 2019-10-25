@@ -32,3 +32,24 @@ url: https://ebmdatalab.net/openpathology-seasonality-in-haemoglobin-test-result
 slug: openpathology-seasonality-in-haemoglobin-test-results
 xpath: //div[@class="entry-content"]
 date: 2019-10-14
+
+---
+title: "Issues with reference ranges – Part 1"
+url: https://ebmdatalab.net/openpathology-issues-with-reference-ranges-part-1/
+slug: issues-with-reference-ranges-part-1
+xpath: //div[@class="entry-content"]
+date: 2019-10-24
+
+---
+title: "Issues with reference ranges – Part 2"
+url: https://ebmdatalab.net/openpathology-issues-with-reference-ranges-part-2/
+slug: issues-with-reference-ranges-part-2
+xpath: //div[@class="entry-content"]
+date: 2019-10-24
+
+---
+title: "Issues with reference ranges – Part 3"
+url: https://ebmdatalab.net/openpathology-issues-with-reference-ranges-part-3/
+slug: issues-with-reference-ranges-part-3
+xpath: //div[@class="entry-content"]
+date: 2019-10-24
