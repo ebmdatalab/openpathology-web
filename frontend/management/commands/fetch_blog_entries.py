@@ -79,7 +79,6 @@ class Command(BaseCommand):
                     )
                     + content
                 )
-                # Replace any links in the content
                 blog_index.append(
                     BLOG_LINK_TEMPLATE.format(
                         url=page["slug"],
