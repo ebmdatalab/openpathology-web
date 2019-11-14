@@ -1,7 +1,9 @@
 import yaml
 import os
+import re
 import requests
 import subprocess
+from urllib.parse import urlparse
 from datetime import datetime
 
 from django.core.management.base import BaseCommand, CommandError
@@ -19,6 +21,24 @@ VANILLA_TEMPLATE = """{{% extends "_base.html" %}}
 """
 
 BLOG_LINK_TEMPLATE = '<li class="nav-item"><h3><a href="/blog/{url}">{title}</a></h3><small class="text-muted">{date}</small><p>{summary} <a href="{url}">[Read More...]</a></p></li>'
+
+
+def make_internal_link_replacements(pages):
+    """Internal links in the source blogs may have different URLs from our
+    imported links. For example, in a source blog we may link to
+    `/myblog/a.html`, but that link target in our destination blog
+    should be `/a.html`. Build an array of regex replacements to
+    rewrite internal links so they work in the destination blog.
+
+    """
+    replacements = []
+    for page in pages:
+        from_path = urlparse(page["url"]).path
+        if from_path[-1] == "/":
+            from_path = from_path[:-1]
+        from_regex = r"(href=.).*{}/?(\b)".format(from_path)
+        replacements.append((from_regex, r"\1/{}\2".format(page["slug"])))
+    return replacements
 
 
 class Command(BaseCommand):
@@ -41,6 +61,7 @@ class Command(BaseCommand):
                 key=lambda x: x["date"],
                 reverse=True,
             )
+            link_replacements = make_internal_link_replacements(pages)
             for page in pages:
                 response = requests.get(page["url"])
                 tree = html.fromstring(response.text)
@@ -48,6 +69,8 @@ class Command(BaseCommand):
                 node = tree.xpath(page["xpath"])[0]
                 cleaner = Cleaner(safe_attrs_only=False, safe_attrs=[])
                 content = cleaner.clean_html(tostring(node, encoding="unicode"))
+                for from_regex, to in link_replacements:
+                    content = re.sub(from_regex, to, content)
                 content += "<hr><p><a href='{% url 'blog' %}'>Read more OpenPathology blogs</a></p>"
                 summary = filters.truncatewords(node.text_content(), 35)
                 content = (
@@ -56,7 +79,6 @@ class Command(BaseCommand):
                     )
                     + content
                 )
-
                 blog_index.append(
                     BLOG_LINK_TEMPLATE.format(
                         url=page["slug"],
