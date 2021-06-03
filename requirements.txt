@@ -16,7 +16,7 @@ gunicorn==19.9.0
     # via -r requirements.in
 idna==2.8
     # via requests
-lxml==4.4.0
+lxml==4.6.3
     # via -r requirements.in
 psycopg2==2.8.2
     # via -r requirements.in
