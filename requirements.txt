@@ -10,7 +10,7 @@ chardet==3.0.4
     # via requests
 dj-database-url==0.5.0
     # via -r requirements.in
-django==2.2.24
+django==2.2.27
     # via -r requirements.in
 gunicorn==19.9.0
     # via -r requirements.in
