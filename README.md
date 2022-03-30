@@ -1,7 +1,7 @@
 # OpenPathology
 
 
-OpenPathology is a new project being built by the EBM DataLab at the
+OpenPathology is a new project being built by the Bennett Institute for Applied Data Science at the
 University of Oxford.
 
 This repo is the code related to the website at https://openpathology.net.
