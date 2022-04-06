@@ -1,55 +1,55 @@
 ---
 title: "Examining variation in test request rates"
-url: https://ebmdatalab.net/examining-variation-in-test-request-rates/
+url: https://www.bennett.ox.ac.uk/blog/2019/09/examining-variation-in-test-request-rates/
 slug: examining-variation-in-test-request-rates
-xpath: //div[@class="entry-content"]
-date: 2019-09-02
+xpath: //div[@class="text prose"]
+date: 2019-09-05
 
 ---
 title: "Getting population sizes right"
-url: https://ebmdatalab.net/openpathology-getting-population-sizes-right/
+url: https://www.bennett.ox.ac.uk/blog/2019/09/openpathology-getting-population-sizes-right/
 slug: getting-population-sizes-right
-xpath: //div[@class="entry-content"]
-date: 2019-09-09
+xpath: //div[@class="text prose"]
+date: 2019-09-18
 
 ---
 title: "Validating pathology data against known shifts in clinical practice"
-url: https://ebmdatalab.net/validating-pathology-data-against-known-shifts-in-clinical-practice/
+url: https://www.bennett.ox.ac.uk/blog/2019/09/validating-pathology-data-against-known-shifts-in-clinical-practice/
 slug: validating-pathology-data-against-known-shifts-in-clinical-practice
-xpath: //div[@class="entry-content"]
-date: 2019-09-10
+xpath: //div[@class="text prose"]
+date: 2019-09-09
 
 ---
-title: "Fake seasonality in potassium results – dangerous and avoidable"
-url: https://ebmdatalab.net/openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable/
+title: "Fake seasonality in potassium results — dangerous and avoidable"
+url: https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable/
 slug: openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable
-xpath: //div[@class="entry-content"]
+xpath: //div[@class="text prose"]
 date: 2019-10-14
 
 ---
 title: "Seasonality in Haemoglobin test results"
-url: https://ebmdatalab.net/openpathology-seasonality-in-haemoglobin-test-results/
+url: https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-seasonality-in-haemoglobin-test-results/
 slug: openpathology-seasonality-in-haemoglobin-test-results
-xpath: //div[@class="entry-content"]
+xpath: //div[@class="text prose"]
 date: 2019-10-14
 
 ---
-title: "Issues with reference ranges – Part 1"
-url: https://ebmdatalab.net/openpathology-issues-with-reference-ranges-part-1/
+title: "Issues with reference ranges — Part 1"
+url: https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-issues-with-reference-ranges-part-1/
 slug: issues-with-reference-ranges-part-1
-xpath: //div[@class="entry-content"]
-date: 2019-10-24
+xpath: //div[@class="text prose"]
+date: 2019-10-23
 
 ---
-title: "Issues with reference ranges – Part 2"
-url: https://ebmdatalab.net/openpathology-issues-with-reference-ranges-part-2/
+title: "Issues with reference ranges — Part 2"
+url: https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-issues-with-reference-ranges-part-2/
 slug: issues-with-reference-ranges-part-2
-xpath: //div[@class="entry-content"]
+xpath: //div[@class="text prose"]
 date: 2019-10-24
 
 ---
-title: "Issues with reference ranges – Part 3"
-url: https://ebmdatalab.net/openpathology-issues-with-reference-ranges-part-3/
+title: "Issues with reference ranges — Part 3"
+url: https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-issues-with-reference-ranges-part-3/
 slug: issues-with-reference-ranges-part-3
-xpath: //div[@class="entry-content"]
-date: 2019-10-24
+xpath: //div[@class="text prose"]
+date: 2019-10-25

@@ -1,88 +1,10 @@
-{% extends "_base.html" %}
-{% load static %}
-{% block content %}
-<h1>Issues with reference ranges – Part 3</h1><small class='text-muted'>24 Oct, 2019</small><div class="entry-content" itemprop="text">
-<p> This is the third instalment in our <a href="/issues-with-reference-ranges-part-1/">series</a> of commentaries on using reference ranges to interpret pathology test results.  </p>
-
-
-
-<h2>Reference ranges vary between labs</h2>
-
-
-
-<p>Classically, the reference range is defined <strong>statistically</strong>: it is the interval within which 95% of the values of a <strong>healthy</strong>  reference population fall into. Therefore 2.5% of the time, healthy people will have (for example) haemoglobin concentrations less than the lower limit, and 2.5% of the time it will be over the upper limit. (Read more in our <a href="/issues-with-reference-ranges-part-2/">previous blog</a>).</p>
-
-
-
-<p>Sometimes intervals are by <strong>consensus</strong> (or “decision limit”) instead – for example, the upper limit of normal for Prostate Specific Antigen (PSA), a test used to identify cases of possible prostate cancer, is defined in the <a href="https://cks.nice.org.uk/prostate-cancer#!diagnosisSub:2">guidelines</a> as 4 ng/mL (but action should be taken &gt;3ng/mL for men 50-69), and this is reflected in reference ranges. In other words, a consensus reference range is supposed to be indicative of some kind of pathology (at a certain level of confidence).</p>
-
-
-
-<h4>Which is correct?</h4>
-
-
-
-<p>There is often considerable debate about the correct levels. The WHO definition of anaemia uses haemoglobin reference ranges defined in 1968, and these <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/bjh.12121">have continued to be debated</a> on the basis of real-world outcomes (such as all-cause mortality) ever since. </p>
-
-
-
-<p>In an ideal world, most reference ranges would be created through a process of scientific consensus based on clinical indications, but pragmatically, the majority are statistical. This creates an interesting disjoint with guidelines which refer to absolute numbers. For example, the definition of abnormally high Thyroid Stimulating Hormone (TSH) is defined by the outliers in a normal population as somewhere between 4 to 5 mU/L, and this is usually the figure given in reference ranges; whereas <a href="https://cks.nice.org.uk/hypothyroidism">guidelines</a> suggest thyroxine treatment should be initiated above the precise figure of 10 mU/L.</p>
-
-
-
-<h4>How do labs come up with different reference ranges?</h4>
-
-
-
-<p>Traditionally, it has been recommended that each lab produce its own reference ranges based on testing local normal populations, using their own analysers.  In practice, this rarely happens. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3428257/">One survey of labs in Birmingham</a> showed 35% used ranges provided by the manufacturer; 14% used literature ranges; 18% used in-house ranges; and 34% didn’t know the source of their ranges.  </p>
-
-
-
-<p>Manufacturer ranges themselves may have been determined directly on selected populations, or may themselves be derived from literature. And it’s not clear how you would judge the relative merits of two reference ranges, both derived from population studies: <a href="https://www.sciencedirect.com/science/article/pii/S235255171630049X#bib29">one study</a> that generated its own reference ranges found 25% of its chemistry tests disagreed with Abbot’s own reference ranges by more than a fifth.</p>
-
-
-
-<p>The result: different labs may use very different reference ranges for no good reason; or there may be a good reason, but the users of the service may not know. </p>
-
-
-
-<h4>Does this matter?</h4>
-
-
-
-<p>We see a lot of different reference ranges in OpenPathology data. For example, a 40 year old woman with 119 g/dL haemoglobin would be flagged as <strong>abnormal</strong> in Cornwall, but <strong>normal</strong> across the border in North Devon.  </p>
-
-
-
-<p>This is reflected in outcomes. We see that Cornwall, with its narrower reference range, does define more results as abnormal:</p>
-
-
-
-<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/image-5.png" alt="" class="wp-image-5606" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/image-5.png 964w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-5-300x86.png 300w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-5-768x220.png 768w" sizes="(max-width: 964px) 100vw, 964px"></figure>
-
-
-
-<p>When a lab changes equipment, it will usually switch to using the reference ranges recommended by the manufacturer. The following chart shows the effect that a new analyser can have on results. In 2018 you can see the proportion of TSH tests above range started going down, in Cornwall only. This lab changed their analyser in September, but we’re currently applying today’s reference values to all of the data:</p>
-
-
-
-<figure class="wp-block-image"><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/image-4.png" alt="" class="wp-image-5605" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/image-4.png 459w, https://ebmdatalab.net/wp-content/uploads/2019/09/image-4-300x171.png 300w" sizes="(max-width: 459px) 100vw, 459px"><figcaption>Median proportion of TSH tests above range, North Devon and Cornwall. Shaded areas show inter-quartile ranges.</figcaption></figure>
-
-
-
-<p>In an ideal world, all analysers would be calibrated to a single reference standard, and this would make the use of fixed national reference ranges completely defensible. Indeed, the <a href="https://journals.sagepub.com/doi/full/10.1258/acb.2008.008187?url_ver=Z39.88-2003">Pathology Harmony Group</a> pioneered a process for setting a number of reference ranges in the UK, which are now used by the majority of labs; but these only cover a few analytes.  In reality, reference ranges come from a hodge-podge of different sources, making it hard to compare outcomes between regions. </p>
-
-
-
-<hr class="wp-block-separator">
-
-
-
-<h2>Keep up-to-date</h2>
-
-
-
-<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-very-dark-gray-color has-background has-pale-cyan-blue-background-color" href="https://t.co/rxeS5Ot3DY?amp=1"><h3><strong> Join our <em>OpenPathology</em> mailing list </strong></h3></a></div>
-
-</div><hr><p><a href='{% url 'blog' %}'>Read more OpenPathology blogs</a></p>
-{% endblock %}
+<html>
+<head>
+<meta http-equiv="refresh" content="0;url=https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-issues-with-reference-ranges-part-3/" />
+<title>Page Moved</title>
+</head>
+<body>
+  This page has moved.
+  <a href="https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-issues-with-reference-ranges-part-3/">Go to the new page</a>.
+</body>
+</html>

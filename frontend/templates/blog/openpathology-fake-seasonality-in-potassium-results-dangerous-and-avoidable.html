@@ -1,90 +1,10 @@
-{% extends "_base.html" %}
-{% load static %}
-{% block content %}
-<h1>Fake seasonality in potassium results – dangerous and avoidable</h1><small class='text-muted'>14 Oct, 2019</small><div class="entry-content" itemprop="text">
-<p>In our initial analyses of pathology data from the South West for our <a href="https://openpathology.net/">OpenPathology.net</a> project, there is a pronounced (sometimes extreme) increase in high potassium results during the winter months, and a corresponding increase in low-potassium results in summer:</p>
-
-
-
-<ul class="wp-block-gallery aligncenter columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_K_seasonality_high.png" alt="" data-id="5618" data-link="https://ebmdatalab.net/?attachment_id=5618" class="wp-image-5618" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_K_seasonality_high.png 396w, https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_K_seasonality_high-300x208.png 300w" sizes="(max-width: 396px) 100vw, 396px"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_K_seasonality_low.png" alt="" data-id="5619" data-link="https://ebmdatalab.net/?attachment_id=5619" class="wp-image-5619" srcset="https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_K_seasonality_low.png 395w, https://ebmdatalab.net/wp-content/uploads/2019/09/openpathology_K_seasonality_low-300x207.png 300w" sizes="(max-width: 395px) 100vw, 395px"></figure></li></ul>
-
-
-
-<p class="has-small-font-size"><em>Proportion of potassium tests above reference range (red line, left) and below range (green line, right) for one practice. </em> <em>Solid blue line represents the median for surrounding practices and dotted lines are deciles.</em> <em>Shading represents the possible range of values where low numbers have been suppressed. </em></p>
-
-
-
-<h2>What’s causing it? </h2>
-
-
-
-<p>The level of potassium in plasma within a blood sample is affected by temperature. Potassium can move into and out of blood cells during storage: in cooler temperatures, potassium diffuses out of cells into plasma, leading to the reading being artefactually higher, while in higher temperatures an enzyme works to pump potassium into the cells. </p>
-
-
-
-<h2>What are the implications?</h2>
-
-
-
-<p>A mildly high potassium will often lead to a repeat of the test, generating (potentially unnecessary) work for doctors with associated anxiety for patients. However, very high potassium is potentially a life-threatening medical emergency, for which patients need to be admitted to hospital for assessment. This comes at considerable expense to the health service, and causes much inconvenience and worry for the patient (see video below).</p>
-
-
-
-<figure class="wp-block-embed-youtube alignleft wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-
-</div><figcaption>Impacts of falsely high results</figcaption></figure>
-
-
-
-<p>In the example practice shown above, the proportion of potassium results above the reference range is around 1% in summer, but rises to over 8% in some winter months. If we take the summer level as the baseline, and assume that the rises in winter are solely due to temperature, then for every 100 tests, 8 will give a “high potassium” result, with 7 of these being a false positive. </p>
-
-
-
-<p>Of course, this assumption may be wrong: it may be difficult to know where the true level lies. However, hospital coding indicates false positives are not rare. Tom Lewis <a href="http://girftpathology.blogspot.com/2019/06/pseudohyperkalemia-dangerous-expensive.html">describes one example in his blog</a>: </p>
-
-
-
-<blockquote class="wp-block-quote"><p><em>A patient was admitted with an incidental finding of a potassium of 6.1 on routine bloods. Her creatinine at the time was 100. By the time her bloods were repeated on the medical assessment unit her potassium was normal – but her creatinine was 122, and this generated an Acute Kidney Injury label. She was admitted – and the coded reason for admission was AKI. This shows how medicine has a tendency to generate its own problems – she was probably just dehydrated following the disruption to her daily pattern of life. </em></p></blockquote>
-
-
-
-<h2>What is the solution?</h2>
-
-
-
-<p>Standard blood-collection tubes contain a gel plug. When these samples are spun in a centrifuge, this plug rises and separates the blood cells from the plasma. This prevents the plasma potassium levels from being affected by leakage from the cells.</p>
-
-
-
-<p>As described in our <a href="/validating-pathology-data-against-known-shifts-in-clinical-practice/">last post</a> about reduction in liver testing, it is possible to validate the effect of spinning samples against known changes in clinical practice. Some practices in North Devon spin all their samples, and we can see they no longer have a seasonal pattern in their results:</p>
-
-
-
-<figure class="wp-block-image"><img src="https://lh3.googleusercontent.com/cAGW36bB_TU0ybMutlOWUQn2B_V8qe-HgEXXXfkiqf6tgwLLr0_3tbCCz9WEmlglWzQgDH4ti-HQeFyS2HD7p6ygc2ORdsx2AxfnloYAv7G8_lQchIML0tA4Xsas_3b8w8T1ZYjp" alt=""></figure>
-
-
-
-<h2>What next?</h2>
-
-
-
-<p>As we collect data from more labs across the country (<a href="https://openpathology.net/get_involved/">let us know if you want to get involved</a>), it will be interesting to compare seasonality in potassium results, and start conversations about any variation. Is there anything other than spinning which can cause variation?</p>
-
-
-
-<p>In our <a href="/openpathology-seasonality-in-haemoglobin-test-results/">next blog</a> we discuss a seasonal pattern in another test.</p>
-
-
-
-<hr class="wp-block-separator">
-
-
-
-<h2><strong>Keep up to date</strong></h2>
-
-
-
-<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-very-dark-gray-color has-background has-pale-cyan-blue-background-color" href="https://t.co/rxeS5Ot3DY?amp=1"><h3><strong> Join our <em>OpenPathology</em> mailing list </strong></h3></a></div>
-
-</div><hr><p><a href='{% url 'blog' %}'>Read more OpenPathology blogs</a></p>
-{% endblock %}
+<html>
+<head>
+<meta http-equiv="refresh" content="0;url=https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable/" />
+<title>Page Moved</title>
+</head>
+<body>
+  This page has moved.
+  <a href="https://www.bennett.ox.ac.uk/blog/2019/10/openpathology-fake-seasonality-in-potassium-results-dangerous-and-avoidable/">Go to the new page</a>.
+</body>
+</html>
